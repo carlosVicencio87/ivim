@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/blanco"
+    tools:context=".Login">
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="170dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/logo"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:padding="7dp"
+        android:background="@drawable/campo"
+        android:layout_marginTop="34dp">
+        <EditText
+            android:layout_width="216dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/correo"
+            android:hint="correo_electronico"
+            android:textSize="16dp"
+            android:textColorHint="@color/blanco"
+            android:inputType="text"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/icoUser"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:id="@+id/icoUser"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/icono_usuario"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="250dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:padding="7dp"
+        android:background="@drawable/campo"
+        android:layout_marginTop="35dp">
+        <EditText
+            android:layout_width="216dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/contrasena"
+            android:hint="PIN"
+            android:textSize="16dp"
+            android:textColorHint="@color/negro"
+            android:inputType="textPassword"
+            android:layout_marginHorizontal="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/icoPass"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <ImageView
+            android:id="@+id/icoPass"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/icono_pass"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/mensaje"
+        android:layout_height="70dp"
+        android:text="Iniciando sesión ..."
+        android:textSize="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/negro"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="120dp"
+            android:id="@+id/ingresar"
+            android:layout_height="60dp"
+            android:text="Ingresar"
+            android:textSize="25dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/negro"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/campo"
+            android:layout_marginBottom="10dp"
+            />
+
+
+    <TextView
+        android:layout_width="200dp"
+        android:id="@+id/recuperarContra"
+        android:layout_height="70dp"
+        android:text="Olvide mi contraseña"
+        android:textSize="20dp"
+        android:textColor="@color/negro"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/campo"
+        android:layout_marginTop="10dp"
+        />
+
+</LinearLayout>
