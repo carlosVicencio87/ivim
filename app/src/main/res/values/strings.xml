@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Ivim</string>
     <string name="title_activity_mapa">Map</string>
+    <string name="texto1">Nombre del usuario</string>
+    <string name="texto2">Fecha de solicitud</string>
+    <string name="texto3">Domicilio</string>
 </resources>

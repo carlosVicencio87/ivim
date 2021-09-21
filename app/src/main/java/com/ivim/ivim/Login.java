@@ -224,8 +224,7 @@ public class Login extends AppCompatActivity {
                                     editor.putString("ultima_alt",strUltima_alt);
                                     editor.putString("ultima_long",strUltima_long);
                                     editor.putString("zona",strZona);
-                                   
-
+                                    editor.apply();
                                     Log.e("1",""+strNombre);
                                     Log.e("2",strApellido_1);
                                     Log.e("3",strApellido_2);

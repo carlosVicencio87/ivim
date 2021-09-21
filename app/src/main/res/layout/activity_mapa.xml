@@ -14,21 +14,19 @@
             android:layout_width="match_parent"
             android:id="@+id/puntoPartida"
             android:layout_height="80dp"
-            android:background="@color/negro"
+            android:background="@color/blanco"
             android:text="Direccion "
             android:textSize="14dp"
-            android:textColor="@color/blanco"
+            android:textColor="@color/negro"
             android:gravity="center"
             android:layout_gravity="top"/>
     </LinearLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mapaid"
         android:visibility="gone"
         android:orientation="vertical">
-
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,10 +47,8 @@
             app:layout_constraintRight_toRightOf="parent"
             android:background="@color/blanco"
             android:id="@+id/iniciar_verificacion"
-            android:visibility="visible"
+            android:visibility="gone"
             />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 <ScrollView
     android:layout_width="match_parent"
@@ -69,45 +65,351 @@
         android:background="@color/blanco"
         android:gravity="center"
         android:orientation="vertical">
-    <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="20dp"
         android:orientation="vertical"
-        android:background="@color/blanco"
-        >
+        android:background="@color/blanco">
         <TextView
             android:layout_width="200dp"
             android:background="@color/blanco"
             android:gravity="center"
             android:textSize="15dp"
+            android:text="Fecha de solicitud"
+            android:textColor="@color/negro"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/blanco"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:id="@+id/caja_fecha"
+            android:layout_margin="10dp">
+        <EditText
+                android:id="@+id/fecha"
+                android:hint="@string/texto2"
+                android:layout_width="200dp"
+                android:layout_height="20dp"
+                android:background="@color/blanco"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="200dp"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="20dp"
             android:text="nombre del usuario"
             android:textColor="@color/negro"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-           />
+            android:layout_height="20dp"
+            android:layout_marginRight="20dp" />
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:background="@color/blanco"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:id="@+id/caja_edit_nombre"
+            android:layout_margin="10dp">
             <EditText
+                android:id="@+id/nombre_texto"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:background="@color/blanco"
+                android:hint="@string/texto1"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/negro"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/guardar_nombre"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_nombre_final"
+            android:layout_margin="10dp"
+            android:visibility="gone">
+            <TextView
                 android:id="@+id/nombre"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:background="@color/blanco"
+                android:text="nombre de usuario"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/negro"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/cambiar_nombre" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Domicilio donde se realizará la verificación"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/caja_direccion"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/direccion_mercado"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:textSize="15dp"
+                android:hint="@string/texto3"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom"
+                android:background="@color/blanco"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Giro"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/caja_giro"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <Spinner
+                android:id="@+id/giros"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:textSize="15dp"
+                android:hint="@string/texto3"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom"
+                android:background="@color/blanco"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Mercado"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/caja_mercado"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+            <Spinner
+                android:id="@+id/mercado"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:textSize="15dp"
+                android:hint="@string/texto3"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom"
+                android:background="@color/blanco"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Telefono"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_edit_tel"
+            android:layout_margin="10dp"
+            >
+            <EditText
+                android:id="@+id/tel_texto"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:background="@color/blanco"
+                android:hint="@string/texto1"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom"
+                android:inputType="phone"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/negro"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/guardar_tel"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_tel_final"
+            android:visibility="gone"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/telefono"
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:background="@color/blanco"
                 android:text="nombre de usuario"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:textColorHint="@color/negro"
                 android:gravity="bottom" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/negro"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/cambiar_telefono" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="35dp"
-            android:background="@drawable/rayita"
-            android:gravity="top"/>
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Tipo de visita"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:background="@color/blanco"
+        android:id="@+id/cons_check">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicial(I)"
+                android:id="@+id/inicial"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Periodica Anual(PA)"
+                android:id="@+id/anual"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Periodica 1er Semestre(P1S)"
+                android:id="@+id/primerSemestre"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="20dp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Periodica 2do Semestre(P2S)"
+                android:id="@+id/segundoSemestre"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+              />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Extraordinaria(E)"
+            android:id="@+id/extraordinaria"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/formulario_bascula"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        android:visibility="visible">
 
+    </ScrollView>
 </LinearLayout>
