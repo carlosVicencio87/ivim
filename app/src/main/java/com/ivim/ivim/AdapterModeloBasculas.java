@@ -50,7 +50,6 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
             super(itemView);
             model_bascula=(TextView)itemView.findViewById(R.id.nombre_bascula);
 
-            ;
 
 
 
