@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -61,7 +63,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Marker marker;
     private ConstraintLayout mapaid,caja_fecha,cons_check;
     private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
-            caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final;
+            caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
+            caja_recycler_modelo,caja_siguiente_tab;
     private Fragment map;
     private int check=0;
     private SharedPreferences sharedPreferences;
@@ -72,16 +75,19 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private TextView puntoPartida,nombre,direccion_mercado,telefono;
     private EditText nombre_texto,fecha,tel_texto;
     private ImageView iniciar_verificacion,guardar_nombre,cambiar_nombre,guardar_tel,
-            cambiar_telefono;
+            cambiar_telefono,siguiente_tab;
     private CheckBox inicial,anual,primerSemestre,segundoSemestre,extraordinaria;
     private Boolean tel10;
     private SharedPreferences datosUsuario;
-    private ScrollView formulario_principal;
+    private ScrollView formulario_principal,formulario_bascula;
     private Spinner giros,mercado;
     public ArrayList<SpinnerModel> listaGiro= new ArrayList<>();
     private AdapterGiro adapterGiro;
     private AdapterMercado adapterMercado;
     public ArrayList<SpinnerModel> listaMercado= new ArrayList<>();
+    private RecyclerView recyclerModelo;
+    private ArrayList<ModeloRecycler> listaModelo;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +132,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         activity = this;
         setListaGiro();
         setListaMercado();
+        caja_siguiente_tab=findViewById(R.id.caja_siguiente_tab);
+        siguiente_tab=findViewById(R.id.siguiente_tab);
+        formulario_bascula=findViewById(R.id.formulario_bascula);
+        context = this;
+        recyclerModelo =(RecyclerView) findViewById(R.id.recycler_modelo);
+        recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
+        listaModelo = new ArrayList<>();
+        caja_recycler_modelo=findViewById(R.id.caja_recycler_modelo);
 
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,6 +291,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 extraordinaria.setChecked(true);
+            }
+        });
+        siguiente_tab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                formulario_principal.setVisibility(view.GONE);
+                formulario_bascula.setVisibility(view.VISIBLE);
             }
         });
 

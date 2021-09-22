@@ -20,7 +20,7 @@
             android:id="@+id/nombre_bascula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Modelo"/>
+            android:text="Modelo de bascula"/>
     </LinearLayout>
 
 

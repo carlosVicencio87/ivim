@@ -16,7 +16,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     ViewHolderRecycler viewholderModelo;
     private  RecyclerView recyclerView;
     private Context context;
-    private String modelo_basculas;
+    private String modelo_bascula;
 
     public AdapterModeloBasculas(ArrayList<ModeloRecycler> rankingrecycler)
     {
@@ -32,9 +32,9 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     @Override
     public void onBindViewHolder(@NonNull AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
         viewholderModelo=holder;
-        nombre_bascula=rankingrecycler.get(position).getNombre_bascula;
+        modelo_bascula=rankingrecycler.get(position).getModeloBascula();
 
-        holder.model_bascula.setText(modelo_basculas);
+        holder.model_bascula.setText(modelo_bascula);
     }
 
     @Override
