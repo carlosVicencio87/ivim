@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/caja_punto_partida">
         <TextView
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mapaid"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
         <fragment
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintBottom_toTopOf="parent"
-    android:visibility="gone">
+    android:visibility="visible">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -401,20 +401,75 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="coordenadas"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/blanco"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/caja_siguiente_tab"
+            android:orientation="vertical"
+            android:id="@+id/caja_latitud"
+            android:visibility="visible"
             android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/latitud_x"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:background="@color/blanco"
+                android:text="latitud"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/caja_longitud"
+            android:visibility="visible"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/longitud_y"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:background="@color/blanco"
+                android:text="longitud"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="bottom" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/caja_siguiente_tab"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/siguiente_tab"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:background="@color/negro"
                 android:layout_margin="15dp"
                 android:layout_marginTop="30dp"
-                android:id="@+id/siguiente_tab"/>
+                android:background="@color/negro" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

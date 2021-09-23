@@ -64,7 +64,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ConstraintLayout mapaid,caja_fecha,cons_check;
     private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
             caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
-            caja_recycler_modelo,caja_siguiente_tab;
+            caja_recycler_modelo,caja_siguiente_tab,caja_latitud,caja_longitud;
     private Fragment map;
     private int check=0;
     private SharedPreferences sharedPreferences;
@@ -72,7 +72,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Mapa activity;
     private double latitud,longitud,latUpdate,longUpdate;
     private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel;
-    private TextView puntoPartida,nombre,direccion_mercado,telefono;
+    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y;
     private EditText nombre_texto,fecha,tel_texto;
     private ImageView iniciar_verificacion,guardar_nombre,cambiar_nombre,guardar_tel,
             cambiar_telefono,siguiente_tab;
@@ -88,6 +88,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private RecyclerView recyclerModelo;
     private ArrayList<ModeloRecycler> listaModelo;
     private Context context;
+    public final static int WGS84 = 0;
+    public final static int HAYFORD = 1;
+    private final static double[] ELLIPSOID_A = {6378137.000, 6378388.000};
+    private final static double[] ELLIPSOID_B = {6356752.3142449996, 6356911.946130};
+    public UTMPoint utmPoint;
+    public CoordinateConverter convertidor;
+    private static final int PERMISO_LOCATION=1;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +150,24 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
         listaModelo = new ArrayList<>();
         caja_recycler_modelo=findViewById(R.id.caja_recycler_modelo);
+        caja_latitud=findViewById(R.id.caja_latitud);
+        caja_longitud=findViewById(R.id.caja_longitud);
+        latitud_x=findViewById(R.id.latitud_x);
+        longitud_y=findViewById(R.id.longitud_y);
+
+
+        final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permisoLocacion!= PackageManager.PERMISSION_GRANTED) {
+            solicitarPermisoLocation();
+
+            Log.e("paso","paso");
+        }
+
+        convertidor=new CoordinateConverter();
+        UTMPoint datos_xy= convertidor.fromGeodeticToUTM(longitud,latitud);
+        Log.e("convertidor",String.valueOf(datos_xy).toString());
+
 
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,13 +248,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         fecha.setText(date);
 
 
-        final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (permisoLocacion!= PackageManager.PERMISSION_GRANTED) {
-            solicitarPermisoLocation();
-
-            Log.e("paso","paso");
-        }
         adapterGiro = new AdapterGiro(activity,R.layout.lista_giro,listaGiro,getResources());
         giros.setAdapter(adapterGiro);
 
@@ -372,13 +394,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
     private Location miLatLong() {
 
-        /** SE PIDEN PERMISOS DE LOCACIÓN PARA*/
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-        /** MANAGER DE LOCACIONES DE ANDROID*/
+5
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
 
         actualizarUbicacion(location);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 5, locationListener);
@@ -398,6 +417,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             coordenadas =coord;
             direccion_mercado.setText(direccion);
+
+
+
+
+
+
+
+
+
+
+
             //Toast.makeText(getApplicationContext(),"direccion: "+direccion,Toast.LENGTH_LONG).show();
             //Toast.makeText(getApplicationContext(),"lat: "+latitud+"long:"+longitud,Toast.LENGTH_LONG).show();
             Context context = this;
@@ -562,5 +592,19 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         extraordinaria.setChecked(false);
 
     }
+    /**
+     * Clase utilidad para realizar:
+     * <ul>
+     * <li>Conversión de coordenadas UTM a geodésicas y viceversa</li>
+     * <li>Conversión de coordenadas geodésiicas a geocéntricas y viceversa</li>
+     * <li>Transformación de coordenadas entre datums</li>
+     * </ul>
+     * @author jpresa
+     */
+
+
+
+
+
 
 }
