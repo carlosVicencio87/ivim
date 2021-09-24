@@ -185,7 +185,7 @@ public class Login extends AppCompatActivity {
                             try {
 
                                   json_datos_usuario=new JSONArray(response);
-
+                                    Log.e("lala",""+json_datos_usuario);
                                 for (int i=0;i<json_datos_usuario.length();i++){
                                     JSONObject jsonObject = json_datos_usuario.getJSONObject(i);
                                     //Log.e("nombreMovies", String.valueOf(jsonObject));
@@ -195,10 +195,11 @@ public class Login extends AppCompatActivity {
                                     String strApellido_2=jsonObject.getString("apellido_2");
                                     String strTelefono=jsonObject.getString("telefono");
                                     String strCorreo=jsonObject.getString("correo");
-                                    String strContrasena=jsonObject.getString("contrasena");
+                                    String strContrasena=jsonObject.getString("contra");
                                     String strActivo = jsonObject.getString("activo");
-                                    String strFecha_registro = jsonObject.getString("fecha_registro");
                                     String strId_sesion=jsonObject.getString("id_sesion");
+                                    String strFecha_registro = jsonObject.getString("fecha_de_ingreso");
+
                                     String strFecha_de_ingreso=jsonObject.getString("fecha_de_ingreso");
                                     String strAltitud=jsonObject.getString("altitud");
                                     String strLongitud=jsonObject.getString("longitud");

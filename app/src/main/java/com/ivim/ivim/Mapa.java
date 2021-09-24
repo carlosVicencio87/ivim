@@ -1,5 +1,8 @@
 package com.ivim.ivim;
 
+import static com.ivim.ivim.CoordinateConverter.fromGeodeticToUTM;
+import static com.ivim.ivim.CoordinateConverter.fromUTMToGeodetic;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -64,13 +67,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ConstraintLayout mapaid,caja_fecha,cons_check;
     private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
             caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
-            caja_recycler_modelo,caja_siguiente_tab,caja_latitud,caja_longitud;
+            caja_recycler_modelo,caja_siguiente_tab,caja_x,caja_longitud;
     private Fragment map;
     private int check=0;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Mapa activity;
-    private double latitud,longitud,latUpdate,longUpdate;
+    private double latitud,longitud,altitud,latUpdate,longUpdate;
     private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel;
     private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y;
     private EditText nombre_texto,fecha,tel_texto;
@@ -92,9 +95,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public final static int HAYFORD = 1;
     private final static double[] ELLIPSOID_A = {6378137.000, 6378388.000};
     private final static double[] ELLIPSOID_B = {6356752.3142449996, 6356911.946130};
-    public UTMPoint utmPoint;
+    public UTMPoint p;
     public CoordinateConverter convertidor;
-    private static final int PERMISO_LOCATION=1;
+    public GeodeticPoint punto=new GeodeticPoint(latitud,longitud,altitud);
 
 
 
@@ -150,7 +153,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
         listaModelo = new ArrayList<>();
         caja_recycler_modelo=findViewById(R.id.caja_recycler_modelo);
-        caja_latitud=findViewById(R.id.caja_latitud);
+        caja_x=findViewById(R.id.caja_x);
         caja_longitud=findViewById(R.id.caja_longitud);
         latitud_x=findViewById(R.id.latitud_x);
         longitud_y=findViewById(R.id.longitud_y);
@@ -165,8 +168,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
 
         convertidor=new CoordinateConverter();
-        UTMPoint datos_xy= convertidor.fromGeodeticToUTM(longitud,latitud);
-        Log.e("convertidor",String.valueOf(datos_xy).toString());
+        UTMPoint p = fromGeodeticToUTM(longitud, latitud);
+
 
 
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
@@ -356,6 +359,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         miLatLong().getLatitude();
         miLatLong().getLongitude();
 
+
+
        Location punto_mercado= new Location("Bascula");
         punto_mercado.setLatitude(19.3506611);
         punto_mercado.setLongitude(-99.0864875);
@@ -394,7 +399,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
     private Location miLatLong() {
 
-5
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -407,16 +412,43 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         if (location != null) {
             latitud = location.getLatitude();
             longitud = location.getLongitude();
+            altitud=location.getAltitude();
             agregarMarcadorUbicacion(latitud, longitud);
             direccion = darDireccion(this, latitud, longitud);
+            UTMPoint p = fromGeodeticToUTM(longitud, latitud);
             LatLng coord = new LatLng(latitud,longitud);
             String[] direccion_fragmentada=direccion.split(",");
             for (int i=0;i<direccion_fragmentada.length;i++){
                 Log.e("direccion_fragmentada",direccion_fragmentada[i]);
             }
-
+            Log.e("lat",""+latitud);
+            Log.e("lon",""+longitud);
             coordenadas =coord;
             direccion_mercado.setText(direccion);
+             UTMPoint conver=fromGeodeticToUTM(punto);
+             Log.e("con",""+conver);
+             UTMPoint conver1=fromGeodeticToUTM(longitud,latitud);
+             Log.e("con1",""+conver1);
+             UTMPoint conver2=fromGeodeticToUTM(longitud,latitud,WGS84);
+             Log.e("con2",""+conver2);
+
+             String strConver= String.valueOf(conver2);
+             Log.e("str",""+strConver);
+
+             String[] X_Y_Z=strConver.split(" ");
+             Log.e("corte",""+X_Y_Z[0].toString().replace(",","").replace("(",""));
+             String x= String.valueOf(conver2.getX());
+             String y=String.valueOf(conver2.getY());
+             String z=String.valueOf(conver2.getZone());
+
+            latitud_x.setText(X_Y_Z[0].toString().replace(",","").replace("(",""));
+            longitud_y.setText(X_Y_Z[1].toString().replace(",","").replace("(",""));
+             GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
+
+             Log.e("con3",""+conver3);
+
+
+
 
 
 

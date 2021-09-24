@@ -7,10 +7,11 @@ public class CoordinateConverter {
     public final static int WGS84 = 0;
     public final static int HAYFORD = 1;
 
+
     /**
      * Semieje mayor de los elipsoides contemplados
      */
-    private final static double[] ELLIPSOID_A = {6378137.000, 6378388.000};
+    private final static double[] ELLIPSOID_A = {6378137.000000,6356752.31424518};
     /**
      * Semieje menor de los elipsoides contemplados
      */
@@ -363,7 +364,7 @@ public class CoordinateConverter {
         return fromECEFToGeodetic(ep2.getX(), ep2.getY(), ep2.getZ(), ellipsoid);
     }
 
-    public static void main(String args[]) {
+    /*public static void main(String args[]) {
         double longitud = 3.8;
         double latitud = 43.5;
         System.out.println("Geodésicas iniciales: (" + longitud + ", " + latitud + ")");
@@ -379,5 +380,5 @@ public class CoordinateConverter {
         GeodeticPoint gpED50 = datumTransformation(gpWGS84, SPAIN_MAINLAND_WGS84_ED50);
         System.out.println("Geodésicas ED50: " + gpED50);
         System.out.println("WGS84 otra vez: " + datumTransformation(gpED50, SPAIN_MAINLAND_ED50_WGS84));
-    }
+    }*/
 }

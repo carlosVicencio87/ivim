@@ -421,7 +421,7 @@
             android:background="@color/blanco"
             android:gravity="center"
             android:orientation="vertical"
-            android:id="@+id/caja_latitud"
+            android:id="@+id/caja_x"
             android:visibility="visible"
             android:layout_margin="10dp">
             <TextView
