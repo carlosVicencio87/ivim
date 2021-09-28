@@ -14,31 +14,31 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class AdapterGiro extends ArrayAdapter<String> {
-    private Activity activity;
-    private ArrayList data;
-    public Resources res;
-    SpinnerModel spinnerModel=null;
-    LayoutInflater inflater;
-    public AdapterGiro(Mapa activitySpinner, int textViewResourceId, ArrayList objects, Resources resLocal)
-    {
+private Activity activity;
+private ArrayList data;
+public Resources res;
+        SpinnerModel spinnerModel=null;
+        LayoutInflater inflater;
+public AdapterGiro(Mapa activitySpinner, int textViewResourceId, ArrayList objects, Resources resLocal)
+        {
         super(activitySpinner, textViewResourceId, objects);
         activity = activitySpinner;
         data = objects;
         res = resLocal;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent)
-    {
+        }
+@Override
+public View getDropDownView(int position, View convertView, ViewGroup parent)
+        {
         return getCustomView(position,convertView,parent);
-    }
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+        }
+@Override
+public View getView(int position, View convertView, ViewGroup parent)
+        {
         return getCustomView(position,convertView,parent);
-    }
-    public View getCustomView(int position, View convertView, ViewGroup parent)
-    {
+        }
+public View getCustomView(int position, View convertView, ViewGroup parent)
+        {
         //Agregar Layout y agregar id de elemento en layout
         View row = inflater.inflate(R.layout.lista_giro,parent,false);
         spinnerModel = null;
@@ -47,14 +47,14 @@ public class AdapterGiro extends ArrayAdapter<String> {
         //ImageView iconoTipo = (ImageView) row.findViewById(R.id.imagenSpinner);
         if (position==0)
         {
-            label.setText("Giro");
+        label.setText("Giro");
         }
         else
         {
-            label.setText(spinnerModel.dameNombre());
-            label.setGravity(Gravity.CENTER);
-            //iconoTipo.setImageResource(res.getIdentifier("com.solidary.solidary:drawable/"+spinnerModel.dameImagen(),null,null));
+        label.setText(spinnerModel.dameNombre());
+        label.setGravity(Gravity.CENTER);
+        //iconoTipo.setImageResource(res.getIdentifier("com.solidary.solidary:drawable/"+spinnerModel.dameImagen(),null,null));
         }
         return row;
-    }
-}
+        }
+        }

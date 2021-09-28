@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,7 +29,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,7 +48,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,7 +64,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ConstraintLayout mapaid,caja_fecha,cons_check;
     private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
             caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
-            caja_recycler_modelo,caja_siguiente_tab,caja_x,caja_longitud;
+            caja_recycler_marca,caja_siguiente_tab,caja_x,caja_longitud,caja_zona,
+            caja_instrumento;
     private Fragment map;
     private int check=0;
     private SharedPreferences sharedPreferences;
@@ -75,21 +73,25 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Mapa activity;
     private double latitud,longitud,altitud,latUpdate,longUpdate;
     private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel;
-    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y;
+    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona;
     private EditText nombre_texto,fecha,tel_texto;
     private ImageView iniciar_verificacion,guardar_nombre,cambiar_nombre,guardar_tel,
             cambiar_telefono,siguiente_tab;
     private CheckBox inicial,anual,primerSemestre,segundoSemestre,extraordinaria;
+    private RecyclerView recycler_marca;
     private Boolean tel10;
     private SharedPreferences datosUsuario;
     private ScrollView formulario_principal,formulario_bascula;
-    private Spinner giros,mercado;
+    private Spinner giros,mercado,tipoInstrumento;
     public ArrayList<SpinnerModel> listaGiro= new ArrayList<>();
     private AdapterGiro adapterGiro;
     private AdapterMercado adapterMercado;
     public ArrayList<SpinnerModel> listaMercado= new ArrayList<>();
-    private RecyclerView recyclerModelo;
-    private ArrayList<ModeloRecycler> listaModelo;
+    private RecyclerView recyclerMarca;
+    private AdapterTipoInstrumento adapterTipoInstrumento;
+    public ArrayList<SpinnerModel> listaInstrumen= new ArrayList<>();
+    private AdapterMarcaBasculas adapterMarcaBasculas;
+    private ArrayList<MarcaRecycler> listaMarca;
     private Context context;
     public final static int WGS84 = 0;
     public final static int HAYFORD = 1;
@@ -145,18 +147,29 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         activity = this;
         setListaGiro();
         setListaMercado();
+        setListaInstrumen();
+        listaMarca = new ArrayList<>();
+        setListaMarca();
         caja_siguiente_tab=findViewById(R.id.caja_siguiente_tab);
         siguiente_tab=findViewById(R.id.siguiente_tab);
         formulario_bascula=findViewById(R.id.formulario_bascula);
         context = this;
-        recyclerModelo =(RecyclerView) findViewById(R.id.recycler_modelo);
-        recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
-        listaModelo = new ArrayList<>();
-        caja_recycler_modelo=findViewById(R.id.caja_recycler_modelo);
+        recyclerMarca =(RecyclerView) findViewById(R.id.recycler_marca);
+        recyclerMarca.setLayoutManager(new LinearLayoutManager(context));
+
+        caja_recycler_marca =findViewById(R.id.caja_recycler_marca);
         caja_x=findViewById(R.id.caja_x);
         caja_longitud=findViewById(R.id.caja_longitud);
         latitud_x=findViewById(R.id.latitud_x);
         longitud_y=findViewById(R.id.longitud_y);
+        caja_zona=findViewById(R.id.caja_zona);
+        zona=findViewById(R.id.zona);
+        caja_instrumento=findViewById(R.id.caja_instrumento);
+        tipoInstrumento=findViewById(R.id.tipoInstrumento);
+        recycler_marca =findViewById(R.id.recycler_marca);
+
+
+
 
 
         final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -257,6 +270,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         adapterMercado = new AdapterMercado(activity,R.layout.lista_mercado,listaMercado,getResources());
         mercado.setAdapter(adapterMercado);
+
+        adapterTipoInstrumento = new AdapterTipoInstrumento(activity,R.layout.lista_tipo_instrumento,listaInstrumen,getResources());
+        tipoInstrumento.setAdapter(adapterTipoInstrumento);
+
+        adapterMarcaBasculas = new AdapterMarcaBasculas(activity,R.layout.item, listaMarca,getResources());
+        recycler_marca.setAdapter(adapterMarcaBasculas);
+
 
 
 
@@ -436,7 +456,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
              Log.e("str",""+strConver);
 
              String[] X_Y_Z=strConver.split(" ");
-             Log.e("corte",""+X_Y_Z[0].toString().replace(",","").replace("(",""));
+             Log.e("corte",""+X_Y_Z[3].toString().replace(",","").replace("(",""));
              String x= String.valueOf(conver2.getX());
              String y=String.valueOf(conver2.getY());
              String z=String.valueOf(conver2.getZone());
@@ -444,6 +464,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             latitud_x.setText(X_Y_Z[0].toString().replace(",","").replace("(",""));
             longitud_y.setText(X_Y_Z[1].toString().replace(",","").replace("(",""));
              GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
+            zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")",""));
 
              Log.e("con3",""+conver3);
 
@@ -601,7 +622,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             sched.ponerImagen("spi_"+i);
             listaGiro.add(sched);
         }
-    }public void setListaMercado()
+    }
+    public void setListaMercado()
     {
         listaMercado.clear();
         String coy[] = {"", "Mercado topo","M.D.C y columnas de concreto",
@@ -615,6 +637,20 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             listaMercado.add(sched);
         }
     }
+    public void setListaInstrumen()
+    {
+        listaInstrumen.clear();
+        String coy[] = {"", "M=Mecanica","E=Electronica",
+                "EM=Electromecanica"};
+        for (int i=0; i<coy.length;i++)
+        {
+            final SpinnerModel sched = new SpinnerModel();
+            sched.ponerNombre(coy[i]);
+            //sched.ponerImagen("spinner"+i);
+            sched.ponerImagen("spi_"+i);
+            listaInstrumen.add(sched);
+        }
+    }
     private void quitar_foco()
     {
         inicial.setChecked(false);
@@ -624,19 +660,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         extraordinaria.setChecked(false);
 
     }
-    /**
-     * Clase utilidad para realizar:
-     * <ul>
-     * <li>Conversión de coordenadas UTM a geodésicas y viceversa</li>
-     * <li>Conversión de coordenadas geodésiicas a geocéntricas y viceversa</li>
-     * <li>Transformación de coordenadas entre datums</li>
-     * </ul>
-     * @author jpresa
-     */
+    public void setListaMarca()
+    {
+        listaMarca.clear();
+        String coy[] = {"Microlife","Braunker",
+                "Ohaus","Transcell","Sartorius","Adam equipemet","Sartorius",};
+        for (int i=0; i<coy.length;i++)
+        {
 
-
-
-
-
+            listaMarca.add(new MarcaRecycler(coy[i]));
+        }
+    }
 
 }

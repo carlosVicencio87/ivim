@@ -58,7 +58,7 @@
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintBottom_toTopOf="parent"
-    android:visibility="visible">
+    android:visibility="gone">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -410,7 +410,43 @@
                 android:background="@color/blanco"
                 android:gravity="left"
                 android:textSize="15dp"
-                android:text="coordenadas"
+                android:text="Zona"
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/caja_zona"
+            android:visibility="visible"
+            android:layout_margin="10dp">
+            <TextView
+                android:id="@+id/zona"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:background="@color/blanco"
+                android:text="Zona"
+                android:textSize="15dp"
+                android:textColorHint="@color/negro"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="coordenada X="
                 android:textColor="@color/negro"
                 android:layout_height="20dp"
                 android:layout_marginRight="20dp"/>
@@ -429,10 +465,27 @@
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:background="@color/blanco"
-                android:text="latitud"
+                android:text="X"
                 android:textSize="15dp"
                 android:textColorHint="@color/negro"
-                android:gravity="bottom" />
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="coordenada Y="
+                android:textColor="@color/negro"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -448,10 +501,11 @@
                 android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:background="@color/blanco"
-                android:text="longitud"
+                android:text="Y"
                 android:textSize="15dp"
                 android:textColorHint="@color/negro"
-                android:gravity="bottom" />
+                android:gravity="center"
+                android:layout_marginBottom="20dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -481,7 +535,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
-        android:visibility="gone">
+        android:visibility="visible">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -499,24 +554,89 @@
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="15dp"
-                    android:text="Tipo de visita"
+                    android:text="ipo de instrumentoT"
                     android:textColor="@color/negro"
                     android:layout_height="20dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_instrumento"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <Spinner
+                    android:id="@+id/tipoInstrumento"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:textSize="15dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="bottom"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="Marca"
+                    android:textColor="@color/negro"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="70dp"
             android:background="@color/blanco"
             android:gravity="center"
             android:orientation="horizontal"
-            android:id="@+id/caja_recycler_modelo">
+            android:id="@+id/caja_recycler_marca">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_modelo"/>
+                android:layout_height="30dp"
+                android:id="@+id/recycler_marca"
+                android:layout_gravity="center"/>
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="MODELO"
+                    android:textColor="@color/negro"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_recycler_modelo">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/recycler_modelo"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
