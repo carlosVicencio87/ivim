@@ -64,21 +64,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ConstraintLayout mapaid,caja_fecha,cons_check;
     private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
             caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
-            caja_recycler_marca,caja_siguiente_tab,caja_x,caja_longitud,caja_zona,
-            caja_instrumento;
+            caja_recycler_marca,caja_recycler_modelo,caja_siguiente_tab,caja_x,caja_longitud,caja_zona,
+            caja_instrumento,caja_edit_serie,caja_serie_final,caja_recycler_alcance;
     private Fragment map;
     private int check=0;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Mapa activity;
     private double latitud,longitud,altitud,latUpdate,longUpdate;
-    private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel;
-    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona;
-    private EditText nombre_texto,fecha,tel_texto;
+    private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel,nueva_serie;
+    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,numero_serie;
+    private EditText nombre_texto,fecha,tel_texto,serie_texto;
     private ImageView iniciar_verificacion,guardar_nombre,cambiar_nombre,guardar_tel,
-            cambiar_telefono,siguiente_tab;
+            cambiar_telefono,siguiente_tab,guardar_serie,cambiar_serie;
     private CheckBox inicial,anual,primerSemestre,segundoSemestre,extraordinaria;
-    private RecyclerView recycler_marca;
+    private RecyclerView recycler_marca,recycler_modelo,recycler_alcance;
     private Boolean tel10;
     private SharedPreferences datosUsuario;
     private ScrollView formulario_principal,formulario_bascula;
@@ -86,11 +86,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public ArrayList<SpinnerModel> listaGiro= new ArrayList<>();
     private AdapterGiro adapterGiro;
     private AdapterMercado adapterMercado;
+
     public ArrayList<SpinnerModel> listaMercado= new ArrayList<>();
-    private RecyclerView recyclerMarca;
+    private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance;
     private AdapterTipoInstrumento adapterTipoInstrumento;
     public ArrayList<SpinnerModel> listaInstrumen= new ArrayList<>();
     private AdapterMarcaBasculas adapterMarcaBasculas;
+    private AdapterModeloBasculas adapterModeloBasculas;
+    private AdapterAlcanceMax adapterAlcanceMax;
+    private ArrayList<AlcanceRecycler>listaAlcance;
+    private ArrayList<ModeloRecycler>listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
     private Context context;
     public final static int WGS84 = 0;
@@ -148,16 +153,27 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         setListaGiro();
         setListaMercado();
         setListaInstrumen();
+
         listaMarca = new ArrayList<>();
         setListaMarca();
+        listaModelo=new ArrayList<>();
+        setListaModelo();
+
+        listaAlcance=new ArrayList<>();
+        setListaAlcance();
         caja_siguiente_tab=findViewById(R.id.caja_siguiente_tab);
         siguiente_tab=findViewById(R.id.siguiente_tab);
         formulario_bascula=findViewById(R.id.formulario_bascula);
         context = this;
         recyclerMarca =(RecyclerView) findViewById(R.id.recycler_marca);
         recyclerMarca.setLayoutManager(new LinearLayoutManager(context));
+        recyclerModelo=findViewById(R.id.recycler_modelo);
+        recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
+        recyclerAlcance=findViewById(R.id.recycler_alcance);
+        recyclerAlcance.setLayoutManager(new LinearLayoutManager(context));
 
-        caja_recycler_marca =findViewById(R.id.caja_recycler_marca);
+
+
         caja_x=findViewById(R.id.caja_x);
         caja_longitud=findViewById(R.id.caja_longitud);
         latitud_x=findViewById(R.id.latitud_x);
@@ -166,9 +182,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         zona=findViewById(R.id.zona);
         caja_instrumento=findViewById(R.id.caja_instrumento);
         tipoInstrumento=findViewById(R.id.tipoInstrumento);
+        caja_recycler_marca =findViewById(R.id.caja_recycler_marca);
+        caja_recycler_modelo =findViewById(R.id.caja_recycler_modelo);
         recycler_marca =findViewById(R.id.recycler_marca);
-
-
+        recycler_modelo =findViewById(R.id.recycler_modelo);
+        caja_edit_serie =findViewById(R.id.caja_edit_serie);
+        serie_texto =findViewById(R.id.serie_texto);
+        guardar_serie =findViewById(R.id.guardar_serie);
+        caja_serie_final =findViewById(R.id.caja_serie_final);
+        numero_serie =findViewById(R.id.numero_serie);
+        cambiar_serie =findViewById(R.id.cambiar_serie);
+        caja_recycler_alcance =findViewById(R.id.caja_recycler_alcance);
+        recycler_alcance =findViewById(R.id.recycler_alcance);
 
 
 
@@ -277,7 +302,36 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         adapterMarcaBasculas = new AdapterMarcaBasculas(activity,R.layout.item, listaMarca,getResources());
         recycler_marca.setAdapter(adapterMarcaBasculas);
 
+        adapterModeloBasculas = new AdapterModeloBasculas(activity,R.layout.item2, listaModelo,getResources());
+        recycler_modelo.setAdapter(adapterModeloBasculas);
 
+        adapterAlcanceMax = new AdapterAlcanceMax(activity,R.layout.item3, listaAlcance,getResources());
+        recycler_alcance.setAdapter(adapterAlcanceMax);
+
+        guardar_serie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_serie=serie_texto.getText().toString();
+                numero_serie.setText(nueva_serie);
+                if(!nueva_serie.trim().equals(""))
+                {
+                    caja_edit_serie.setVisibility(View.GONE);
+                    caja_serie_final.setVisibility(View.VISIBLE);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"El numero de serie es necesario.",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_serie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_serie_final.setVisibility(view.GONE);
+                caja_edit_serie.setVisibility(view.VISIBLE);
+            }
+        });
 
 
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -669,6 +723,29 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         {
 
             listaMarca.add(new MarcaRecycler(coy[i]));
+        }
+    }
+
+    public void setListaModelo()
+    {
+        listaModelo.clear();
+        String coy[] = {"WS100","WS80",
+                "CS500","CS2000","CS200","TR30RS","ESW-5M",};
+        for (int i=0; i<coy.length;i++)
+        {
+
+            listaModelo.add(new ModeloRecycler(coy[i]));
+        }
+    }
+    public void setListaAlcance()
+    {
+        listaAlcance.clear();
+        String coy[] = {"8/10","10/20",
+                "5/10","40/20","50/100","100/200","150/1000",};
+        for (int i=0; i<coy.length;i++)
+        {
+
+            listaAlcance.add(new AlcanceRecycler(coy[i]));
         }
     }
 

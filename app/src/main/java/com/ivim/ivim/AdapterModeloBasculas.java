@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBasculas.ViewHolderRecycler>{
-    private ArrayList<MarcaRecycler> ranking2recycler;
+    private ArrayList<ModeloRecycler> ranking2recycler;
     ViewHolderRecycler viewholderModelo;
     private  RecyclerView recyclerView;
     private Context context;
     private String modelo_bascula;
 
-    public AdapterModeloBasculas(Mapa activity, int item, ArrayList<MarcaRecycler> ranking2recycler, Resources resources)
+    public AdapterModeloBasculas(Mapa activity, int item, ArrayList<ModeloRecycler> ranking2recycler, Resources resources)
     {
-        this.ranking2recycler = ranking2recycler;
+        this.ranking2recycler=ranking2recycler;
     }
     @Override
     public ViewHolderRecycler onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,7 +34,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     @Override
     public void onBindViewHolder(@NonNull AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
         viewholderModelo =holder;
-        modelo_bascula = ranking2recycler.get(position).getMarca_basculaBascula();
+        modelo_bascula = ranking2recycler.get(position).getModelo_bascula();
 
         holder.model_bascula.setText(modelo_bascula);
         holder.model_bascula.setText(modelo_bascula);
