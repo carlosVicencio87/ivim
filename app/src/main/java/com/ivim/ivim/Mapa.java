@@ -57,46 +57,57 @@ import java.util.Locale;
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private static final int PERMISO_LOCATION=1;
+    private static final int PERMISO_LOCATION = 1;
     private LocationManager locationManager;
-    private LatLng coord,coordenadas,latLong;
+    private LatLng coord, coordenadas, latLong;
     private Marker marker;
-    private ConstraintLayout mapaid,caja_fecha,cons_check;
-    private LinearLayout caja_punto_partida,caja_edit_nombre,caja_nombre_final,
-            caja_direccion,caja_giro,caja_mercado,caja_edit_tel,caja_tel_final,
-            caja_recycler_marca,caja_recycler_modelo,caja_siguiente_tab,caja_x,caja_longitud,caja_zona,
-            caja_instrumento,caja_edit_serie,caja_serie_final,caja_recycler_alcance;
+    private ConstraintLayout mapaid, caja_fecha, cons_check,caja_siguiente_basc;
+    private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
+            caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
+            caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud, caja_zona,
+            caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
+            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,caja_costo_final;
     private Fragment map;
-    private int check=0;
+    private int check = 0;
+    private int tiempo_actualizacion = 20000;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Mapa activity;
-    private double latitud,longitud,altitud,latUpdate,longUpdate;
-    private String direccion,nuevo_nombre,seleccion_giro,nuevo_tel,nueva_serie;
-    private TextView puntoPartida,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,numero_serie;
-    private EditText nombre_texto,fecha,tel_texto,serie_texto;
-    private ImageView iniciar_verificacion,guardar_nombre,cambiar_nombre,guardar_tel,
-            cambiar_telefono,siguiente_tab,guardar_serie,cambiar_serie;
-    private CheckBox inicial,anual,primerSemestre,segundoSemestre,extraordinaria;
-    private RecyclerView recycler_marca,recycler_modelo,recycler_alcance;
+    private double latitud, longitud, altitud, latUpdate, longUpdate;
+    private String direccion, nuevo_nombre, seleccion_giro, nuevo_tel, nueva_serie,nuevo_costo;
+    private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
+            longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
+            agregar_bascula,finalizar_reg_bascula;
+    private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
+    private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
+            cambiar_telefono,guardar_serie, cambiar_serie,
+            guardar_costo,cambiar_costo;
+    private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
+    private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
+            recycler_minimo;
     private Boolean tel10;
     private SharedPreferences datosUsuario;
-    private ScrollView formulario_principal,formulario_bascula;
-    private Spinner giros,mercado,tipoInstrumento;
-    public ArrayList<SpinnerModel> listaGiro= new ArrayList<>();
+    private ScrollView formulario_principal, formulario_bascula;
+    private Spinner giros, mercado, tipoInstrumento,ClaseExactitud;
     private AdapterGiro adapterGiro;
+    public ArrayList<SpinnerModel> listaGiro = new ArrayList<>();
     private AdapterMercado adapterMercado;
-
-    public ArrayList<SpinnerModel> listaMercado= new ArrayList<>();
-    private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance;
+    public ArrayList<SpinnerModel> listaMercado = new ArrayList<>();
+    private AdapterClaseExactitud adapterClaseExactitud;
+    public ArrayList<SpinnerModel>listaClase=new ArrayList<>();
+    private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance,recyclerEod,recyclerMinimo;
     private AdapterTipoInstrumento adapterTipoInstrumento;
-    public ArrayList<SpinnerModel> listaInstrumen= new ArrayList<>();
+    public ArrayList<SpinnerModel> listaInstrumen = new ArrayList<>();
     private AdapterMarcaBasculas adapterMarcaBasculas;
     private AdapterModeloBasculas adapterModeloBasculas;
     private AdapterAlcanceMax adapterAlcanceMax;
-    private ArrayList<AlcanceRecycler>listaAlcance;
-    private ArrayList<ModeloRecycler>listaModelo;
+    private AdapterEoD adapterEoD;
+    private AdapterAlcanceMinimo adapterAlcanceMinimo;
+    private ArrayList<AlcanceRecycler> listaAlcance;
+    private ArrayList<ModeloRecycler> listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
+    private ArrayList<EodRecycler>listaEod;
+    private ArrayList<AlcanceMinRecycler>listaMinimo;
     private Context context;
     public final static int WGS84 = 0;
     public final static int HAYFORD = 1;
@@ -104,9 +115,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private final static double[] ELLIPSOID_B = {6356752.3142449996, 6356911.946130};
     public UTMPoint p;
     public CoordinateConverter convertidor;
-    public GeodeticPoint punto=new GeodeticPoint(latitud,longitud,altitud);
-
-
+    public GeodeticPoint punto = new GeodeticPoint(latitud, longitud, altitud);
 
 
     @Override
@@ -118,122 +127,156 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        mapaid=findViewById(R.id.mapaid);
-        puntoPartida=findViewById(R.id.puntoPartida);
-        iniciar_verificacion=findViewById(R.id.iniciar_verificacion);
-        nombre=findViewById(R.id.nombre);
-        nombre_texto=findViewById(R.id.nombre_texto);
-        formulario_principal=findViewById(R.id.formulario_principal);
-        caja_punto_partida=findViewById(R.id.caja_punto_partida);
-        caja_edit_nombre=findViewById(R.id.caja_edit_nombre);
-        caja_nombre_final=findViewById(R.id.caja_nombre_final);
-        guardar_nombre=findViewById(R.id.guardar_nombre);
-        cambiar_nombre=findViewById(R.id.cambiar_nombre);
-        caja_fecha=findViewById(R.id.caja_fecha);
-        fecha=findViewById(R.id.fecha);
-        caja_direccion=findViewById(R.id.caja_direccion);
-        direccion_mercado=findViewById(R.id.direccion_mercado);
-        caja_giro=findViewById(R.id.caja_giro);
-        giros=findViewById(R.id.giros);
-        caja_mercado=findViewById(R.id.caja_mercado);
-        mercado=findViewById(R.id.mercado);
-        caja_edit_tel=findViewById(R.id.caja_edit_tel);
-        tel_texto=findViewById(R.id.tel_texto);
-        guardar_tel=findViewById(R.id.guardar_tel);
-        caja_tel_final=findViewById(R.id.caja_tel_final);
-        cambiar_telefono=findViewById(R.id.cambiar_telefono);
-        telefono=findViewById(R.id.telefono);
-        cons_check=findViewById(R.id.cons_check);
-        inicial=findViewById(R.id.inicial);
-        anual=findViewById(R.id.anual);
-        primerSemestre=findViewById(R.id.primerSemestre);
-        segundoSemestre=findViewById(R.id.segundoSemestre);
-        extraordinaria=findViewById(R.id.extraordinaria);
+        mapaid = findViewById(R.id.mapaid);
+        puntoPartida = findViewById(R.id.puntoPartida);
+        iniciar_verificacion = findViewById(R.id.iniciar_verificacion);
+        nombre = findViewById(R.id.nombre);
+        nombre_texto = findViewById(R.id.nombre_texto);
+        formulario_principal = findViewById(R.id.formulario_principal);
+        caja_punto_partida = findViewById(R.id.caja_punto_partida);
+        caja_edit_nombre = findViewById(R.id.caja_edit_nombre);
+        caja_nombre_final = findViewById(R.id.caja_nombre_final);
+        guardar_nombre = findViewById(R.id.guardar_nombre);
+        cambiar_nombre = findViewById(R.id.cambiar_nombre);
+        caja_fecha = findViewById(R.id.caja_fecha);
+        fecha = findViewById(R.id.fecha);
+        caja_direccion = findViewById(R.id.caja_direccion);
+        direccion_mercado = findViewById(R.id.direccion_mercado);
+        caja_giro = findViewById(R.id.caja_giro);
+        giros = findViewById(R.id.giros);
+        caja_mercado = findViewById(R.id.caja_mercado);
+        mercado = findViewById(R.id.mercado);
+        caja_edit_tel = findViewById(R.id.caja_edit_tel);
+        tel_texto = findViewById(R.id.tel_texto);
+        guardar_tel = findViewById(R.id.guardar_tel);
+        caja_tel_final = findViewById(R.id.caja_tel_final);
+        cambiar_telefono = findViewById(R.id.cambiar_telefono);
+        telefono = findViewById(R.id.telefono);
+        cons_check = findViewById(R.id.cons_check);
+        inicial = findViewById(R.id.inicial);
+        anual = findViewById(R.id.anual);
+        primerSemestre = findViewById(R.id.primerSemestre);
+        segundoSemestre = findViewById(R.id.segundoSemestre);
+        extraordinaria = findViewById(R.id.extraordinaria);
         activity = this;
         setListaGiro();
         setListaMercado();
         setListaInstrumen();
+        setListaClase();
 
         listaMarca = new ArrayList<>();
         setListaMarca();
-        listaModelo=new ArrayList<>();
+        listaModelo = new ArrayList<>();
         setListaModelo();
 
-        listaAlcance=new ArrayList<>();
+        listaAlcance = new ArrayList<>();
         setListaAlcance();
-        caja_siguiente_tab=findViewById(R.id.caja_siguiente_tab);
-        siguiente_tab=findViewById(R.id.siguiente_tab);
-        formulario_bascula=findViewById(R.id.formulario_bascula);
+
+        listaEod=new ArrayList<>();
+        setListaEod();
+
+        listaMinimo=new ArrayList<>();
+        setListaMinimo();
+        caja_siguiente_tab = findViewById(R.id.caja_siguiente_tab);
+        regresar_map = findViewById(R.id.regresar_map);
+        siguiente_tab = findViewById(R.id.siguiente_tab);
+        formulario_bascula = findViewById(R.id.formulario_bascula);
         context = this;
-        recyclerMarca =(RecyclerView) findViewById(R.id.recycler_marca);
+        recyclerMarca = (RecyclerView) findViewById(R.id.recycler_marca);
         recyclerMarca.setLayoutManager(new LinearLayoutManager(context));
-        recyclerModelo=findViewById(R.id.recycler_modelo);
+        recyclerModelo = findViewById(R.id.recycler_modelo);
         recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
-        recyclerAlcance=findViewById(R.id.recycler_alcance);
+        recyclerAlcance = findViewById(R.id.recycler_alcance);
         recyclerAlcance.setLayoutManager(new LinearLayoutManager(context));
+        recyclerEod=findViewById(R.id.recycler_eod);
+        recyclerEod.setLayoutManager(new LinearLayoutManager(context));
+        recyclerMinimo=findViewById(R.id.recycler_minimo);
+        recyclerMinimo.setLayoutManager(new LinearLayoutManager(context));
 
+        caja_x = findViewById(R.id.caja_x);
+        caja_longitud = findViewById(R.id.caja_longitud);
+        latitud_x = findViewById(R.id.latitud_x);
+        longitud_y = findViewById(R.id.longitud_y);
+        caja_zona = findViewById(R.id.caja_zona);
+        zona = findViewById(R.id.zona);
+        caja_instrumento = findViewById(R.id.caja_instrumento);
+        tipoInstrumento = findViewById(R.id.tipoInstrumento);
+        caja_recycler_marca = findViewById(R.id.caja_recycler_marca);
+        caja_recycler_modelo = findViewById(R.id.caja_recycler_modelo);
+        recycler_marca = findViewById(R.id.recycler_marca);
+        recycler_modelo = findViewById(R.id.recycler_modelo);
+        caja_edit_serie = findViewById(R.id.caja_edit_serie);
+        serie_texto = findViewById(R.id.serie_texto);
+        guardar_serie = findViewById(R.id.guardar_serie);
+        caja_serie_final = findViewById(R.id.caja_serie_final);
+        numero_serie = findViewById(R.id.numero_serie);
+        cambiar_serie = findViewById(R.id.cambiar_serie);
+        caja_recycler_alcance = findViewById(R.id.caja_recycler_alcance);
+        recycler_alcance = findViewById(R.id.recycler_alcance);
+        caja_recycler_eod = findViewById(R.id.caja_recycler_eod);
+        recycler_eod = findViewById(R.id.recycler_eod);
+        caja_recycler_minimo = findViewById(R.id.caja_recycler_minimo);
+        recycler_minimo = findViewById(R.id.recycler_minimo);
+        caja_exactitud = findViewById(R.id.caja_exactitud);
+        ClaseExactitud = findViewById(R.id.ClaseExactitud);
+        caja_edit_costo = findViewById(R.id.caja_edit_costo);
+        costo_texto = findViewById(R.id.costo_texto);
+        guardar_costo = findViewById(R.id.guardar_costo);
+        caja_costo_final = findViewById(R.id.caja_costo_final);
+        costo = findViewById(R.id.costo);
+        cambiar_costo = findViewById(R.id.cambiar_costo);
+        caja_siguiente_basc = findViewById(R.id.caja_siguiente_basc);
+        regresar_formulario = findViewById(R.id.regresar_formulario);
+        agregar_bascula = findViewById(R.id.agregar_bascula);
+        finalizar_reg_bascula = findViewById(R.id.finalizar_reg_bascula);
 
-
-        caja_x=findViewById(R.id.caja_x);
-        caja_longitud=findViewById(R.id.caja_longitud);
-        latitud_x=findViewById(R.id.latitud_x);
-        longitud_y=findViewById(R.id.longitud_y);
-        caja_zona=findViewById(R.id.caja_zona);
-        zona=findViewById(R.id.zona);
-        caja_instrumento=findViewById(R.id.caja_instrumento);
-        tipoInstrumento=findViewById(R.id.tipoInstrumento);
-        caja_recycler_marca =findViewById(R.id.caja_recycler_marca);
-        caja_recycler_modelo =findViewById(R.id.caja_recycler_modelo);
-        recycler_marca =findViewById(R.id.recycler_marca);
-        recycler_modelo =findViewById(R.id.recycler_modelo);
-        caja_edit_serie =findViewById(R.id.caja_edit_serie);
-        serie_texto =findViewById(R.id.serie_texto);
-        guardar_serie =findViewById(R.id.guardar_serie);
-        caja_serie_final =findViewById(R.id.caja_serie_final);
-        numero_serie =findViewById(R.id.numero_serie);
-        cambiar_serie =findViewById(R.id.cambiar_serie);
-        caja_recycler_alcance =findViewById(R.id.caja_recycler_alcance);
-        recycler_alcance =findViewById(R.id.recycler_alcance);
 
 
 
         final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (permisoLocacion!= PackageManager.PERMISSION_GRANTED) {
+        if (permisoLocacion != PackageManager.PERMISSION_GRANTED) {
             solicitarPermisoLocation();
 
-            Log.e("paso","paso");
+            Log.e("paso", "paso");
         }
 
-        convertidor=new CoordinateConverter();
+        convertidor = new CoordinateConverter();
         UTMPoint p = fromGeodeticToUTM(longitud, latitud);
-
 
 
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            formulario_principal.setVisibility(View.VISIBLE);
-            mapaid.setVisibility(View.GONE);
-            caja_punto_partida.setVisibility(View.GONE);
+                formulario_principal.setVisibility(View.VISIBLE);
+                mapaid.setVisibility(View.GONE);
+                caja_punto_partida.setVisibility(View.GONE);
 
             }
         });
+        regresar_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                formulario_principal.setVisibility(view.GONE);
+                mapaid.setVisibility(view.VISIBLE);
+                caja_punto_partida.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         guardar_nombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                 nuevo_nombre=nombre_texto.getText().toString();
-                 nombre.setText(nuevo_nombre);
-                 if(!nuevo_nombre.trim().equals(""))
-                 {
-                     caja_edit_nombre.setVisibility(View.GONE);
-                     caja_nombre_final.setVisibility(View.VISIBLE);
-                 }
-                 else{
-                     Toast.makeText(getApplicationContext(),"El nombre es necesario.",Toast.LENGTH_LONG).show();
-                 }
+                nuevo_nombre = nombre_texto.getText().toString();
+                nombre.setText(nuevo_nombre);
+                if (!nuevo_nombre.trim().equals("")) {
+                    caja_edit_nombre.setVisibility(View.GONE);
+                    caja_nombre_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+                }
             }
         });
         cambiar_nombre.setOnClickListener(new View.OnClickListener() {
@@ -253,22 +296,19 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 } else {
                     tel10 = false;
                 }
-                nuevo_tel=tel_texto.getText().toString();
+                nuevo_tel = tel_texto.getText().toString();
                 telefono.setText(nuevo_tel);
-                if(!nuevo_tel.trim().equals(""))
-                {
-                    if(tel10==true){
+                if (!nuevo_tel.trim().equals("")) {
+                    if (tel10 == true) {
 
 
                         caja_edit_tel.setVisibility(View.GONE);
                         caja_tel_final.setVisibility(View.VISIBLE);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
                     }
-                    else{
-                        Toast.makeText(getApplicationContext(),"El telefono debe ser de 10 digitos.",Toast.LENGTH_LONG).show();
-                    }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"El telefono es necesario.",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "El telefono es necesario.", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -285,42 +325,48 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
                 Locale.getDefault()).format(new Date());
-        Log.e("fecha",""+date);
+        Log.e("fecha", "" + date);
         fecha.setText(date);
 
 
-
-        adapterGiro = new AdapterGiro(activity,R.layout.lista_giro,listaGiro,getResources());
+        adapterGiro = new AdapterGiro(activity, R.layout.lista_giro, listaGiro, getResources());
         giros.setAdapter(adapterGiro);
 
-        adapterMercado = new AdapterMercado(activity,R.layout.lista_mercado,listaMercado,getResources());
+        adapterMercado = new AdapterMercado(activity, R.layout.lista_mercado, listaMercado, getResources());
         mercado.setAdapter(adapterMercado);
 
-        adapterTipoInstrumento = new AdapterTipoInstrumento(activity,R.layout.lista_tipo_instrumento,listaInstrumen,getResources());
+        adapterTipoInstrumento = new AdapterTipoInstrumento(activity, R.layout.lista_tipo_instrumento, listaInstrumen, getResources());
         tipoInstrumento.setAdapter(adapterTipoInstrumento);
 
-        adapterMarcaBasculas = new AdapterMarcaBasculas(activity,R.layout.item, listaMarca,getResources());
+        adapterMarcaBasculas = new AdapterMarcaBasculas(activity, R.layout.item, listaMarca, getResources());
         recycler_marca.setAdapter(adapterMarcaBasculas);
 
-        adapterModeloBasculas = new AdapterModeloBasculas(activity,R.layout.item2, listaModelo,getResources());
+        adapterModeloBasculas = new AdapterModeloBasculas(activity, R.layout.item2, listaModelo, getResources());
         recycler_modelo.setAdapter(adapterModeloBasculas);
 
-        adapterAlcanceMax = new AdapterAlcanceMax(activity,R.layout.item3, listaAlcance,getResources());
+        adapterAlcanceMax = new AdapterAlcanceMax(activity, R.layout.item3, listaAlcance, getResources());
         recycler_alcance.setAdapter(adapterAlcanceMax);
+
+        adapterEoD = new AdapterEoD(activity, R.layout.item4, listaEod, getResources());
+        recycler_eod.setAdapter(adapterEoD);
+
+        adapterAlcanceMinimo = new AdapterAlcanceMinimo(activity, R.layout.item5, listaMinimo, getResources());
+        recycler_minimo.setAdapter(adapterAlcanceMinimo);
+
+        adapterClaseExactitud = new AdapterClaseExactitud(activity, R.layout.lista_clase_exactitud, listaClase, getResources());
+        ClaseExactitud.setAdapter(adapterClaseExactitud);
 
         guardar_serie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                nueva_serie=serie_texto.getText().toString();
+                nueva_serie = serie_texto.getText().toString();
                 numero_serie.setText(nueva_serie);
-                if(!nueva_serie.trim().equals(""))
-                {
+                if (!nueva_serie.trim().equals("")) {
                     caja_edit_serie.setVisibility(View.GONE);
                     caja_serie_final.setVisibility(View.VISIBLE);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"El numero de serie es necesario.",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -332,27 +378,56 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_edit_serie.setVisibility(view.VISIBLE);
             }
         });
+        guardar_costo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nuevo_costo = costo_texto.getText().toString();
+                costo.setText("$"+nuevo_costo);
+                if (!nuevo_costo.trim().equals("")) {
+                    caja_edit_costo.setVisibility(View.GONE);
+                    caja_costo_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El costo es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_costo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_costo_final.setVisibility(view.GONE);
+                caja_edit_costo.setVisibility(view.VISIBLE);
+            }
+        });
+        regresar_formulario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                formulario_principal.setVisibility(view.VISIBLE);
+                formulario_bascula.setVisibility(view.GONE);
+
+            }
+        });
 
 
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView listas_giro=findViewById(R.id.listaGiro);
-                if (listas_giro==null)
-                {
-                    listas_giro=(TextView) view.findViewById(R.id.listaGiro);
+                TextView listas_giro = findViewById(R.id.listaGiro);
+                if (listas_giro == null) {
+                    listas_giro = (TextView) view.findViewById(R.id.listaGiro);
+                } else {
+                    listas_giro = (TextView) view.findViewById(R.id.listaGiro);
                 }
-                else
-                {
-                    listas_giro=(TextView) view.findViewById(R.id.listaGiro);
-                }
-                seleccion_giro =listas_giro.getText().toString();
-                Log.e("tipomat",""+seleccion_giro);
+                seleccion_giro = listas_giro.getText().toString();
+                Log.e("tipomat", "" + seleccion_giro);
 
 
-                Log.e("tipo",""+seleccion_giro);
-                Log.e("tipo",""+position);
+                Log.e("tipo", "" + seleccion_giro);
+                Log.e("tipo", "" + position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -430,37 +505,35 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions().position(punto4).title("Mercado Margarita Maza de juarez"));
         mMap.addMarker(new MarkerOptions().position(punto5).title("Mercado topo"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        miLatLong().getLatitude();
-        miLatLong().getLongitude();
+        miLatLong();
 
 
-
-       Location punto_mercado= new Location("Bascula");
+        Location punto_mercado = new Location("Bascula");
         punto_mercado.setLatitude(19.3506611);
         punto_mercado.setLongitude(-99.0864875);
-       Location punto_usuario= new Location("Usuario");
-       punto_usuario.setLatitude(miLatLong().getLatitude());
-       punto_usuario.setLongitude(miLatLong().getLongitude());
-       Log.e("mercado",""+punto_mercado);
-       Log.e("usuario",""+punto_usuario);
+        Location punto_usuario = new Location("Usuario");
+        punto_usuario.setLatitude(latitud);
+        punto_usuario.setLongitude(longitud);
+        Log.e("mercado", "" + punto_mercado);
+        Log.e("usuario", "" + punto_usuario);
 
-       float distancias=punto_mercado.distanceTo(punto_usuario);
-       float restriccion=5;
-       Log.e("distancia",""+distancias);
-       if(distancias<restriccion){
-           iniciar_verificacion.setVisibility(View.VISIBLE);
-       }
-       else {
-           Log.e("distancia2",""+distancias);
-           Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
-       }
+        float distancias = punto_mercado.distanceTo(punto_usuario);
+        float restriccion = 16;
+        Log.e("distancia", "" + distancias);
+        if (distancias < restriccion) {
+            iniciar_verificacion.setVisibility(View.VISIBLE);
+        } else {
+            Log.e("distancia2", "" + distancias);
+            Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
+        }
 
     }
+
     private void solicitarPermisoLocation() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 PERMISO_LOCATION);
-        Log.e("va","va");
+        Log.e("va", "va");
     }
 
     public void checarPermisos() {
@@ -471,17 +544,26 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             startActivity(irPermisos);
         }
     }
-    private Location miLatLong() {
 
+    private void miLatLong(){
 
+        /** SE PIDEN PERMISOS DE LOCACIÓN PARA*/
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        /** MANAGER DE LOCACIONES DE ANDROID*/
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-
         actualizarUbicacion(location);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 5, locationListener);
-        return location;
+
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Long.parseLong(String.valueOf(tiempo_actualizacion)), 0, locationListener);
     }
+
+
+
     private void actualizarUbicacion(Location location) {
         if (location != null) {
             latitud = location.getLatitude();
@@ -518,17 +600,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             latitud_x.setText(X_Y_Z[0].toString().replace(",","").replace("(",""));
             longitud_y.setText(X_Y_Z[1].toString().replace(",","").replace("(",""));
              GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
-            zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")",""));
+            zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")","")+"N");
 
              Log.e("con3",""+conver3);
-
-
-
-
-
-
-
-
 
 
 
@@ -748,5 +822,43 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             listaAlcance.add(new AlcanceRecycler(coy[i]));
         }
     }
+    public void setListaEod()
+    {
+        listaEod.clear();
+        String coy[] = {"1/10","2/20",
+                "3/10","4/10","5/10","10/10","15/10",};
+        for (int i=0; i<coy.length;i++)
+        {
 
+            listaEod.add(new EodRecycler(coy[i]));
+        }
+    }
+    public void setListaMinimo()
+    {
+        listaMinimo.clear();
+        String coy[] = {"10","20",
+                "30","40","50","60","100","200"};
+        for (int i=0; i<coy.length;i++)
+        {
+            listaMinimo.add(new AlcanceMinRecycler(coy[i]));
+        }
+    }
+    public void setListaClase()
+    {
+        listaClase.clear();
+        String coy[] = {"", "Ordinaria (llll)","Media(lll)"};
+        for (int i=0; i<coy.length;i++)
+        {
+            final SpinnerModel sched = new SpinnerModel();
+            sched.ponerNombre(coy[i]);
+            //sched.ponerImagen("spinner"+i);
+            sched.ponerImagen("spi_"+i);
+            listaClase.add(sched);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

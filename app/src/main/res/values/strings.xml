@@ -6,4 +6,5 @@
     <string name="texto3">Domicilio</string>
     <string name="texto4">Numero de serie</string>
     <string name="texto5">Telefono</string>
+    <string name="texto6">Costo $</string>
 </resources>

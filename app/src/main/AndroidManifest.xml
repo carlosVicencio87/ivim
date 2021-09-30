@@ -19,11 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".AlcanceRecycler"
-            android:exported="true" />
-        <activity android:name=".ModeloRecycler" />
-        <activity android:name=".MarcaRecycler" />
+        <activity android:name=".AlcanceMinRecycler"></activity>
+        <activity android:name=".EodRecycler" />
         <activity android:name=".ActivarPermisos" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
