@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/caja_punto_partida">
         <TextView
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mapaid"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
         <fragment
             android:layout_width="match_parent"
@@ -542,7 +542,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -600,6 +600,28 @@
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_auto_marca">
+            <AutoCompleteTextView
+                android:id="@+id/automarca"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:completionThreshold="1"
+                android:completionHint="1"
+                android:text="Ingresar Marca"
+                android:dropDownAnchor="@+id/marcasdes"/>
+            <TextView
+                android:id="@+id/marcasdes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:completionThreshold="1"
+                android:completionHint="1"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -607,7 +629,8 @@
             android:background="@color/blanco"
             android:gravity="center"
             android:orientation="horizontal"
-            android:id="@+id/caja_recycler_marca">
+            android:id="@+id/caja_recycler_marca"
+            android:visibility="gone">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -671,7 +694,7 @@
                 android:orientation="horizontal"
                 android:id="@+id/caja_serie_final"
                 android:layout_margin="10dp"
-                android:visibility="gone">
+                android:visibility="visible">
                 <TextView
                     android:id="@+id/numero_serie"
                     android:layout_width="250dp"

@@ -28,6 +28,8 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,9 +66,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private ConstraintLayout mapaid, caja_fecha, cons_check,caja_siguiente_basc;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
-            caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud, caja_zona,
-            caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
-            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,caja_costo_final;
+            caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
+            caja_zona,caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
+            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
+            caja_costo_final;
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
@@ -74,10 +77,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private SharedPreferences.Editor editor;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
-    private String direccion, nuevo_nombre, seleccion_giro, nuevo_tel, nueva_serie,nuevo_costo;
+    private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,nuevo_costo;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula;
+
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
@@ -116,6 +120,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public UTMPoint p;
     public CoordinateConverter convertidor;
     public GeodeticPoint punto = new GeodeticPoint(latitud, longitud, altitud);
+
+    private AutoCompleteTextView automarca;
+
+    private static final String[] Basculas = new String[]{
+                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
 
     @Override
@@ -229,8 +238,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         regresar_formulario = findViewById(R.id.regresar_formulario);
         agregar_bascula = findViewById(R.id.agregar_bascula);
         finalizar_reg_bascula = findViewById(R.id.finalizar_reg_bascula);
+        automarca = findViewById(R.id.automarca);
 
-
+        ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Basculas);
+        automarca.setAdapter(adaptador);
 
 
         final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -421,11 +432,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     listas_giro = (TextView) view.findViewById(R.id.listaGiro);
                 }
                 seleccion_giro = listas_giro.getText().toString();
-                Log.e("tipomat", "" + seleccion_giro);
+                Log.e("tipogiro", "" + seleccion_giro);
 
 
                 Log.e("tipo", "" + seleccion_giro);
                 Log.e("tipo", "" + position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        mercado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView listas_mercado = findViewById(R.id.listaMercado);
+                if (listas_mercado == null) {
+                    listas_mercado = (TextView) view.findViewById(R.id.listaGiro);
+                } else {
+                    listas_mercado = (TextView) view.findViewById(R.id.listaGiro);
+                }
+                seleccion_mercado = listas_mercado.getText().toString();
+                Log.e("tipogiro", "" + seleccion_mercado);
+
+
+
             }
 
             @Override
@@ -470,9 +501,41 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         siguiente_tab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int cuenta = tel_texto.getText().toString().trim().length();
+                if (cuenta == 10) {
+                    tel10 = true;
+                } else {
+                    tel10 = false;
+                }
+                nuevo_nombre = nombre_texto.getText().toString();
+                nuevo_tel = tel_texto.getText().toString();
+                if (!nuevo_nombre.trim().equals("")) {
+                    if(!seleccion_giro.trim().equals("Giro")){
+                        if(!seleccion_mercado.trim().equals("Mercado")){
+                            if (!nuevo_tel.trim().equals("")) {
+                                if (tel10==true){
+                                    formulario_principal.setVisibility(view.GONE);
+                                    formulario_bascula.setVisibility(view.VISIBLE);
+                                }
 
-                formulario_principal.setVisibility(view.GONE);
-                formulario_bascula.setVisibility(view.VISIBLE);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Seleccionar mercado es necesario.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
+
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 

@@ -170,7 +170,7 @@ public class Login extends AppCompatActivity {
     public void hacerPeticion()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"inicioSesion.php",
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"inicio_sesion_usuarios.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
