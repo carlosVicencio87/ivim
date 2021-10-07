@@ -77,7 +77,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private SharedPreferences.Editor editor;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
-    private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,nuevo_costo;
+    private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
+            nuevo_costo,seleccion_instrumento;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si;
@@ -478,9 +479,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView listas_mercado = findViewById(R.id.listaMercado);
                 if (listas_mercado == null) {
-                    listas_mercado = (TextView) view.findViewById(R.id.listaGiro);
+                    listas_mercado = (TextView) view.findViewById(R.id.listaMercado);
                 } else {
-                    listas_mercado = (TextView) view.findViewById(R.id.listaGiro);
+                    listas_mercado = (TextView) view.findViewById(R.id.listaMercado);
                 }
                 seleccion_mercado = listas_mercado.getText().toString();
                 Log.e("tipogiro", "" + seleccion_mercado);
@@ -569,6 +570,22 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
+        tipoInstrumento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView listas_intrusmento = findViewById(R.id.listaInstrumento);
+                if (listas_intrusmento == null) {
+                    listas_intrusmento = (TextView) view.findViewById(R.id.listaInstrumento);
+                } else {
+                    listas_intrusmento = (TextView) view.findViewById(R.id.listaInstrumento);
+                }
+                seleccion_instrumento = listas_intrusmento.getText().toString();
+                Log.e("tipoInstrumento", "" + seleccion_instrumento);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
     }
 
@@ -901,8 +918,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 "CS500","CS2000","CS200","TR30RS","ESW-5M",};
         for (int i=0; i<coy.length;i++)
         {
+            ModeloRecycler modeloRecycler = new ModeloRecycler(coy[i]);
 
-            listaModelo.add(new ModeloRecycler(coy[i]));
+            String selector_modelo= modeloRecycler.getModelo_bascula();
+
+            listaModelo.add(modeloRecycler);
+            Log.e("tipomodel",""+selector_modelo);
+
         }
     }
     public void setListaAlcance()
@@ -912,7 +934,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 "5/10","40/20","50/100","100/200","150/1000",};
         for (int i=0; i<coy.length;i++)
         {
-
             listaAlcance.add(new AlcanceRecycler(coy[i]));
         }
     }
@@ -955,4 +976,5 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onBackPressed() {
 
     }
+
 }

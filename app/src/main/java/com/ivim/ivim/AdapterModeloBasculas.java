@@ -6,7 +6,9 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,12 +34,21 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
+    public void onBindViewHolder(@NonNull final AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
         viewholderModelo =holder;
         modelo_bascula = ranking2recycler.get(position).getModelo_bascula();
+        holder.model_bascula.setText(modelo_bascula);
+        holder.model_bascula.setText(modelo_bascula);
+        final String modelo  =  holder.model_bascula.getText().toString();
+        holder.marco.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Toast.makeText(context,modelo,Toast.LENGTH_SHORT).show();
 
-        holder.model_bascula.setText(modelo_bascula);
-        holder.model_bascula.setText(modelo_bascula);
+            }
+        });
     }
 
     @Override
@@ -47,11 +58,13 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     }
     public class ViewHolderRecycler extends RecyclerView.ViewHolder {
         TextView model_bascula;
+        LinearLayout marco;
 
 
         public ViewHolderRecycler(View itemView) {
             super(itemView);
             model_bascula =(TextView)itemView.findViewById(R.id.modelo_bascula);
+            marco=(LinearLayout)itemView.findViewById(R.id.marco);
 
 
 
