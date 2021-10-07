@@ -63,7 +63,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
-    private ConstraintLayout mapaid, caja_fecha, cons_check,caja_siguiente_basc;
+    private ConstraintLayout mapaid, caja_fecha, cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
@@ -80,7 +80,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,nuevo_costo;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
-            agregar_bascula,finalizar_reg_bascula;
+            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si;
 
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
@@ -239,6 +239,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_bascula = findViewById(R.id.agregar_bascula);
         finalizar_reg_bascula = findViewById(R.id.finalizar_reg_bascula);
         automarca = findViewById(R.id.automarca);
+        finalizar_no = findViewById(R.id.finalizar_no);
+        finalizar_si = findViewById(R.id.finalizar_si);
+        caja_mensaje_basc = findViewById(R.id.caja_mensaje_basc);
+        caja_finalizar_basc = findViewById(R.id.caja_finalizar_basc);
 
         ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Basculas);
         automarca.setAdapter(adaptador);
@@ -420,7 +424,33 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
+        finalizar_reg_bascula.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                formulario_bascula.setVisibility(view.GONE);
+                caja_finalizar_basc.setVisibility(view.VISIBLE);
+            }
+        });
+
+        finalizar_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_finalizar_basc.setVisibility(view.GONE);
+                formulario_bascula.setVisibility(View.VISIBLE);
+
+            }
+        });
+        finalizar_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               Intent cambio_form= new Intent(Mapa.this,ActaDictamen.class);
+               startActivity(cambio_form);
+
+            }
+        });
 
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -538,6 +568,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
+
 
     }
 
