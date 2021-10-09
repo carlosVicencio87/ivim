@@ -31,11 +31,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,30 +70,29 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
             caja_zona,caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
-            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
+            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,caja_auto_marca,caja_marca_final,
             caja_costo_final;
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,alcanceMinSher;
     private SharedPreferences.Editor editor;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
-            nuevo_costo,seleccion_instrumento;
+            nuevo_costo,seleccion_instrumento,seleccion_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
+            seleccion_exactitud,nueva_marca,valorCheckbox;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
-            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si;
-
+            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
-            guardar_costo,cambiar_costo;
+            guardar_costo,cambiar_costo,guardar_marca,cambiar_marca;
     private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
     private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
             recycler_minimo;
     private Boolean tel10;
-    private SharedPreferences datosUsuario;
     private ScrollView formulario_principal, formulario_bascula;
     private Spinner giros, mercado, tipoInstrumento,ClaseExactitud;
     private AdapterGiro adapterGiro;
@@ -124,7 +125,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     private AutoCompleteTextView automarca;
 
-    private static final String[] Basculas = new String[]{
+    private static final String[] BASCULAS = new String[]{
                 "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
 
@@ -244,8 +245,23 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_si = findViewById(R.id.finalizar_si);
         caja_mensaje_basc = findViewById(R.id.caja_mensaje_basc);
         caja_finalizar_basc = findViewById(R.id.caja_finalizar_basc);
+        caja_auto_marca = findViewById(R.id.caja_auto_marca);
+        guardar_marca = findViewById(R.id.guardar_marca);
+        caja_marca_final = findViewById(R.id.caja_marca_final);
+        marca_basc = findViewById(R.id.marca_basc);
+        cambiar_marca = findViewById(R.id.cambiar_marca);
 
-        ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,Basculas);
+
+        modeloSHER=getSharedPreferences("modelos",this.MODE_PRIVATE);
+        checkModel=modeloSHER.getString("modelo","no");
+        alcanceMaxSher=getSharedPreferences("alcancesMax",this.MODE_PRIVATE);
+        checkAlcanceMax=alcanceMaxSher.getString("alcanceMax","no");
+        eodSher=getSharedPreferences("alcancesEod",this.MODE_PRIVATE);
+        checkEod=eodSher.getString("alcanceEod","NO");
+        alcanceMinSher=getSharedPreferences("alcancesMin",this.MODE_PRIVATE);
+        checkAlcanceMin=alcanceMinSher.getString("alcanceMin","no");
+
+        ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, BASCULAS);
         automarca.setAdapter(adaptador);
 
 
@@ -433,14 +449,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_finalizar_basc.setVisibility(view.VISIBLE);
             }
         });
-
         finalizar_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 caja_finalizar_basc.setVisibility(view.GONE);
                 formulario_bascula.setVisibility(View.VISIBLE);
-
             }
         });
         finalizar_si.setOnClickListener(new View.OnClickListener() {
@@ -449,10 +462,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                Intent cambio_form= new Intent(Mapa.this,ActaDictamen.class);
                startActivity(cambio_form);
-
             }
         });
-
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -485,20 +496,22 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 seleccion_mercado = listas_mercado.getText().toString();
                 Log.e("tipogiro", "" + seleccion_mercado);
-
-
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+
+        valorCheckbox="Inicial";
+        inicial.setChecked(true);
         inicial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 quitar_foco();
                 inicial.setChecked(true);
+                valorCheckbox="Inicial";
+                Log.e("cambios", "" + valorCheckbox);
             }
         });
         anual.setOnClickListener(new View.OnClickListener() {
@@ -506,6 +519,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 anual.setChecked(true);
+                valorCheckbox="Anual";
+                Log.e("cambios", "" + valorCheckbox);
             }
         });
         primerSemestre.setOnClickListener(new View.OnClickListener() {
@@ -513,6 +528,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 primerSemestre.setChecked(true);
+                valorCheckbox="Primer Semestre";
+                Log.e("cambios", "" + valorCheckbox);
             }
         });
         segundoSemestre.setOnClickListener(new View.OnClickListener() {
@@ -520,6 +537,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 segundoSemestre.setChecked(true);
+                valorCheckbox="Segundo Semestre";
+                Log.e("cambios", "" + valorCheckbox);
             }
         });
         extraordinaria.setOnClickListener(new View.OnClickListener() {
@@ -527,8 +546,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 extraordinaria.setChecked(true);
+                valorCheckbox="Extraordinaria";
+                Log.e("cambios", "" + valorCheckbox);
             }
         });
+
         siguiente_tab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -548,7 +570,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                     formulario_principal.setVisibility(view.GONE);
                                     formulario_bascula.setVisibility(view.VISIBLE);
                                 }
-
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
@@ -560,16 +581,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
-
                     }
-
                 } else {
                     Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
-
         tipoInstrumento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -586,7 +603,45 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        guardar_marca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                nueva_marca = automarca.getText().toString();
+                marca_basc.setText(nueva_marca);
+                if (!nueva_marca.trim().equals("")) {
+                    caja_auto_marca.setVisibility(View.GONE);
+                    caja_marca_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "La marca es necesaria.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_marca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_marca_final .setVisibility(view.GONE);
+                caja_auto_marca.setVisibility(view.VISIBLE);
+            }
+        });
+
+        ClaseExactitud.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView listas_exactitud = findViewById(R.id.listaClaseExactitud);
+                if (listas_exactitud == null) {
+                    listas_exactitud = (TextView) view.findViewById(R.id.listaClaseExactitud);
+                } else {
+                    listas_exactitud = (TextView) view.findViewById(R.id.listaClaseExactitud);
+                }
+                seleccion_exactitud = listas_exactitud.getText().toString();
+                Log.e("tipoexactitud", "" + seleccion_exactitud);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     /**

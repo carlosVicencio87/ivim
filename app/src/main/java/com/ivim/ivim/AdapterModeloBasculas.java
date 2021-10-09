@@ -2,7 +2,9 @@ package com.ivim.ivim;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +19,12 @@ import java.util.ArrayList;
 
 public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBasculas.ViewHolderRecycler>{
     private ArrayList<ModeloRecycler> ranking2recycler;
-    ViewHolderRecycler viewholderModelo;
+    ViewHolderRecycler viewholderModelo,anterior;
     private  RecyclerView recyclerView;
     private Context context;
     private String modelo_bascula;
+    private SharedPreferences datosModelo;
+    private SharedPreferences.Editor editor;
 
     public AdapterModeloBasculas(Mapa activity, int item, ArrayList<ModeloRecycler> ranking2recycler, Resources resources)
     {
@@ -30,12 +34,15 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     public ViewHolderRecycler onCreateViewHolder(ViewGroup parent, int viewType) {
         View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item2,parent,false);
         context=parent.getContext();
+        datosModelo= context.getSharedPreferences("modelos",context.MODE_PRIVATE);
+        editor=datosModelo.edit();
         return new ViewHolderRecycler(vista);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
         viewholderModelo =holder;
+
         modelo_bascula = ranking2recycler.get(position).getModelo_bascula();
         holder.model_bascula.setText(modelo_bascula);
         holder.model_bascula.setText(modelo_bascula);
@@ -46,6 +53,20 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
             public void onClick(View view)
             {
                 Toast.makeText(context,modelo,Toast.LENGTH_SHORT).show();
+                editor.putString("modelo",modelo);
+                editor.apply();
+
+                if (anterior!=null)
+                {
+                    anterior.marco.setBackgroundResource(R.color.blanco);
+                    anterior.model_bascula.setTextColor(context.getResources().getColor(R.color.negro));
+                }
+                holder.marco.setBackgroundResource(R.color.negro);
+                holder.model_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
+
+
+
+                anterior=holder;
 
             }
         });

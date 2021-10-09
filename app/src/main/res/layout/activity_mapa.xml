@@ -679,26 +679,53 @@
             </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="70dp"
             android:background="@color/blanco"
             android:gravity="center"
             android:orientation="horizontal"
             android:id="@+id/caja_auto_marca">
             <AutoCompleteTextView
                 android:id="@+id/automarca"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                android:completionHint="1"
-                android:text="Ingresar Marca"
-                android:dropDownAnchor="@+id/marcasdes"/>
-            <TextView
-                android:id="@+id/marcasdes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:completionThreshold="1"
-                android:completionHint="1"/>
+                android:gravity="center"/>
+            <ImageView
+                android:id="@+id/guardar_marca"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/negro" />
         </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_marca_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/marca_basc"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_marca" />
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -718,18 +745,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:background="@color/blanco"
                 android:gravity="left">
                 <TextView
                     android:layout_width="match_parent"
+
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="20dp"
-                    android:text="MODELO"
+                    android:text="Modelo:"
                     android:textColor="@color/negro"
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -761,7 +790,33 @@
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_edit_serie"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal">
 
+                <EditText
+                    android:id="@+id/serie_texto"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:hint="@string/texto4"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_serie"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -770,16 +825,18 @@
                 android:orientation="horizontal"
                 android:id="@+id/caja_serie_final"
                 android:layout_margin="10dp"
-                android:visibility="visible">
+                android:visibility="gone">
+
                 <TextView
                     android:id="@+id/numero_serie"
                     android:layout_width="250dp"
                     android:layout_height="22dp"
                     android:background="@color/blanco"
+                    android:gravity="center"
                     android:text="numero de serie"
-                    android:textSize="20dp"
                     android:textColorHint="@color/negro"
-                    android:gravity="center" />
+                    android:textSize="20dp" />
+
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -817,33 +874,7 @@
                     android:id="@+id/recycler_alcance"
                     android:layout_marginVertical="11dp"/>
 
-                <LinearLayout
-                    android:id="@+id/caja_edit_serie"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/serie_texto"
-                        android:layout_width="250dp"
-                        android:layout_height="22dp"
-                        android:background="@color/blanco"
-                        android:gravity="center"
-                        android:hint="@string/texto4"
-                        android:textColorHint="@color/negro"
-                        android:textSize="20dp" />
-
-                    <ImageView
-                        android:id="@+id/guardar_serie"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="15dp"
-                        android:layout_marginTop="30dp"
-                        android:background="@color/negro" />
-                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
