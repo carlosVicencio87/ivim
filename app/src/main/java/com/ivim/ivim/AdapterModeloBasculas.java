@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
                 Toast.makeText(context,modelo,Toast.LENGTH_SHORT).show();
                 editor.putString("modelo",modelo);
                 editor.apply();
+                Log.e("cambio",datosModelo.getString("modelo","no"));
 
                 if (anterior!=null)
                 {

@@ -75,12 +75,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
-    private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,alcanceMinSher;
-    private SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,
+            alcanceMinSher;
+    private SharedPreferences.Editor editormodelo,editorAlcanceMax,editorEod,
+            editorAlcanceMin;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
-            nuevo_costo,seleccion_instrumento,seleccion_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
+            nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
             seleccion_exactitud,nueva_marca,valorCheckbox;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
@@ -93,7 +95,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
             recycler_minimo;
     private Boolean tel10;
-    private ScrollView formulario_principal, formulario_bascula;
+    private ScrollView formulario_principal, formulario_bascula,almacen_basculas;
     private Spinner giros, mercado, tipoInstrumento,ClaseExactitud;
     private AdapterGiro adapterGiro;
     public ArrayList<SpinnerModel> listaGiro = new ArrayList<>();
@@ -252,14 +254,32 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         cambiar_marca = findViewById(R.id.cambiar_marca);
 
 
+
         modeloSHER=getSharedPreferences("modelos",this.MODE_PRIVATE);
+        editormodelo=modeloSHER.edit();
+        editormodelo.putString("modelo","");
+        editormodelo.apply();
         checkModel=modeloSHER.getString("modelo","no");
+
         alcanceMaxSher=getSharedPreferences("alcancesMax",this.MODE_PRIVATE);
+        editorAlcanceMax=alcanceMaxSher.edit();
+        editorAlcanceMax.putString("alcanceMax","");
+        editorAlcanceMax.apply();
         checkAlcanceMax=alcanceMaxSher.getString("alcanceMax","no");
+
         eodSher=getSharedPreferences("alcancesEod",this.MODE_PRIVATE);
+        editorEod=eodSher.edit();
+        editorEod.putString("alcanceEod","");
+        editorEod.apply();
         checkEod=eodSher.getString("alcanceEod","NO");
+
         alcanceMinSher=getSharedPreferences("alcancesMin",this.MODE_PRIVATE);
+        editorAlcanceMin=alcanceMinSher.edit();
+        editorAlcanceMin.putString("alcanceMin","");
+        editorAlcanceMin.apply();
         checkAlcanceMin=alcanceMinSher.getString("alcanceMin","no");
+
+        almacen_basculas = findViewById(R.id.almacen_basculas);
 
         ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, BASCULAS);
         automarca.setAdapter(adaptador);
@@ -503,8 +523,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         });
 
 
-        valorCheckbox="Inicial";
-        inicial.setChecked(true);
+        valorCheckbox="";
+        //inicial.setChecked(true);
         inicial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -642,6 +662,81 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        agregar_bascula.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nueva_marca = automarca.getText().toString();
+                nueva_serie = serie_texto.getText().toString();
+                checkModel=modeloSHER.getString("modelo","no");
+                checkAlcanceMax=alcanceMaxSher.getString("alcanceMax","no");
+                checkEod=eodSher.getString("alcanceEod","NO");
+                checkAlcanceMin=alcanceMinSher.getString("alcanceMin","no");
+                nuevo_costo = costo_texto.getText().toString();
+                Log.e("bascula","listo");
+                Log.e("cambiar_2",""+checkModel);
+                Log.e("cambio3",""+selector_modelo);
+                if (!seleccion_instrumento.trim().equals("Tipo de instrumento")) {
+                    if(!nueva_marca.trim().equals("")){
+                        if(!checkModel.trim().equals("")){
+                            if(!nueva_serie.trim().equals("")){
+                                if(!checkAlcanceMax.trim().equals("")){
+                                    if(!checkEod.trim().equals("")){
+                                        if(!checkAlcanceMin.trim().equals("")){
+                                            if(!seleccion_exactitud.trim().equals("Clase de exactitud")){
+                                                if(!valorCheckbox.trim().equals("")){
+                                                    if(!nuevo_costo.trim().equals("")){
+                                                        formulario_bascula.setVisibility(View.GONE);
+                                                        almacen_basculas.setVisibility(View.VISIBLE);
+                                                    }
+                                                    else
+                                                    {
+                                                        Toast.makeText(getApplicationContext(), "Ingregso el costo.", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Toast.makeText(getApplicationContext(), "Seleccione tipo de visita.", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Seleccione la clase de exactitud.", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(getApplicationContext(), "Seleccione el Alcance Minimo.", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(getApplicationContext(), "Seleccione el Eod.", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(), "Seleccione el alcance Max.", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Seleccione  un modelo.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "La marca es necesaria.", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "La clase de instrumento es necesaria.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     /**
@@ -969,23 +1064,24 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void setListaModelo()
     {
         listaModelo.clear();
-        String coy[] = {"WS100","WS80",
+        String coy[] = {"Modelo","WS100","WS80",
                 "CS500","CS2000","CS200","TR30RS","ESW-5M",};
         for (int i=0; i<coy.length;i++)
         {
             ModeloRecycler modeloRecycler = new ModeloRecycler(coy[i]);
 
-            String selector_modelo= modeloRecycler.getModelo_bascula();
+            selector_modelo= modeloRecycler.getModelo_bascula();
 
             listaModelo.add(modeloRecycler);
             Log.e("tipomodel",""+selector_modelo);
+
 
         }
     }
     public void setListaAlcance()
     {
         listaAlcance.clear();
-        String coy[] = {"8/10","10/20",
+        String coy[] = {"AlcanceMaximo","8/10","10/20",
                 "5/10","40/20","50/100","100/200","150/1000",};
         for (int i=0; i<coy.length;i++)
         {

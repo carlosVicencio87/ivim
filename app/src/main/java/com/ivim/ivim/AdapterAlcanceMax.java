@@ -4,6 +4,7 @@ package com.ivim.ivim;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class AdapterAlcanceMax extends RecyclerView.Adapter<AdapterAlcanceMax.Vi
                 Toast.makeText(context,alcanceMax,Toast.LENGTH_SHORT).show();
                 editor.putString("alcanceMax",alcanceMax);
                 editor.apply();
-
+                Log.e("cambio",datosAlcanceMax.getString("modelo","no"));
                 if (anterior!=null)
                 {
                     anterior.marco2.setBackgroundResource(R.color.blanco);

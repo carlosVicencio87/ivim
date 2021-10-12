@@ -3,6 +3,7 @@ package com.ivim.ivim;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class AdapterAlcanceMinimo extends RecyclerView.Adapter<AdapterAlcanceMin
                 Toast.makeText(context,alcanceMin,Toast.LENGTH_SHORT).show();
                 editor.putString("alcanceMin",alcanceMin);
                 editor.apply();
-
+                Log.e("cambio",datosAlcanceMin.getString("modelo","no"));
                 if (anterior!=null)
                 {
                     anterior.marco4.setBackgroundResource(R.color.blanco);

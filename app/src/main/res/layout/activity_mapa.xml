@@ -1001,7 +1001,8 @@
                     android:layout_height="wrap_content"
                     android:text="Inicial(I)"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:checked="false"/>
 
                 <CheckBox
                     android:id="@+id/anual"
@@ -1010,7 +1011,8 @@
                     android:text="Periodica Anual(PA)"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:checked="false"/>
 
                 <CheckBox
                     android:id="@+id/primerSemestre"
@@ -1019,7 +1021,8 @@
                     android:layout_marginRight="20dp"
                     android:text="Periodica 1er Semestre(P1S)"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:checked="false"/>
 
                 <CheckBox
                     android:id="@+id/segundoSemestre"
@@ -1027,7 +1030,8 @@
                     android:layout_height="wrap_content"
                     android:text="Periodica 2do Semestre(P2S)"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:checked="false"/>
 
                 <CheckBox
                     android:id="@+id/extraordinaria"
@@ -1037,7 +1041,8 @@
                     android:text="Extraordinaria(E)"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:checked="false"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1159,5 +1164,25 @@
         </LinearLayout>
 
     </ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/almacen_basculas"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/blanco">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

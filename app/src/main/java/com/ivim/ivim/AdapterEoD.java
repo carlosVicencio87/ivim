@@ -3,6 +3,7 @@ package com.ivim.ivim;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class AdapterEoD  extends RecyclerView.Adapter<AdapterEoD.ViewHolderRecyc
                 Toast.makeText(context,alcanceEod,Toast.LENGTH_SHORT).show();
                 editor.putString("alcanceEod",alcanceEod);
                 editor.apply();
-
+                Log.e("cambio",datosEod.getString("modelo","no"));
                 if (anterior!=null)
                 {
                     anterior.marco3.setBackgroundResource(R.color.blanco);
