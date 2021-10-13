@@ -51,6 +51,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +82,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,
             alcanceMinSher;
     private SharedPreferences.Editor editormodelo,editorAlcanceMax,editorEod,
-            editorAlcanceMin;
+            editorAlcanceMin,editor;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
@@ -86,7 +90,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             seleccion_exactitud,nueva_marca,valorCheckbox;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
-            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc;
+            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
@@ -130,6 +134,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private static final String[] BASCULAS = new String[]{
                 "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
+   private JSONObject json_datos_bascula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -610,7 +615,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         tipoInstrumento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView listas_intrusmento = findViewById(R.id.listaInstrumento);
+                listas_intrusmento = findViewById(R.id.listaInstrumento);
                 if (listas_intrusmento == null) {
                     listas_intrusmento = (TextView) view.findViewById(R.id.listaInstrumento);
                 } else {
@@ -649,7 +654,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         ClaseExactitud.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView listas_exactitud = findViewById(R.id.listaClaseExactitud);
+                 listas_exactitud = findViewById(R.id.listaClaseExactitud);
                 if (listas_exactitud == null) {
                     listas_exactitud = (TextView) view.findViewById(R.id.listaClaseExactitud);
                 } else {
@@ -665,6 +670,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                seleccion_instrumento = listas_intrusmento.getText().toString();
                 nueva_marca = automarca.getText().toString();
                 nueva_serie = serie_texto.getText().toString();
                 checkModel=modeloSHER.getString("modelo","no");
@@ -687,6 +693,27 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                     if(!nuevo_costo.trim().equals("")){
                                                         formulario_bascula.setVisibility(View.GONE);
                                                         almacen_basculas.setVisibility(View.VISIBLE);
+
+                                                        JSONObject jsonObject=new JSONObject();
+                                                        try {
+                                                            jsonObject.put("marca",nueva_marca);
+                                                            jsonObject.put("tipo intrsumento",seleccion_instrumento);
+                                                            jsonObject.put("modelo",checkModel);
+                                                            jsonObject.put("serie",nueva_serie);
+                                                            jsonObject.put("Alcance_max",checkAlcanceMax);
+                                                            jsonObject.put("eod",checkEod);
+                                                            jsonObject.put("alcance_min",checkAlcanceMin);
+                                                            jsonObject.put("exactitud",seleccion_exactitud);
+                                                            jsonObject.put("checkbox",valorCheckbox);
+                                                            jsonObject.put("costo",nuevo_costo);
+
+                                                            Log.e("1", String.valueOf(jsonObject));
+
+
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+
                                                     }
                                                     else
                                                     {
