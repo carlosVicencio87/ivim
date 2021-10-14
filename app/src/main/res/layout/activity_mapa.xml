@@ -618,7 +618,8 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintBottom_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent">
+    app:layout_constraintRight_toRightOf="parent"
+    android:visibility="visible">
 
 
         <LinearLayout
@@ -1133,7 +1134,7 @@
                     android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-
+                    android:layout_marginLeft="50dp"
                     />
                 <TextView
                     android:id="@+id/agregar_bascula"
@@ -1143,22 +1144,11 @@
                     android:text="Agregar bascula"
                     android:textColor="@color/negro"
                     android:gravity="center"
-                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginRight="50dp"
+                    />
 
-                    />
-                <TextView
-                    android:id="@+id/finalizar_reg_bascula"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/campo"
-                    android:text="Iniciar acta dictamen de verificaicon "
-                    android:textColor="@color/negro"
-                    android:gravity="center"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -1171,14 +1161,88 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/blanco">
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Todas las basculas"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_recycler_basculas">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycler_numero_basc"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="11dp"/>
+            </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/caja_siguiente_registro"
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="100dp">
+                <TextView
+                    android:id="@+id/regresar_otravez_formulario"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/campo"
+                    android:text="Regresar al formulario"
+                    android:textColor="@color/negro"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+                <TextView
+                    android:id="@+id/agregar_otra_bascula"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/campo"
+                    android:text="Agregar bascula"
+                    android:textColor="@color/negro"
+                    android:gravity="center"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+                <TextView
+                    android:id="@+id/finalizar_reg_bascula"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/campo"
+                    android:text="finalizar registro de basculas"
+                    android:textColor="@color/negro"
+                    android:gravity="center"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
     </ScrollView>

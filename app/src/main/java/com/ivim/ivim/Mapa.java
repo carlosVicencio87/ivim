@@ -74,7 +74,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
             caja_zona,caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
-            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,caja_auto_marca,caja_marca_final,
+            caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
+            caja_auto_marca,caja_marca_final,caja_recycler_basculas,
             caja_costo_final;
     private Fragment map;
     private int check = 0;
@@ -97,7 +98,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             guardar_costo,cambiar_costo,guardar_marca,cambiar_marca;
     private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
     private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
-            recycler_minimo;
+            recycler_minimo,recycler_numero_basc;
     private Boolean tel10;
     private ScrollView formulario_principal, formulario_bascula,almacen_basculas;
     private Spinner giros, mercado, tipoInstrumento,ClaseExactitud;
@@ -107,7 +108,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public ArrayList<SpinnerModel> listaMercado = new ArrayList<>();
     private AdapterClaseExactitud adapterClaseExactitud;
     public ArrayList<SpinnerModel>listaClase=new ArrayList<>();
-    private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance,recyclerEod,recyclerMinimo;
+    private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance,recyclerEod,
+            recyclerMinimo,recyclerCantidad;
     private AdapterTipoInstrumento adapterTipoInstrumento;
     public ArrayList<SpinnerModel> listaInstrumen = new ArrayList<>();
     private AdapterMarcaBasculas adapterMarcaBasculas;
@@ -115,11 +117,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private AdapterAlcanceMax adapterAlcanceMax;
     private AdapterEoD adapterEoD;
     private AdapterAlcanceMinimo adapterAlcanceMinimo;
+    private AdapterCantidadBasculas adapterCantidadBasculas;
     private ArrayList<AlcanceRecycler> listaAlcance;
     private ArrayList<ModeloRecycler> listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
     private ArrayList<EodRecycler>listaEod;
     private ArrayList<AlcanceMinRecycler>listaMinimo;
+    private ArrayList<CantidadBasculasRecycler>listaCantidadBasc;
     private Context context;
     public final static int WGS84 = 0;
     public final static int HAYFORD = 1;
@@ -134,7 +138,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private static final String[] BASCULAS = new String[]{
                 "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
-   private JSONObject json_datos_bascula;
+   private  JSONArray json_datos_bascula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,8 +186,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         setListaInstrumen();
         setListaClase();
 
-        listaMarca = new ArrayList<>();
-        setListaMarca();
+        listaCantidadBasc = new ArrayList<>();
+        setListaCantidadBasc();
         listaModelo = new ArrayList<>();
         setListaModelo();
 
@@ -210,6 +214,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         recyclerEod.setLayoutManager(new LinearLayoutManager(context));
         recyclerMinimo=findViewById(R.id.recycler_minimo);
         recyclerMinimo.setLayoutManager(new LinearLayoutManager(context));
+        recyclerCantidad=findViewById(R.id.recycler_numero_basc);
+        recyclerCantidad.setLayoutManager(new LinearLayoutManager(context));
+
 
         caja_x = findViewById(R.id.caja_x);
         caja_longitud = findViewById(R.id.caja_longitud);
@@ -260,6 +267,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
+
         modeloSHER=getSharedPreferences("modelos",this.MODE_PRIVATE);
         editormodelo=modeloSHER.edit();
         editormodelo.putString("modelo","");
@@ -285,6 +293,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         checkAlcanceMin=alcanceMinSher.getString("alcanceMin","no");
 
         almacen_basculas = findViewById(R.id.almacen_basculas);
+        recycler_numero_basc = findViewById(R.id.recycler_numero_basc);
+        caja_recycler_basculas = findViewById(R.id.caja_recycler_basculas);
+
+
+
 
         ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, BASCULAS);
         automarca.setAdapter(adaptador);
@@ -412,6 +425,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         adapterClaseExactitud = new AdapterClaseExactitud(activity, R.layout.lista_clase_exactitud, listaClase, getResources());
         ClaseExactitud.setAdapter(adapterClaseExactitud);
+
+        adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
+        recycler_numero_basc.setAdapter(adapterCantidadBasculas);
 
         guardar_serie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -695,6 +711,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                         almacen_basculas.setVisibility(View.VISIBLE);
 
                                                         JSONObject jsonObject=new JSONObject();
+                                                        json_datos_bascula=new JSONArray();
                                                         try {
                                                             jsonObject.put("marca",nueva_marca);
                                                             jsonObject.put("tipo intrsumento",seleccion_instrumento);
@@ -707,7 +724,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                             jsonObject.put("checkbox",valorCheckbox);
                                                             jsonObject.put("costo",nuevo_costo);
 
+                                                            json_datos_bascula.put(jsonObject);
+
                                                             Log.e("1", String.valueOf(jsonObject));
+                                                            Log.e("2", String.valueOf(json_datos_bascula));
+                                                            for (int i=0; i<json_datos_bascula.length();i++)
+                                                            {
+                                                                try {
+                                                                    Log.e("json"+i,json_datos_bascula.get(i).toString());
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+                                                            }
 
 
                                                         } catch (JSONException e) {
@@ -1149,10 +1177,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             listaClase.add(sched);
         }
     }
+    public void setListaCantidadBasc()
+    {
+        listaCantidadBasc.clear();
+        String coy[] = {"10","20",
+                "30","40","50","60","100","200"};
+        for (int i=0; i<coy.length;i++)
+        {
+            listaCantidadBasc.add(new CantidadBasculasRecycler(coy[i]));
+        }
+    }
 
     @Override
     public void onBackPressed() {
 
     }
+
 
 }

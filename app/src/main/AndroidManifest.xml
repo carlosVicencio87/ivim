@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".CantidadBasculasRecycler"></activity>
         <activity
             android:name=".ActaDictamen"
             android:exported="true" />
@@ -47,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Orden_servicio" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
         <activity android:name=".MainActivity" />
 
         <uses-library
