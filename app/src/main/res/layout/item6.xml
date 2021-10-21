@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
+    android:layout_height="match_parent"
     android:background="@color/cafe"
     android:gravity="center"
     android:orientation="vertical">
@@ -12,13 +12,76 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/blanco"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        >
         <TextView
             android:id="@+id/cantidad_bascula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Marca"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_tipo_instrumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tipo de instrumento"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_modelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modelo"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_serie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Numero de serie"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_AlcanceMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alcance Maximo"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_Eod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eod"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_AlcanceMin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Alcance Minimo "
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_exactitud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clase de exactitud"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="checkbox"
+            android:gravity="center"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/cantidad_costo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="costo"
             android:gravity="center"
             android:textSize="20dp"/>
     </LinearLayout>

@@ -75,7 +75,7 @@ public class Login extends AppCompatActivity {
                 valCorreo=correo.getText().toString();
                 valContra=contrasena.getText().toString();
                 Log.e("datocorreo",valCorreo );
-                Log.e("datocorreo",valContra );
+                Log.e("datocontra",valContra );
                 if(!valCorreo.trim().equals("")){
                     if(!valContra.trim().equals("")){
                         if(correo_exitoso==true){

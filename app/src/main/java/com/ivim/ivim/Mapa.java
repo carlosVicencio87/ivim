@@ -91,7 +91,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             seleccion_exactitud,nueva_marca,valorCheckbox;
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
-            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud;
+            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
+            listas_mercado,listas_giro;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
@@ -426,9 +427,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         adapterClaseExactitud = new AdapterClaseExactitud(activity, R.layout.lista_clase_exactitud, listaClase, getResources());
         ClaseExactitud.setAdapter(adapterClaseExactitud);
 
-        adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
+        /*adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
         recycler_numero_basc.setAdapter(adapterCantidadBasculas);
-
+*/
         guardar_serie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -508,7 +509,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView listas_giro = findViewById(R.id.listaGiro);
+               listas_giro = findViewById(R.id.listaGiro);
                 if (listas_giro == null) {
                     listas_giro = (TextView) view.findViewById(R.id.listaGiro);
                 } else {
@@ -529,7 +530,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         mercado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView listas_mercado = findViewById(R.id.listaMercado);
+                listas_mercado = findViewById(R.id.listaMercado);
                 if (listas_mercado == null) {
                     listas_mercado = (TextView) view.findViewById(R.id.listaMercado);
                 } else {
@@ -714,7 +715,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                         json_datos_bascula=new JSONArray();
                                                         try {
                                                             jsonObject.put("marca",nueva_marca);
-                                                            jsonObject.put("tipo intrsumento",seleccion_instrumento);
+                                                            jsonObject.put("tipo_intrsumento",seleccion_instrumento);
                                                             jsonObject.put("modelo",checkModel);
                                                             jsonObject.put("serie",nueva_serie);
                                                             jsonObject.put("Alcance_max",checkAlcanceMax);
@@ -730,8 +731,38 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                             Log.e("2", String.valueOf(json_datos_bascula));
                                                             for (int i=0; i<json_datos_bascula.length();i++)
                                                             {
-                                                                try {
-                                                                    Log.e("json"+i,json_datos_bascula.get(i).toString());
+                                                                try { JSONObject jsonSacando= json_datos_bascula.getJSONObject(i);
+                                                                   String strMarca=jsonSacando.get("marca").toString();
+                                                                   String strTipo_intrsumento=jsonSacando.get("tipo_intrsumento").toString();
+                                                                   String strModelo=jsonSacando.get("modelo").toString();
+                                                                   String strSerie=jsonSacando.get("serie").toString();
+                                                                   String strAlcance_max=jsonSacando.get("Alcance_max").toString();
+                                                                   String strEod=jsonSacando.get("eod").toString();
+                                                                   String strAlcance_min=jsonSacando.get("alcance_min").toString();
+                                                                   String strExactitud=jsonSacando.get("exactitud").toString();
+                                                                   String strCheckbox=jsonSacando.get("checkbox").toString();
+                                                                   String strCosto=jsonSacando.get("costo").toString();
+
+
+                                                                    listaCantidadBasc.clear();
+
+                                                                    listaCantidadBasc.add(new CantidadBasculasRecycler(strMarca,strTipo_intrsumento,strModelo,
+                                                                            strSerie,strAlcance_max,strEod,strAlcance_min,strExactitud,strCheckbox,strCosto));
+                                                                    adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
+                                                                    recycler_numero_basc.setAdapter(adapterCantidadBasculas);
+
+                                                                    Log.e("t1",strMarca);
+                                                                    Log.e("t2",strTipo_intrsumento);
+                                                                    Log.e("t3",strModelo);
+                                                                    Log.e("t4",strSerie);
+                                                                    Log.e("t5",strAlcance_max);
+                                                                    Log.e("t6",strEod);
+                                                                    Log.e("t7",strAlcance_min);
+                                                                    Log.e("t8",strExactitud);
+                                                                    Log.e("t9",strCheckbox);
+                                                                    Log.e("t10",strCosto);
+
+                                                                    //Log.e("json"+i,jsonObject.getString(nueva_marca));
                                                                 } catch (JSONException e) {
                                                                     e.printStackTrace();
                                                                 }
@@ -1179,13 +1210,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
     public void setListaCantidadBasc()
     {
-        listaCantidadBasc.clear();
-        String coy[] = {"10","20",
-                "30","40","50","60","100","200"};
-        for (int i=0; i<coy.length;i++)
-        {
-            listaCantidadBasc.add(new CantidadBasculasRecycler(coy[i]));
-        }
+
     }
 
     @Override

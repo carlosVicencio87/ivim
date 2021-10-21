@@ -40,10 +40,10 @@ public class AdapterMercado extends ArrayAdapter<String> {
     public View getCustomView(int position, View convertView, ViewGroup parent)
     {
         //Agregar Layout y agregar id de elemento en layout
-        View row = inflater.inflate(R.layout.lista_giro,parent,false);
+        View row = inflater.inflate(R.layout.lista_mercado,parent,false);
         spinnerModel = null;
         spinnerModel= (SpinnerModel) data.get(position);
-        TextView label = (TextView) row.findViewById(R.id.listaGiro);
+        TextView label = (TextView) row.findViewById(R.id.listaMercado);
         //ImageView iconoTipo = (ImageView) row.findViewById(R.id.imagenSpinner);
         if (position==0)
         {

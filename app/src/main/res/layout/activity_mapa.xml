@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/caja_punto_partida">
         <TextView
             android:layout_width="match_parent"
             android:id="@+id/puntoPartida"
             android:layout_height="80dp"
             android:background="@color/blanco"
-            android:text="Direccion "
+            android:text="Historial de visitas"
             android:textSize="14dp"
             android:textColor="@color/negro"
             android:gravity="center"
@@ -28,19 +29,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mapaid"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
+
         <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
-            tools:context=".Mapa"
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintVertical_bias="0.0"
+            tools:context=".Mapa" />
 
         <ImageView
             android:layout_width="200dp"
@@ -619,7 +622,7 @@
     app:layout_constraintBottom_toTopOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    android:visibility="visible">
+    android:visibility="gone">
 
 
         <LinearLayout
