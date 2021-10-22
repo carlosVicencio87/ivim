@@ -92,7 +92,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
-            listas_mercado,listas_giro;
+            listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
@@ -296,6 +296,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         almacen_basculas = findViewById(R.id.almacen_basculas);
         recycler_numero_basc = findViewById(R.id.recycler_numero_basc);
         caja_recycler_basculas = findViewById(R.id.caja_recycler_basculas);
+
+        regresar_otravez_formulario = findViewById(R.id.regresar_otravez_formulario);
+        agregar_otra_bascula = findViewById(R.id.agregar_otra_bascula);
 
 
 
@@ -744,7 +747,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                                    String strCosto=jsonSacando.get("costo").toString();
 
 
-                                                                    listaCantidadBasc.clear();
+                                                                    //listaCantidadBasc.clear();
 
                                                                     listaCantidadBasc.add(new CantidadBasculasRecycler(strMarca,strTipo_intrsumento,strModelo,
                                                                             strSerie,strAlcance_max,strEod,strAlcance_min,strExactitud,strCheckbox,strCosto));
@@ -822,7 +825,35 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         });
-
+        regresar_otravez_formulario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                almacen_basculas.setVisibility(View.GONE);
+                formulario_principal.setVisibility(View.VISIBLE);
+            }
+        });
+        agregar_otra_bascula.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                formulario_bascula.setVisibility(View.VISIBLE);
+                automarca.setText("");
+                caja_auto_marca.setVisibility(View.VISIBLE);
+                caja_marca_final.setVisibility(View.GONE);
+                tipoInstrumento.setSelection(0);
+                recycler_modelo.setAdapter(adapterModeloBasculas);
+                serie_texto.setText("");
+                caja_serie_final.setVisibility(View.GONE);
+                caja_edit_serie.setVisibility(View.VISIBLE);
+                recycler_alcance.setAdapter(adapterAlcanceMax);
+                recycler_eod.setAdapter(adapterEoD);
+                recycler_minimo.setAdapter(adapterAlcanceMinimo);
+                ClaseExactitud.setSelection(0);
+                valorCheckbox="";
+                costo_texto.setText("");
+                caja_costo_final.setVisibility(View.GONE);
+                caja_edit_costo.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     /**
@@ -1150,7 +1181,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void setListaModelo()
     {
         listaModelo.clear();
-        String coy[] = {"Modelo","WS100","WS80",
+        String coy[] = {"WS100","WS80",
                 "CS500","CS2000","CS200","TR30RS","ESW-5M",};
         for (int i=0; i<coy.length;i++)
         {
@@ -1167,7 +1198,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void setListaAlcance()
     {
         listaAlcance.clear();
-        String coy[] = {"AlcanceMaximo","8/10","10/20",
+        String coy[] = {"8/10","10/20",
                 "5/10","40/20","50/100","100/200","150/1000",};
         for (int i=0; i<coy.length;i++)
         {

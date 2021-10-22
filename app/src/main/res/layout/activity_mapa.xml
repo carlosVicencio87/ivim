@@ -1191,7 +1191,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="match_parent"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -1201,7 +1201,8 @@
                     android:layout_height="match_parent"
                     android:id="@+id/recycler_numero_basc"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_marginVertical="10dp"
+                    android:padding="10dp"/>
             </LinearLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/caja_siguiente_registro"

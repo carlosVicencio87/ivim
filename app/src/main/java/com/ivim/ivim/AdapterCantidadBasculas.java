@@ -45,7 +45,7 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
 
         cantidad_bascula = ranking6recycler.get(position).getCantidad_bascula();
         holder.cant_bascula.setText(cantidad_bascula);
-        cantidad_tipo_instrumento=ranking6recycler.get(position).getCantidad_bascula();
+        cantidad_tipo_instrumento=ranking6recycler.get(position).getCantidad_tipo_instrumento();
         holder.cant_tipo_instrumento.setText(cantidad_tipo_instrumento);
         cantidad_modelo=ranking6recycler.get(position).getCantidad_modelo();
         holder.cant__modelo.setText(cantidad_modelo);
@@ -80,7 +80,7 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
                     anterior.marco5.setBackgroundResource(R.color.blanco);
                     anterior.cant_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
                 }
-                holder.marco5.setBackgroundResource(R.color.negro);
+
                 holder.cant_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
 
 
