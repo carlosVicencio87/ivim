@@ -34,6 +34,8 @@ import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
 
+    private AsincronaCatalogo asincronaCatalogo;
+    private AsincronaBascula asincronaBascula;
     private Asincrona asincrona;
     private EditText correo,contrasena;
     private TextView ingresar,recuperarContra,mensaje;
@@ -44,6 +46,8 @@ public class Login extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private boolean correo_exitoso,contrasena_exitoso;
     private  JSONArray json_datos_usuario;
+    private  JSONArray json_datos_tabla;
+    private  JSONArray json_datos_basculas;
     private  String strInicio,strUsuario;
 
 
@@ -87,6 +91,10 @@ public class Login extends AppCompatActivity {
                                 mensaje.setVisibility(View.VISIBLE);
                                 asincrona= new Asincrona();
                                 asincrona.execute();
+                                asincronaCatalogo= new Login.AsincronaCatalogo();
+                                asincronaCatalogo.execute();
+                                asincronaBascula= new AsincronaBascula();
+                                asincronaBascula.execute();
 
                         }
                         else{
@@ -263,6 +271,123 @@ public class Login extends AppCompatActivity {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("correo",valCorreo);
                 map.put("contrasena",valContra);
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    private class AsincronaCatalogo extends AsyncTask<Void, Integer,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            pedir_tabla();
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+    public void pedir_tabla()
+    {
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"pedir_tabla.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("respuesta2:",response + "");
+                        try{
+                            json_datos_tabla=new JSONArray(response);
+                            Log.e("tabla",""+json_datos_tabla);
+                            for(int i=0; i<json_datos_tabla.length();i++){
+                                
+                            }
+
+                        }
+
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("respuesta1", error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
+    private class AsincronaBascula extends AsyncTask<Void, Integer,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            pedir_bascula();
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+    public void pedir_bascula()
+    {
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"pedir_bascula.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("respuesta23:",response + "");
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("respuesta11", error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
                 return map;
             }
         };

@@ -23,6 +23,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -41,6 +42,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,24 +67,29 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private static final int PERMISO_LOCATION = 1;
+
     private LocationManager locationManager;
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
-    private ConstraintLayout mapaid, caja_fecha, cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc;
+    private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
             caja_zona,caja_instrumento, caja_edit_serie, caja_serie_final, caja_recycler_alcance,
             caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
             caja_auto_marca,caja_marca_final,caja_recycler_basculas,
-            caja_costo_final;
+            caja_costo_final,caja_edit_fecha,caja_fecha_final;
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
@@ -88,15 +101,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
-            seleccion_exactitud,nueva_marca,valorCheckbox;
-    private TextView puntoPartida, nombre, direccion_mercado, telefono, latitud_x,
+            seleccion_exactitud,nueva_marca,valorCheckbox,fecha_final_Str;
+    private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
             listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
-            guardar_costo,cambiar_costo,guardar_marca,cambiar_marca;
+            guardar_costo,cambiar_costo,guardar_marca,cambiar_marca,guardar_fecha,cambiar_fecha;
     private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
     private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
             recycler_minimo,recycler_numero_basc;
@@ -140,6 +153,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
    private  JSONArray json_datos_bascula;
+   private static String SERVIDOR_CONTROLADOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,8 +175,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_nombre_final = findViewById(R.id.caja_nombre_final);
         guardar_nombre = findViewById(R.id.guardar_nombre);
         cambiar_nombre = findViewById(R.id.cambiar_nombre);
-        caja_fecha = findViewById(R.id.caja_fecha);
+        caja_edit_fecha = findViewById(R.id.caja_edit_fecha);
+        guardar_fecha = findViewById(R.id.guardar_fecha);
         fecha = findViewById(R.id.fecha);
+        caja_fecha_final = findViewById(R.id.caja_fecha_final);
+        fecha_final = findViewById(R.id.fecha_final);
+        cambiar_fecha = findViewById(R.id.cambiar_fecha);
+
+
         caja_direccion = findViewById(R.id.caja_direccion);
         direccion_mercado = findViewById(R.id.direccion_mercado);
         caja_giro = findViewById(R.id.caja_giro);
@@ -265,7 +285,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_marca_final = findViewById(R.id.caja_marca_final);
         marca_basc = findViewById(R.id.marca_basc);
         cambiar_marca = findViewById(R.id.cambiar_marca);
-
+        SERVIDOR_CONTROLADOR = new Servidor().local;
 
 
 
@@ -325,6 +345,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 formulario_principal.setVisibility(View.VISIBLE);
                 mapaid.setVisibility(View.GONE);
                 caja_punto_partida.setVisibility(View.GONE);
+
 
             }
         });
@@ -401,6 +422,41 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 Locale.getDefault()).format(new Date());
         Log.e("fecha", "" + date);
         fecha.setText(date);
+
+        /*fecha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean tieneFoco) {
+
+                if(!tieneFoco)
+                {
+                    fecha_final_Str=fecha.getText().toString().trim().toLowerCase();
+                    if (!fecha_final_Str.equals("")&&fecha_final_Str!=null)
+                    {
+                        // String regex = "^(.+)@(.+)$";
+
+                        String regexUsuario = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+                        Pattern pattern = Pattern.compile(regexUsuario);
+                        Matcher matcher = pattern.matcher(fecha_final_Str);
+                        if(matcher.matches()==true){
+
+                            correo_exitoso=true;
+
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Ingrese correo valido.",Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });*/
+
+        guardar_fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
         adapterGiro = new AdapterGiro(activity, R.layout.lista_giro, listaGiro, getResources());
@@ -876,19 +932,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         LatLng punto3 = new LatLng(19.3543387, -99.0942125);
         LatLng punto4 = new LatLng(19.3498456, -99.0843095);
         LatLng punto5 = new LatLng(19.3506611, -99.0864875);
+        LatLng punto6 = new LatLng(19.3411523, -99.103033);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.addMarker(new MarkerOptions().position(punto1).title("Mercado morelos"));
         mMap.addMarker(new MarkerOptions().position(punto2).title("Mercado sonora"));
         mMap.addMarker(new MarkerOptions().position(punto3).title("Mercado renovacion"));
         mMap.addMarker(new MarkerOptions().position(punto4).title("Mercado Margarita Maza de juarez"));
         mMap.addMarker(new MarkerOptions().position(punto5).title("Mercado topo"));
+        mMap.addMarker(new MarkerOptions().position(punto6).title("Mercado HUEVO"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         miLatLong();
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3506611);
-        punto_mercado.setLongitude(-99.0864875);
+        punto_mercado.setLatitude(19.3411523);
+        punto_mercado.setLongitude(-99.103033);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -896,10 +954,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         Log.e("usuario", "" + punto_usuario);
 
         float distancias = punto_mercado.distanceTo(punto_usuario);
-        float restriccion = 16;
+        float restriccion = 30;
         Log.e("distancia", "" + distancias);
         if (distancias < restriccion) {
             iniciar_verificacion.setVisibility(View.VISIBLE);
+
         } else {
             Log.e("distancia2", "" + distancias);
             Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
@@ -1115,11 +1174,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             // permissions this app might request
         }
     }
+
     public void setListaGiro()
     {
         listaGiro.clear();
-        String coy[] = {"", "Vendedor de croquetas","M.D.C y columnas de concreto",
-                "M.D.C y columnas de acero", "M.D.C y columnas mixtas"};
+        String coy[] = {"", "Abarrotes","Cafetería",
+                "Carnicería", "Casas de empeño","Chocolatería","Compra-venta de chatarra",
+                "Compra-venta de papel y cartón", "Confitería","Cremería","Desperdicios Industriales",
+                "Dulcería", "Ferretería","Huevo","Joyería",
+                "Lavandería", "Materiales de Construcción", "Mercado sobre ruedas",
+                "Mini súper", "Miscelánea","Molino","Panadería",
+                "Pescados y mariscos", "Pollería","Productos del Campo","Recaudería",
+                "Restaurant", "Rosticería","Semillas y chiles secos","Supermercados",
+                "Taquería", "Tiendas Departamentales","Tlapalería", "Tortillería","Otros","Contenedores Marítimos",
+                "Agropecuarias y/o Ganaderas", "Comerciales","De Servicios","Industriales",
+                "Básculas Públicas", "Industria Automotriz"};
         for (int i=0; i<coy.length;i++)
         {
             final SpinnerModel sched = new SpinnerModel();

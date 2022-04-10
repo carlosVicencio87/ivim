@@ -169,29 +169,63 @@
                     app:layout_constraintLeft_toLeftOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/caja_fecha"
+
+                <LinearLayout
+                    android:id="@+id/caja_edit_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_margin="10dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <EditText
+
+                        android:id="@+id/fecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:background="@color/blanco"
+                        android:hint="@string/texto2"
+                        android:inputType="number"
+                        android:textSize="20dp"
+                        android:gravity="left|center"
+                     />
+                    <ImageView
+                        android:id="@+id/guardar_fecha"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="15dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/palomita"/>
+                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_fecha_final"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="27dp"
                 android:layout_margin="10dp"
                 android:background="@color/blanco"
-                android:gravity="right"
+                android:gravity="center"
                 android:orientation="horizontal"
+                android:visibility="gone">
 
-                >
-
-                <EditText
-                    android:id="@+id/fecha"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/fecha_final"
+                    android:layout_width="250dp"
                     android:layout_height="22dp"
                     android:background="@color/blanco"
-                    android:hint="@string/texto2"
-                    android:textSize="20dp"
-                    android:gravity="right"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:gravity="bottom"
+                    android:text="nombre de usuario"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
 
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/cambiar_fecha"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

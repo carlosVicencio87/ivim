@@ -40,16 +40,19 @@
 
         <activity
             android:name=".Mapa"
-            android:label="@string/title_activity_mapa">
-
-        </activity>
+            android:label="@string/title_activity_mapa"></activity>
         <activity android:name=".Orden_servicio" />
         <activity android:name=".Login" >
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
         </activity>
         <activity android:name=".MainActivity" />
 
