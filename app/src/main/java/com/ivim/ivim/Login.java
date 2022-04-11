@@ -2,9 +2,12 @@ package com.ivim.ivim;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -49,6 +55,7 @@ public class Login extends AppCompatActivity {
     private  JSONArray json_datos_tabla;
     private  JSONArray json_datos_basculas;
     private  String strInicio,strUsuario;
+    private Conexion conexion1,conexion2;
 
 
     @Override
@@ -178,7 +185,7 @@ public class Login extends AppCompatActivity {
     public void hacerPeticion()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"inicio_sesion_usuarios.php",
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"inicioSesion.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -253,6 +260,11 @@ public class Login extends AppCompatActivity {
 
                                     Intent intent = new Intent(Login.this, Mapa.class);
                                     startActivity(intent);
+
+
+
+
+
                                 }
                             }
                             catch (JSONException e) {
@@ -270,11 +282,41 @@ public class Login extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("correo",valCorreo);
-                map.put("contrasena",valContra);
+                map.put("contra",valContra);
                 return map;
             }
         };
         requestQueue.add(request);
+    }
+    private class AsincronaBD extends AsyncTask<Void, Integer,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //Aqui va la funcion a Ejecutar en Segundo plano
+            cargarBDS();
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //Toast.makeText(getApplicationContext(), "Termino asynck", Toast.LENGTH_LONG).show();
+        }
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+
+    public void cargarBDS(){
+
     }
 
     private class AsincronaCatalogo extends AsyncTask<Void, Integer,Void>
@@ -314,8 +356,61 @@ public class Login extends AppCompatActivity {
                         try{
                             json_datos_tabla=new JSONArray(response);
                             Log.e("tabla",""+json_datos_tabla);
+                            conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
+                            SQLiteDatabase database1 = conexion1.getWritableDatabase();
+                            database1.execSQL(Sentencias.DROP_CATALOGO);
+                            database1.execSQL(Sentencias.TABLA_CATALOGO);
+                            String TABLE_NAME = "catalogo";
+                            Cursor cursor = database1.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + TABLE_NAME + "'", null);
+                            Log.e("dbExiste:",cursor.getCount()+" -- ");
+                            if (cursor.getCount()==0){
+                                database1.execSQL(Sentencias.TABLA_CATALOGO);
+                            }
                             for(int i=0; i<json_datos_tabla.length();i++){
-                                
+                                JSONObject jsonObject = json_datos_tabla.getJSONObject(i);
+                                String strId = jsonObject.getString("id");
+                                String  strAlcanceMaximo = jsonObject.getString("alcance_maximo");
+                                String  strEod = jsonObject.getString("eod");
+                                String  strTipo = jsonObject.getString("tipo");
+                                String  strAlcanceMinimo = jsonObject.getString("alcance_minimo");
+                                String  strAlcanceMedicion = jsonObject.getString("alcance_medicion");
+                                String  strClaseExactitud= jsonObject.getString("clase_exactitud");
+                                String  strMarcoPesas= jsonObject.getString("marco_pesas");
+                                String  strPesa5kg= jsonObject.getString("pesa_5kg");
+                                String  strPesa10kg= jsonObject.getString("pesa_10kg");
+                                String  strPesa20kg= jsonObject.getString("pesa_20kg");
+                                String  strPesaClaseExactitud= jsonObject.getString("pesa_clase_exactitud");
+                                String  strHorario= jsonObject.getString("horario");
+                                Log.e("1",""+strId);
+                                Log.e("2",strAlcanceMaximo);
+                                Log.e("3",strEod);
+                                Log.e("4",strTipo);
+                                Log.e("5",strAlcanceMinimo);
+                                Log.e("6",strAlcanceMedicion);
+                                Log.e("7",strClaseExactitud);
+                                Log.e("8",""+strMarcoPesas);
+                                Log.e("9",strPesa5kg);
+                                Log.e("10",strPesa10kg);
+                                Log.e("11",strPesa20kg);
+                                Log.e("12",strPesaClaseExactitud);
+                                Log.e("13",strHorario);
+
+                                ContentValues valores = new ContentValues();
+                                String str = "";
+                                valores.put("alcance_maximo",strAlcanceMaximo);
+                                valores.put("eod",strEod);
+                                valores.put("tipo",strTipo);
+                                valores.put("alcance_minimo",strAlcanceMinimo);
+                                valores.put("alcance_medicion",strAlcanceMedicion);
+                                valores.put("clase_exactitud",strClaseExactitud);
+                                valores.put("marco_pesas",strMarcoPesas);
+                                valores.put("pesa_5kg",strPesa5kg);
+                                valores.put("pesa_10kg",strPesa10kg);
+                                valores.put("pesa_20kg",strPesa20kg);
+                                valores.put("pesa_clase_exactitud",strPesaClaseExactitud);
+                                valores.put("horario",strHorario);
+                                Long id_res= database1.insert("catalogo","id",valores);
+                                Log.e("respuesta",""+id_res);
                             }
 
                         }
@@ -375,7 +470,65 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("respuesta23:",response + "");
+                        try{
+                            json_datos_basculas=new JSONArray(response);
+                            Log.e("tabla",""+json_datos_tabla);
+                            conexion2=new Conexion(getApplicationContext(),"basculas",null,1);
+                            SQLiteDatabase database2 = conexion2.getWritableDatabase();
+                            database2.execSQL(Sentencias.DROP_BASCULAS);
+                            database2.execSQL(Sentencias.TABLA_BASCULAS);
 
+
+                            String TABLE_NAME2 = "basculas";
+
+                            Cursor cursor2 = database2.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + TABLE_NAME2 + "'", null);
+
+                            Log.e("dbExiste:",cursor2.getCount()+" -- ");
+
+
+                            if (cursor2.getCount()==0){
+                                database2.execSQL(Sentencias.TABLA_BASCULAS);
+                            }
+                            for(int i=0; i<json_datos_basculas.length();i++){
+                                JSONObject jsonObject = json_datos_basculas.getJSONObject(i);
+                                String strId = jsonObject.getString("id");
+                                String  strMarca = jsonObject.getString("marca");
+                                String  strModelo = jsonObject.getString("modelo");
+                                String  strNumeroAprobacion = jsonObject.getString("numero_aprobacion");
+                                String  strCodigoMarca = jsonObject.getString("codigo_marca");
+                                String  strCodigoModelo= jsonObject.getString("codigo_modelo");
+                                String  strAnoAprobacion= jsonObject.getString("ano_aprobacion");
+                                String  strAlcanceMinimo=jsonObject.getString("alcance_minimo");
+                                String  strAlcanceMaximo= jsonObject.getString("alcance_maximo");
+                                Log.e("11",""+strId);
+                                Log.e("22",strMarca);
+                                Log.e("33",strModelo);
+                                Log.e("44",strNumeroAprobacion);
+                                Log.e("55",strCodigoMarca);
+                                Log.e("66",strCodigoModelo);
+                                Log.e("77",strAnoAprobacion);
+                                Log.e("88",""+strAlcanceMinimo);
+                                Log.e("99",strAlcanceMaximo);
+
+                                ContentValues valores = new ContentValues();
+                                String string = "";
+                                ContentValues valores2 = new ContentValues();
+                                valores2.put("marca",strMarca);
+                                valores2.put("modelo",strModelo);
+                                valores2.put("numero_aprobacion",strNumeroAprobacion);
+                                valores2.put("codigo_marca",strCodigoMarca);
+                                valores2.put("codigo_modelo",strCodigoModelo);
+                                valores2.put("ano_aprobacion",strAnoAprobacion);
+                                valores2.put("alcance_minimo",strAlcanceMinimo);
+                                valores2.put("alcance_maximo",strAlcanceMaximo);
+                                Long id_res2= database2.insert("basculas","id",valores);
+                                Log.e("respuesta",""+id_res2);
+
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
