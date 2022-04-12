@@ -101,7 +101,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
-            seleccion_exactitud,nueva_marca,valorCheckbox,fecha_final_Str;
+            seleccion_exactitud,nueva_marca,valorCheckbox,fecha_final_Str,tipo_intrumento;
     private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
@@ -154,6 +154,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
    private  JSONArray json_datos_bascula;
    private static String SERVIDOR_CONTROLADOR;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1214,6 +1215,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
     public void setListaInstrumen()
     {
+
         listaInstrumen.clear();
         String coy[] = {"", "M=Mecanica","E=Electronica",
                 "EM=Electromecanica"};

@@ -510,7 +510,6 @@ public class Login extends AppCompatActivity {
                                 Log.e("88",""+strAlcanceMinimo);
                                 Log.e("99",strAlcanceMaximo);
 
-                                ContentValues valores = new ContentValues();
                                 String string = "";
                                 ContentValues valores2 = new ContentValues();
                                 valores2.put("marca",strMarca);
@@ -521,7 +520,7 @@ public class Login extends AppCompatActivity {
                                 valores2.put("ano_aprobacion",strAnoAprobacion);
                                 valores2.put("alcance_minimo",strAlcanceMinimo);
                                 valores2.put("alcance_maximo",strAlcanceMaximo);
-                                Long id_res2= database2.insert("basculas","id",valores);
+                                Long id_res2= database2.insert("basculas","id",valores2);
                                 Log.e("respuesta",""+id_res2);
 
                             }
