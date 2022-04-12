@@ -16,6 +16,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -101,7 +103,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
-            seleccion_exactitud,nueva_marca,valorCheckbox,fecha_final_Str,tipo_intrumento;
+            seleccion_exactitud,nueva_marca,valorCheckbox,fecha_final_Str,tipo_intrumento,valcatalogo;
     private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
@@ -154,7 +156,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
    private  JSONArray json_datos_bascula;
    private static String SERVIDOR_CONTROLADOR;
-
+    private Conexion conexion1,conexion2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -963,6 +965,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         } else {
             Log.e("distancia2", "" + distancias);
             Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
+            consultarFormaMedicamento();
         }
 
     }
@@ -1175,7 +1178,84 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             // permissions this app might request
         }
     }
+    private void consultarFormaMedicamento(){
+        conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
+        SQLiteDatabase database=conexion1.getReadableDatabase();
 
+
+
+        try {
+            Cursor cursor1= database.rawQuery("SELECT tipo FROM catalogo  ",null);
+           // Log.e("tipos",""+cursor1);
+
+
+            int cuenta =cursor1.getCount();
+            Log.e("catalogo",""+cuenta);
+
+
+            /*while (cursor1.moveToNext()){
+                final SpinnerModelForma modelForma = new SpinnerModelForma();
+                //sched2.ponerImagen("spinner"+i);
+                if (cuenta==1){
+                    listaForma.add(modelForma);
+                    modelForma.ponerNombreForma(cursor1.getString(0));
+                    Log.e("farmaco",cursor1.getString(0)+" ---- "+cursor1.getString(1));
+                    arrayMedicamento.add(cursor1.getString(1));
+                }
+                else{
+                    int existe=0;
+                    for (int i7=0;i7<listaForma.size();i7++){
+                        if (listaForma.get(i7).dameNombreForma().trim().equals(cursor1.getString(0).trim())){
+                            existe=1;
+                        }
+                    }
+                    if (existe!=1){
+                        listaForma.add(modelForma);
+                        modelForma.ponerNombreForma(cursor1.getString(0));
+                        Log.e("farmaco",cursor1.getString(0)+" ---- "+cursor1.getString(1));
+                        arrayMedicamento.add(cursor1.getString(1));
+                    }
+                }
+                cuenta++;
+            }*/
+
+            /*adapterSpinnerForma = new AdapterSpinnerForma(activity,R.layout.item_forma,listaForma,getResources());
+
+            spinnerForma.setAdapter(adapterSpinnerForma);
+            adapterSpinnerForma.setNotifyOnChange(true);
+            spinnerConcentracion.setAdapter(adapterSpinnerConcentracion);
+
+            String cero=arrayMedicamento.get(0);
+            if (cero.contains("*//*")){
+                String[] pedazos=cero.split("\\\\//\\\\");
+                if (pedazos.length>0){
+
+                    for (int iP=0;iP<pedazos.length;iP++){
+                        Log.e("presentacion"+iP,pedazos[iP]);
+                        final SpinnerModelConcentracion modelConcentracion = new SpinnerModelConcentracion();
+                        //sched2.ponerImagen("spinner"+i);
+                        listaConcentracion.add(modelConcentracion);
+                        modelConcentracion.ponerNombreConcentracion(pedazos[iP].trim());
+                    }
+                }
+            }
+            else {
+                Log.e("presentacion1---",cero);
+                final SpinnerModelConcentracion modelConcentracion = new SpinnerModelConcentracion();
+                //sched2.ponerImagen("spinner"+i);
+                listaConcentracion.add(modelConcentracion);
+                modelConcentracion.ponerNombreConcentracion(cero.trim());
+            }*/
+
+            /*adapterSpinnerConcentracion = new AdapterSpinnerConcentracion(activity,R.layout.item_concentracion,listaConcentracion,getResources());
+            adapterSpinnerConcentracion.setNotifyOnChange(true);
+            spinnerConcentracion.setAdapter(adapterSpinnerConcentracion);*/
+
+            Log.e("farmaco",cuenta+" -- ");
+        }catch (Exception e){
+            Log.e("farmaco","no existe");
+        }
+    }
     public void setListaGiro()
     {
         listaGiro.clear();
@@ -1219,6 +1299,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         listaInstrumen.clear();
         String coy[] = {"", "M=Mecanica","E=Electronica",
                 "EM=Electromecanica"};
+
         for (int i=0; i<coy.length;i++)
         {
             final SpinnerModel sched = new SpinnerModel();
@@ -1226,6 +1307,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             //sched.ponerImagen("spinner"+i);
             sched.ponerImagen("spi_"+i);
             listaInstrumen.add(sched);
+
         }
     }
     private void quitar_foco()
