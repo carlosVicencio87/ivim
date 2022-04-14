@@ -28,6 +28,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,6 +41,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -68,6 +72,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -149,14 +154,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public CoordinateConverter convertidor;
     public GeodeticPoint punto = new GeodeticPoint(latitud, longitud, altitud);
 
-    private AutoCompleteTextView automarca;
+    private MultiAutoCompleteTextView automarca;
 
-    private static final String[] BASCULAS = new String[]{
-                "Afghanistan", "Albania", "Algeria", "Andorra", "Angola"};
 
    private  JSONArray json_datos_bascula;
    private static String SERVIDOR_CONTROLADOR;
+   private   SQLiteDatabase database,database2;
     private Conexion conexion1,conexion2;
+    private Cursor cursor1,cursor2;
+    private ArrayList<String>BASCULAS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +227,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         listaEod=new ArrayList<>();
         setListaEod();
+        BASCULAS=new ArrayList<>();
 
         listaMinimo=new ArrayList<>();
         setListaMinimo();
@@ -326,8 +334,58 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-        ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, BASCULAS);
+        ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,BASCULAS);
         automarca.setAdapter(adaptador);
+        automarca.setTokenizer(new MultiAutoCompleteTextView.Tokenizer() {
+            public int findTokenStart(CharSequence text, int cursor) {
+                int i = cursor;
+
+                while (i > 0 && text.charAt(i - 1) != ' ') {
+                    i--;
+                }
+                while (i < cursor && text.charAt(i) == ' ') {
+                    i++;
+                }
+
+                return i;
+            }
+
+            public int findTokenEnd(CharSequence text, int cursor) {
+                int i = cursor;
+                int len = text.length();
+
+                while (i < len) {
+                    if (text.charAt(i) == ' ') {
+                        return i;
+                    } else {
+                        i++;
+                    }
+                }
+
+                return len;
+            }
+
+            public CharSequence terminateToken(CharSequence text) {
+                int i = text.length();
+
+                while (i > 0 && text.charAt(i - 1) == ' ') {
+                    i--;
+                }
+
+                if (i > 0 && text.charAt(i - 1) == ' ') {
+                    return text;
+                } else {
+                    if (text instanceof Spanned) {
+                        SpannableString sp = new SpannableString(text + " ");
+                        TextUtils.copySpansFrom((Spanned) text, 0, text.length(),
+                                Object.class, sp, 0);
+                        return sp;
+                    } else {
+                        return text + " ";
+                    }
+                }
+            }
+        });
 
 
         final int permisoLocacion = ContextCompat.checkSelfPermission(Mapa.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -346,6 +404,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 formulario_principal.setVisibility(View.VISIBLE);
+                consultarFormaMedicamento();
                 mapaid.setVisibility(View.GONE);
                 caja_punto_partida.setVisibility(View.GONE);
 
@@ -965,7 +1024,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         } else {
             Log.e("distancia2", "" + distancias);
             Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
-            consultarFormaMedicamento();
+
         }
 
     }
@@ -1180,80 +1239,39 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
     private void consultarFormaMedicamento(){
         conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
-        SQLiteDatabase database=conexion1.getReadableDatabase();
+        database=conexion1.getReadableDatabase();
+        conexion2=new Conexion(getApplicationContext(),"basculas",null,1);
+        database2=conexion2.getReadableDatabase();
 
 
 
         try {
-            Cursor cursor1= database.rawQuery("SELECT tipo FROM catalogo  ",null);
-           // Log.e("tipos",""+cursor1);
-
-
+            cursor1= database.rawQuery("SELECT alcance_maximo,eod,tipo,alcance_minimo,alcance_medicion,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo  ",null);
+            // Log.e("tipos",""+cursor1);
             int cuenta =cursor1.getCount();
             Log.e("catalogo",""+cuenta);
-
-
-            /*while (cursor1.moveToNext()){
-                final SpinnerModelForma modelForma = new SpinnerModelForma();
-                //sched2.ponerImagen("spinner"+i);
-                if (cuenta==1){
-                    listaForma.add(modelForma);
-                    modelForma.ponerNombreForma(cursor1.getString(0));
-                    Log.e("farmaco",cursor1.getString(0)+" ---- "+cursor1.getString(1));
-                    arrayMedicamento.add(cursor1.getString(1));
-                }
-                else{
-                    int existe=0;
-                    for (int i7=0;i7<listaForma.size();i7++){
-                        if (listaForma.get(i7).dameNombreForma().trim().equals(cursor1.getString(0).trim())){
-                            existe=1;
-                        }
-                    }
-                    if (existe!=1){
-                        listaForma.add(modelForma);
-                        modelForma.ponerNombreForma(cursor1.getString(0));
-                        Log.e("farmaco",cursor1.getString(0)+" ---- "+cursor1.getString(1));
-                        arrayMedicamento.add(cursor1.getString(1));
-                    }
-                }
-                cuenta++;
-            }*/
-
-            /*adapterSpinnerForma = new AdapterSpinnerForma(activity,R.layout.item_forma,listaForma,getResources());
-
-            spinnerForma.setAdapter(adapterSpinnerForma);
-            adapterSpinnerForma.setNotifyOnChange(true);
-            spinnerConcentracion.setAdapter(adapterSpinnerConcentracion);
-
-            String cero=arrayMedicamento.get(0);
-            if (cero.contains("*//*")){
-                String[] pedazos=cero.split("\\\\//\\\\");
-                if (pedazos.length>0){
-
-                    for (int iP=0;iP<pedazos.length;iP++){
-                        Log.e("presentacion"+iP,pedazos[iP]);
-                        final SpinnerModelConcentracion modelConcentracion = new SpinnerModelConcentracion();
-                        //sched2.ponerImagen("spinner"+i);
-                        listaConcentracion.add(modelConcentracion);
-                        modelConcentracion.ponerNombreConcentracion(pedazos[iP].trim());
-                    }
-                }
+            while (cursor1.moveToNext()){
+                Log.e("*",cursor1.getString(0));
+                Log.e("horario",cursor1.getString(1));
             }
-            else {
-                Log.e("presentacion1---",cero);
-                final SpinnerModelConcentracion modelConcentracion = new SpinnerModelConcentracion();
-                //sched2.ponerImagen("spinner"+i);
-                listaConcentracion.add(modelConcentracion);
-                modelConcentracion.ponerNombreConcentracion(cero.trim());
-            }*/
-
-            /*adapterSpinnerConcentracion = new AdapterSpinnerConcentracion(activity,R.layout.item_concentracion,listaConcentracion,getResources());
-            adapterSpinnerConcentracion.setNotifyOnChange(true);
-            spinnerConcentracion.setAdapter(adapterSpinnerConcentracion);*/
-
-            Log.e("farmaco",cuenta+" -- ");
+            Log.e("horario",cuenta+" -- ");
+            }catch (Exception e){
+            Log.e("catalogo","no existe");
+            }
+        try {
+             cursor2= database2.rawQuery("SELECT marca,modelo,numero_aprobacion,codigo_marca,codigo_modelo,ano_aprobacion,alcance_minimo,alcance_maximo FROM basculas  ",null);
+            // Log.e("tipos",""+cursor1);
+            int cuenta =cursor2.getCount();
+            Log.e("basculas",""+cuenta);
+            while (cursor2.moveToNext()){
+                Log.e("marca",cursor2.getString(0));
+                Log.e("modelo",cursor2.getString(1));
+                 BASCULAS.add(cursor2.getString(0));
+                //Log.e("lista_basculas",""+BASCULAS);
+            }
+            Log.e("lista_basculas",""+BASCULAS);
         }catch (Exception e){
-            Log.e("farmaco","no existe");
+            Log.e("basculas","no existe");
         }
     }
     public void setListaGiro()
@@ -1400,6 +1418,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
 
+    }
+    private void limpiarAcentos(String cadena){
+        String limpia=cadena.replace("á","a");
+        limpia=limpia.replace("é","e");
+        limpia=limpia.replace("í","i");
+        limpia=limpia.replace("ó","o");
+        limpia=limpia.replace("ú","u");
+
+        Log.e("busqueda",limpia);
+
+        automarca.setText(limpia);
     }
 
 

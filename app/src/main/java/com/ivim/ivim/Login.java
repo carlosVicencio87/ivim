@@ -210,7 +210,7 @@ public class Login extends AppCompatActivity {
                                     String strApellido_2=jsonObject.getString("apellido_2");
                                     String strTelefono=jsonObject.getString("telefono");
                                     String strCorreo=jsonObject.getString("correo");
-                                    String strContrasena=jsonObject.getString("contra");
+                                    String strContrasena=jsonObject.getString("contrasena");
                                     String strActivo = jsonObject.getString("activo");
                                     String strId_sesion=jsonObject.getString("id_sesion");
                                     String strFecha_registro = jsonObject.getString("fecha_de_ingreso");
@@ -282,7 +282,7 @@ public class Login extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("correo",valCorreo);
-                map.put("contra",valContra);
+                map.put("contrasena",valContra);
                 return map;
             }
         };

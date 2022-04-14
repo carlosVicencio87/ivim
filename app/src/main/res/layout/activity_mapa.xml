@@ -722,7 +722,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:id="@+id/caja_auto_marca">
-            <AutoCompleteTextView
+            <MultiAutoCompleteTextView
                 android:id="@+id/automarca"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
