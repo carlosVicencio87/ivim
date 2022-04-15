@@ -159,9 +159,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
    private  JSONArray json_datos_bascula;
    private static String SERVIDOR_CONTROLADOR;
-   private   SQLiteDatabase database,database2;
-    private Conexion conexion1,conexion2;
-    private Cursor cursor1,cursor2;
+   private   SQLiteDatabase database,database2,database3;
+    private Conexion conexion1,conexion2,conexion3;
+    private Cursor cursor1,cursor2,cursor3;
     private ArrayList<String>BASCULAS;
 
 
@@ -220,7 +220,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         listaCantidadBasc = new ArrayList<>();
         setListaCantidadBasc();
         listaModelo = new ArrayList<>();
-        setListaModelo();
 
         listaAlcance = new ArrayList<>();
         setListaAlcance();
@@ -533,8 +532,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         adapterMarcaBasculas = new AdapterMarcaBasculas(activity, R.layout.item, listaMarca, getResources());
         recycler_marca.setAdapter(adapterMarcaBasculas);
 
-        adapterModeloBasculas = new AdapterModeloBasculas(activity, R.layout.item2, listaModelo, getResources());
-        recycler_modelo.setAdapter(adapterModeloBasculas);
+
 
         adapterAlcanceMax = new AdapterAlcanceMax(activity, R.layout.item3, listaAlcance, getResources());
         recycler_alcance.setAdapter(adapterAlcanceMax);
@@ -769,9 +767,30 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         guardar_marca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                conexion3=new Conexion(getApplicationContext(),"basculas",null,1);
+                database3=conexion3.getReadableDatabase();
                 nueva_marca = automarca.getText().toString();
                 marca_basc.setText(nueva_marca);
+                try {
+                    String[] parametros = {nueva_marca.trim()};
+                    Log.e("nueva_marca",""+nueva_marca);
+                    cursor3= database3.rawQuery("SELECT DISTINCT marca,modelo FROM basculas WHERE marca=?",parametros);
+                    Log.e("marca",""+cursor3);
+
+                    int cuenta =cursor3.getCount();
+                    Log.e("modelo_cuenta",""+cuenta);
+                    listaModelo.clear();
+                    while (cursor3.moveToNext()){
+                        Log.e("modelo",cursor3.getString(1));
+                        listaModelo.add(new ModeloRecycler(cursor3.getString(1)));
+
+                        //Log.e("lista_basculas",""+BASCULAS);
+                    }
+                    setListaModelo();
+                    Log.e("lista_basculas",""+cursor2);
+                }catch (Exception e){
+                    Log.e("basculas","no existe");
+                }
                 if (!nueva_marca.trim().equals("")) {
                     caja_auto_marca.setVisibility(View.GONE);
                     caja_marca_final.setVisibility(View.VISIBLE);
@@ -1007,8 +1026,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3411523);
-        punto_mercado.setLongitude(-99.103033);
+        punto_mercado.setLatitude(19.3506611);
+        punto_mercado.setLongitude(-99.0864875);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -1259,14 +1278,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Log.e("catalogo","no existe");
             }
         try {
-             cursor2= database2.rawQuery("SELECT marca,modelo,numero_aprobacion,codigo_marca,codigo_modelo,ano_aprobacion,alcance_minimo,alcance_maximo FROM basculas  ",null);
+             cursor2= database2.rawQuery("SELECT DISTINCT marca FROM basculas  ",null);
             // Log.e("tipos",""+cursor1);
             int cuenta =cursor2.getCount();
             Log.e("basculas",""+cuenta);
             while (cursor2.moveToNext()){
                 Log.e("marca",cursor2.getString(0));
-                Log.e("modelo",cursor2.getString(1));
-                 BASCULAS.add(cursor2.getString(0));
+                BASCULAS.add(cursor2.getString(0));
                 //Log.e("lista_basculas",""+BASCULAS);
             }
             Log.e("lista_basculas",""+BASCULAS);
@@ -1323,9 +1341,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             final SpinnerModel sched = new SpinnerModel();
             sched.ponerNombre(coy[i]);
             //sched.ponerImagen("spinner"+i);
-            sched.ponerImagen("spi_"+i);
+            //sched.ponerImagen("spi_"+i);
             listaInstrumen.add(sched);
-
+ 
         }
     }
     private void quitar_foco()
@@ -1351,20 +1369,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     public void setListaModelo()
     {
-        listaModelo.clear();
-        String coy[] = {"WS100","WS80",
-                "CS500","CS2000","CS200","TR30RS","ESW-5M",};
-        for (int i=0; i<coy.length;i++)
-        {
-            ModeloRecycler modeloRecycler = new ModeloRecycler(coy[i]);
-
-            selector_modelo= modeloRecycler.getModelo_bascula();
-
-            listaModelo.add(modeloRecycler);
-            Log.e("tipomodel",""+selector_modelo);
-
-
-        }
+        adapterModeloBasculas = new AdapterModeloBasculas(activity, R.layout.item2, listaModelo, getResources());
+        recycler_modelo.setAdapter(adapterModeloBasculas);
     }
     public void setListaAlcance()
     {
