@@ -902,15 +902,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_alcance">
-                <androidx.recyclerview.widget.RecyclerView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/recycler_alcance"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_marginVertical="11dp"
+                    android:gravity="center"/>
 
 
             </LinearLayout>
@@ -933,11 +934,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_eod">
-                <androidx.recyclerview.widget.RecyclerView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/recycler_eod"
@@ -962,15 +963,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_minimo">
-                <androidx.recyclerview.widget.RecyclerView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/recycler_minimo"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_marginVertical="11dp"
+                    android:gravity="center"/>
             </LinearLayout>
 
 

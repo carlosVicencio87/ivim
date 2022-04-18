@@ -66,7 +66,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
                 holder.marco.setBackgroundResource(R.color.negro);
                 holder.model_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
 
-
+                ((Mapa)context).definirAlcance(modelo);
 
                 anterior=holder;
 

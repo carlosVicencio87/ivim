@@ -112,14 +112,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, numero_serie,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,marca_basc,listas_intrusmento,listas_exactitud,
-            listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula;
+            listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula,recycler_alcance,
+            recycler_minimo,recycler_eod;
     private EditText nombre_texto, fecha, tel_texto, serie_texto,costo_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_serie, cambiar_serie,
             guardar_costo,cambiar_costo,guardar_marca,cambiar_marca,guardar_fecha,cambiar_fecha;
     private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
-    private RecyclerView recycler_marca, recycler_modelo, recycler_alcance,recycler_eod,
-            recycler_minimo,recycler_numero_basc;
+    private RecyclerView recycler_marca, recycler_modelo,recycler_numero_basc;
     private Boolean tel10;
     private ScrollView formulario_principal, formulario_bascula,almacen_basculas;
     private Spinner giros, mercado, tipoInstrumento,ClaseExactitud;
@@ -135,15 +135,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public ArrayList<SpinnerModel> listaInstrumen = new ArrayList<>();
     private AdapterMarcaBasculas adapterMarcaBasculas;
     private AdapterModeloBasculas adapterModeloBasculas;
-    private AdapterAlcanceMax adapterAlcanceMax;
-    private AdapterEoD adapterEoD;
-    private AdapterAlcanceMinimo adapterAlcanceMinimo;
+
+
     private AdapterCantidadBasculas adapterCantidadBasculas;
-    private ArrayList<AlcanceRecycler> listaAlcance;
+
     private ArrayList<ModeloRecycler> listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
-    private ArrayList<EodRecycler>listaEod;
-    private ArrayList<AlcanceMinRecycler>listaMinimo;
+
+
     private ArrayList<CantidadBasculasRecycler>listaCantidadBasc;
     private Context context;
     public final static int WGS84 = 0;
@@ -159,9 +158,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
    private  JSONArray json_datos_bascula;
    private static String SERVIDOR_CONTROLADOR;
-   private   SQLiteDatabase database,database2,database3;
-    private Conexion conexion1,conexion2,conexion3;
-    private Cursor cursor1,cursor2,cursor3;
+   private   SQLiteDatabase database,database2,database3,database4;
+    private Conexion conexion1,conexion2,conexion3,conexion4;
+    private Cursor cursor1,cursor2,cursor3,cursor4;
     private ArrayList<String>BASCULAS;
 
 
@@ -220,16 +219,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         listaCantidadBasc = new ArrayList<>();
         setListaCantidadBasc();
         listaModelo = new ArrayList<>();
-
-        listaAlcance = new ArrayList<>();
-        setListaAlcance();
-
-        listaEod=new ArrayList<>();
-        setListaEod();
         BASCULAS=new ArrayList<>();
 
-        listaMinimo=new ArrayList<>();
-        setListaMinimo();
+
         caja_siguiente_tab = findViewById(R.id.caja_siguiente_tab);
         regresar_map = findViewById(R.id.regresar_map);
         siguiente_tab = findViewById(R.id.siguiente_tab);
@@ -239,12 +231,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         recyclerMarca.setLayoutManager(new LinearLayoutManager(context));
         recyclerModelo = findViewById(R.id.recycler_modelo);
         recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
-        recyclerAlcance = findViewById(R.id.recycler_alcance);
-        recyclerAlcance.setLayoutManager(new LinearLayoutManager(context));
-        recyclerEod=findViewById(R.id.recycler_eod);
-        recyclerEod.setLayoutManager(new LinearLayoutManager(context));
-        recyclerMinimo=findViewById(R.id.recycler_minimo);
-        recyclerMinimo.setLayoutManager(new LinearLayoutManager(context));
+
+
         recyclerCantidad=findViewById(R.id.recycler_numero_basc);
         recyclerCantidad.setLayoutManager(new LinearLayoutManager(context));
 
@@ -534,14 +522,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-        adapterAlcanceMax = new AdapterAlcanceMax(activity, R.layout.item3, listaAlcance, getResources());
-        recycler_alcance.setAdapter(adapterAlcanceMax);
 
-        adapterEoD = new AdapterEoD(activity, R.layout.item4, listaEod, getResources());
-        recycler_eod.setAdapter(adapterEoD);
 
-        adapterAlcanceMinimo = new AdapterAlcanceMinimo(activity, R.layout.item5, listaMinimo, getResources());
-        recycler_minimo.setAdapter(adapterAlcanceMinimo);
+
+
 
         adapterClaseExactitud = new AdapterClaseExactitud(activity, R.layout.lista_clase_exactitud, listaClase, getResources());
         ClaseExactitud.setAdapter(adapterClaseExactitud);
@@ -764,6 +748,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         guardar_marca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -819,6 +804,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 seleccion_exactitud = listas_exactitud.getText().toString();
                 Log.e("tipoexactitud", "" + seleccion_exactitud);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -981,9 +967,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 serie_texto.setText("");
                 caja_serie_final.setVisibility(View.GONE);
                 caja_edit_serie.setVisibility(View.VISIBLE);
-                recycler_alcance.setAdapter(adapterAlcanceMax);
-                recycler_eod.setAdapter(adapterEoD);
-                recycler_minimo.setAdapter(adapterAlcanceMinimo);
+                recycler_alcance.setText("");
+                //recycler_eod.setAdapter(adapterEoD);
+                recycler_minimo.setText("");
                 ClaseExactitud.setSelection(0);
                 valorCheckbox="";
                 costo_texto.setText("");
@@ -1257,8 +1243,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
     }
     private void consultarFormaMedicamento(){
-        conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
-        database=conexion1.getReadableDatabase();
+
         conexion2=new Conexion(getApplicationContext(),"basculas",null,1);
         database2=conexion2.getReadableDatabase();
 
@@ -1372,37 +1357,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         adapterModeloBasculas = new AdapterModeloBasculas(activity, R.layout.item2, listaModelo, getResources());
         recycler_modelo.setAdapter(adapterModeloBasculas);
     }
-    public void setListaAlcance()
-    {
-        listaAlcance.clear();
-        String coy[] = {"8/10","10/20",
-                "5/10","40/20","50/100","100/200","150/1000",};
-        for (int i=0; i<coy.length;i++)
-        {
-            listaAlcance.add(new AlcanceRecycler(coy[i]));
-        }
-    }
-    public void setListaEod()
-    {
-        listaEod.clear();
-        String coy[] = {"1/10","2/20",
-                "3/10","4/10","5/10","10/10","15/10",};
-        for (int i=0; i<coy.length;i++)
-        {
 
-            listaEod.add(new EodRecycler(coy[i]));
-        }
-    }
-    public void setListaMinimo()
-    {
-        listaMinimo.clear();
-        String coy[] = {"10","20",
-                "30","40","50","60","100","200"};
-        for (int i=0; i<coy.length;i++)
-        {
-            listaMinimo.add(new AlcanceMinRecycler(coy[i]));
-        }
-    }
+
+
     public void setListaClase()
     {
         listaClase.clear();
@@ -1435,6 +1392,52 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         Log.e("busqueda",limpia);
 
         automarca.setText(limpia);
+    }
+
+    public void definirAlcance(String modelo){
+        conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
+        database=conexion1.getReadableDatabase();
+        conexion4=new Conexion(getApplicationContext(),"basculas",null,1);
+        database4=conexion4.getReadableDatabase();
+        marca_basc.setText(nueva_marca);
+
+        modelo.trim();
+        Log.e("MODELO_MAPA",""+modelo);
+        try {
+            String[] parametros = {modelo.trim()};
+            Log.e("parametros",""+modelo);
+            cursor4= database4.rawQuery("SELECT alcance_maximo,alcance_minimo,modelo FROM basculas WHERE modelo=?",parametros);
+            Log.e("alcance",""+cursor4);
+
+            int cuenta =cursor4.getCount();
+            Log.e("alcance_cuenta",""+cuenta);
+            //listaAlcance.clear();
+            while (cursor4.moveToNext()){
+                Log.e("alcance",cursor4.getString(0));
+                recycler_alcance.setText(cursor4.getString(0));
+                recycler_minimo.setText(cursor4.getString(1));
+                try {
+                    String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
+                    cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
+                     //Log.e("tipos",""+parametros2);
+                    int cuenta2 =cursor1.getCount();
+                    Log.e("catalogo",""+cuenta2);
+                    while (cursor1.moveToNext()){
+                        Log.e("1",cursor1.getString(0));
+                        Log.e("eod",cursor1.getString(1));
+                        recycler_eod.setText(cursor1.getString(2));
+                    }
+                    Log.e("eod",cuenta2+" -- ");
+                }catch (Exception e){
+                    Log.e("catalogo","no existe");
+                }
+            }
+
+            Log.e("LISTA_aLCANCE",""+cursor4);
+        }catch (Exception e){
+            Log.e("ALCANCE_MAX","no existe");
+        }
+
     }
 
 
