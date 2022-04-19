@@ -132,6 +132,81 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/caja_verificar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/blanco"
+            android:alpha="0.3">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/caja_verificar_numAprobacion"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="La bascula cuenta con numero de aprobacion?"
+                android:textColor="@color/negro"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/aprobacion_no"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="No"
+                android:textColor="@color/negro"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/aprobacion_si"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="Si"
+                android:textColor="@color/negro"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <ScrollView
         android:id="@+id/formulario_principal"
         android:layout_width="match_parent"
@@ -187,7 +262,7 @@
                         android:hint="@string/texto2"
                         android:inputType="number"
                         android:textSize="20dp"
-                        android:gravity="left|center"
+                        android:gravity="center"
                      />
                     <ImageView
                         android:id="@+id/guardar_fecha"
@@ -665,6 +740,7 @@
             android:orientation="vertical"
             android:background="@color/blanco">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -676,41 +752,7 @@
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="20dp"
-                    android:text="Tipo de instrumento"
-                    android:textColor="@color/negro"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/caja_instrumento"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_margin="10dp">
-                <Spinner
-                    android:id="@+id/tipoInstrumento"
-                    android:layout_width="300dp"
-                    android:layout_height="22dp"
-                    android:textSize="20dp"
-                    android:hint="@string/texto3"
-                    android:textColorHint="@color/negro"
-                    android:gravity="bottom"
-                    android:background="@color/blanco"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:orientation="vertical"
-                android:background="@color/blanco"
-                android:gravity="left">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:textSize="20dp"
-                    android:text="Marca"
+                    android:text="Numero de aprobacion"
                     android:textColor="@color/negro"
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
@@ -721,20 +763,20 @@
             android:background="@color/blanco"
             android:gravity="center"
             android:orientation="horizontal"
-            android:id="@+id/caja_auto_marca">
+            android:id="@+id/caja_auto_aproba">
             <MultiAutoCompleteTextView
-                android:id="@+id/automarca"
+                android:id="@+id/autoAprobacion"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
                 android:gravity="center"/>
             <ImageView
-                android:id="@+id/guardar_marca"
+                android:id="@+id/guardar_aprobacion"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="15dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/negro" />
+                android:background="@color/negro"/>
         </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -742,12 +784,12 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/caja_marca_final"
+                android:id="@+id/caja_aprobacion_final"
                 android:layout_margin="10dp"
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/marca_basc"
+                    android:id="@+id/aprobacion_basc"
                     android:layout_width="250dp"
                     android:layout_height="22dp"
                     android:background="@color/blanco"
@@ -762,24 +804,8 @@
                     android:background="@color/negro"
                     android:layout_margin="15dp"
                     android:layout_marginTop="30dp"
-                    android:id="@+id/cambiar_marca" />
+                    android:id="@+id/cambiar_aprobacion"/>
             </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@color/blanco"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/caja_recycler_marca"
-            android:visibility="gone">
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_marca"
-                android:layout_gravity="center"
-                android:layout_marginVertical="11dp"/>
-        </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -788,7 +814,87 @@
                 android:gravity="left">
                 <TextView
                     android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Marca:"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_recycler_marca"
+            android:visibility="visible">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_marca"
+                android:layout_gravity="center"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:layout_marginVertical="11dp"/>
 
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_snAprobacion_marca"
+                android:visibility="gone">
+                <EditText
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/marca_snAprobacion"
+
+                    />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/guardar_marca"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_snAprobacion_marca_final"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/marca_snAprobacion_final"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="11dp"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_marca"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="20dp"
@@ -801,9 +907,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="130dp"
                 android:background="@color/blanco"
-
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_modelo">
                 <androidx.recyclerview.widget.RecyclerView
@@ -813,75 +918,48 @@
                     android:layout_marginVertical="11dp"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:orientation="vertical"
-                android:background="@color/blanco"
-                android:gravity="left">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:textSize="20dp"
-                    android:text="Numero de Serie"
-                    android:textColor="@color/negro"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/caja_edit_serie"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/serie_texto"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:hint="@string/texto4"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:id="@+id/guardar_serie"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@color/negro" />
-            </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/blanco"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:id="@+id/caja_snAprobacion_modelo"
+            android:visibility="gone">
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="11dp"
+                android:layout_gravity="center"
+                android:id="@+id/modelo_snAprobacion"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@color/negro"
+                android:layout_margin="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/guardar_modelo"/>
+        </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/caja_serie_final"
-                android:layout_margin="10dp"
+                android:id="@+id/caja_snAprobacion_modelo_final"
                 android:visibility="gone">
-
                 <TextView
-                    android:id="@+id/numero_serie"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:text="numero de serie"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/modelo_snAprobacion_final"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="11dp"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:background="@color/negro"
                     android:layout_margin="15dp"
                     android:layout_marginTop="30dp"
-                    android:id="@+id/cambiar_serie" />
+                    android:id="@+id/cambiar_modelo"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -899,7 +977,6 @@
                     android:layout_height="25dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -912,9 +989,252 @@
                     android:id="@+id/recycler_alcance"
                     android:layout_marginVertical="11dp"
                     android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_alcanceSnaprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/alcanceSnAprobacion_texto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_alcance_snAprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_alcanceSnaprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/alcanceSnAprobacion"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_alcance_snAprobacion"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Alcance minimo (g)"
+                    android:textColor="@color/negro"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="20dp"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:orientation="horizontal"
+                android:id="@+id/caja_recycler_minimo">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycler_minimo"
+                    android:layout_marginVertical="11dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_alcanceMinSnaprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/alcanceMinSnAprobacion_texto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_alcanceMin_snAprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_alcanceSMinnaprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/alcanceMinSnAprobacion"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_alcanceMin_snAprobacion"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Codigo de marca:"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_codigo_marca"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/codigo_marca"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_marginVertical="11dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Codigo de modelo:"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_codigo_modelo"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/codigo_modelo"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_marginVertical="11dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Ano de aprobacion:"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_ano_aprobacion"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ano_aprobacion"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_marginVertical="11dp"/>
+            </LinearLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -942,7 +1262,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/recycler_eod"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_marginVertical="11dp"
+                    android:gravity="center"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -955,24 +1276,28 @@
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="20dp"
-                    android:text="Alcance minimo (g)"
+                    android:text="Tipo de instrumento"
                     android:textColor="@color/negro"
-                    android:layout_height="25dp"
+                    android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
-
             <LinearLayout
+                android:id="@+id/caja_instrumento"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="35dp"
                 android:background="@color/blanco"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/caja_recycler_minimo">
+                android:layout_margin="10dp">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/recycler_minimo"
-                    android:layout_marginVertical="11dp"
-                    android:gravity="center"/>
+                    android:id="@+id/tipoInstrumento"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
             </LinearLayout>
 
 
@@ -1000,14 +1325,218 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:layout_margin="10dp">
-                <Spinner
-                    android:id="@+id/ClaseExactitud"
+                <TextView
+                    android:id="@+id/claseExactitud"
                     android:layout_width="300dp"
                     android:layout_height="22dp"
                     android:textSize="20dp"
                     android:hint="@string/texto3"
                     android:textColorHint="@color/negro"
-                    android:gravity="bottom"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Marco de pesas"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_marco_pesas"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/marco_pesas"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Pesa de 5 kg"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_pesa5k"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/pesas_5kg"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Pesa de 10 kg"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_pesa10k"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/pesas_10kg"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Pesa de 20 kg"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_pesa20k"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/pesas_20kg"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Pesas clase de exactitud"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_pesa_clase_exactitud"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/pesa_clase_exactitud"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Horario"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_horario"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/horario"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
                     android:background="@color/blanco"/>
             </LinearLayout>
             <LinearLayout
