@@ -166,7 +166,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="22dp"
+                android:layout_height="70dp"
                 android:layout_marginRight="20dp"
                 android:gravity="center"
                 android:text="La bascula cuenta con numero de aprobacion?"
@@ -1164,7 +1164,61 @@
                     android:textSize="20dp"
                     android:gravity="center"
                     android:layout_marginVertical="11dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_Codigomarca_Snaprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/Codigomarca_Snaprobacion_texto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_Codigomarca_Snaprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_Codigomarca_Snaprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/CodigomarcaSnaprobacion"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_Codigomarca_Snaprobacion"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1198,7 +1252,61 @@
                     android:textSize="20dp"
                     android:gravity="center"
                     android:layout_marginVertical="11dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_CodigomaModelo_Snaprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/CodigomaModelo_Snaprobacion_texto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_CodigomaModelo_Snaprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_CodigomaModelo_Snaprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/CodigomaModeloSnaprobacion"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_CodigomaModelo_Snaprobacion"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1233,7 +1341,61 @@
                     android:gravity="center"
                     android:layout_marginVertical="11dp"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_ano_Snaprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
+                <EditText
+                    android:id="@+id/ano_Snaprobacion_texto"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="11dp"
+                    android:layout_gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:inputType="number"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/guardar_ano_Snaprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_ano_Snaprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/anoSnaprobacion"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="numero de serie"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_ano_Snaprobacion"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

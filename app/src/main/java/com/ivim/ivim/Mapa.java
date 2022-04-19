@@ -80,7 +80,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_zona,caja_instrumento, caja_alcanceSnaprobacion, caja_alcanceSnaprobacion_final, caja_recycler_alcance,caja_snAprobacion_marca,
             caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
             caja_auto_aproba,caja_aprobacion_final,caja_recycler_basculas,caja_codigo_marca,caja_codigo_modelo,caja_ano_aprobacion,
-            caja_costo_final,caja_edit_fecha,caja_fecha_final,caja_marco_pesas,caja_pesa5k,caja_pesa10k,caja_pesa20k,caja_pesa_clase_exactitud,caja_horario,caja_alcanceMinSnaprobacion,caja_alcanceSMinnaprobacion_final,caja_snAprobacion_modelo;
+            caja_costo_final,caja_edit_fecha,caja_fecha_final,caja_marco_pesas,caja_pesa5k,caja_pesa10k,caja_pesa20k,caja_pesa_clase_exactitud,
+            caja_horario,caja_snAprobacion_marca_final,caja_alcanceMinSnaprobacion,caja_alcanceSMinnaprobacion_final,caja_snAprobacion_modelo,
+            caja_snAprobacion_modelo_final,caja_Codigomarca_Snaprobacion_final,caja_Codigomarca_Snaprobacion,
+            caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final;
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
@@ -92,16 +95,24 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
-            seleccion_exactitud,nueva_aprobacion,valorCheckbox,fecha_final_Str,tipo_intrumento,valcatalogo,nueva_marca;
+            seleccion_exactitud,nueva_aprobacion,valorCheckbox,fecha_final_Str,tipo_intrumento,valcatalogo,nueva_marca,
+            nueva_modelo,nueva_alcanceMax,nueva_alcanceMin,nueva_codigoMarca,nueva_codigoModelo,nueva_anoSnapro;
     private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
             longitud_y, zona, alcanceSnAprobacion,costo,regresar_map, siguiente_tab,regresar_formulario,
             agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,aprobacion_basc,listas_intrusmento,listas_exactitud,
             listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula,recycler_alcance,recycler_marca,
-            recycler_minimo,recycler_eod,tipoInstrumento, claseExactitud,marco_pesas,pesas_5kg,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,aprobacion_no,aprobacion_si;
-    private EditText nombre_texto, fecha, tel_texto, alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto;
+            recycler_minimo,recycler_eod,tipoInstrumento, claseExactitud,marco_pesas,pesas_5kg,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,
+            ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,
+            CodigomarcaSnaprobacion,CodigomaModeloSnaprobacion,anoSnaprobacion;
+
+    private EditText nombre_texto, fecha, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
+            modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,ano_Snaprobacion_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono, guardar_alcance_snAprobacion, cambiar_alcance_snAprobacion,
-            guardar_costo,cambiar_costo,guardar_aprobacion,cambiar_aprobacion,guardar_fecha,cambiar_fecha,guardar_alcanceMin_snAprobacion,cambiar_alcanceMin_snAprobacion;
+            guardar_costo,cambiar_costo,guardar_aprobacion,cambiar_aprobacion,guardar_fecha,cambiar_fecha,
+            guardar_alcanceMin_snAprobacion,cambiar_alcanceMin_snAprobacion,guardar_marca,cambiar_marca,
+            guardar_modelo,cambiar_modelo,cambiar_Codigomarca_Snaprobacion,guardar_Codigomarca_Snaprobacion,
+            guardar_CodigomaModelo_Snaprobacion,cambiar_CodigomaModelo_Snaprobacion,guardar_ano_Snaprobacion,cambiar_ano_Snaprobacion;
     private CheckBox inicial, anual, primerSemestre, segundoSemestre, extraordinaria;
     private RecyclerView  recycler_modelo,recycler_numero_basc;
     private Boolean tel10;
@@ -286,7 +297,43 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_horario = findViewById(R.id.caja_horario);
         horario = findViewById(R.id.horario);
         caja_snAprobacion_marca = findViewById(R.id.caja_snAprobacion_marca);
+        guardar_marca = findViewById(R.id.guardar_marca);
+        marca_snAprobacion = findViewById(R.id.marca_snAprobacion);
+        caja_snAprobacion_marca_final = findViewById(R.id.caja_snAprobacion_marca_final);
+        cambiar_marca = findViewById(R.id.cambiar_marca);
+        modelo_snAprobacion = findViewById(R.id.modelo_snAprobacion);
+        modelo_snAprobacion_final = findViewById(R.id.modelo_snAprobacion_final);
+        caja_snAprobacion_modelo_final = findViewById(R.id.caja_snAprobacion_modelo_final);
+        guardar_modelo = findViewById(R.id.guardar_modelo);
+        cambiar_modelo = findViewById(R.id.cambiar_modelo);
+        cambiar_Codigomarca_Snaprobacion = findViewById(R.id.cambiar_Codigomarca_Snaprobacion);
+        caja_Codigomarca_Snaprobacion_final = findViewById(R.id.caja_Codigomarca_Snaprobacion_final);
+        CodigomarcaSnaprobacion = findViewById(R.id.CodigomarcaSnaprobacion);
+        guardar_Codigomarca_Snaprobacion = findViewById(R.id.guardar_Codigomarca_Snaprobacion);
+        Codigomarca_Snaprobacion_texto = findViewById(R.id.Codigomarca_Snaprobacion_texto);
+        caja_Codigomarca_Snaprobacion = findViewById(R.id.caja_Codigomarca_Snaprobacion);
+
+
+        caja_CodigomaModelo_Snaprobacion = findViewById(R.id.caja_CodigomaModelo_Snaprobacion);
+        CodigomaModelo_Snaprobacion_texto = findViewById(R.id.CodigomaModelo_Snaprobacion_texto);
+        guardar_CodigomaModelo_Snaprobacion = findViewById(R.id.guardar_CodigomaModelo_Snaprobacion);
+        caja_CodigomaModelo_Snaprobacion_final = findViewById(R.id.caja_CodigomaModelo_Snaprobacion_final);
+        CodigomaModeloSnaprobacion = findViewById(R.id.CodigomaModeloSnaprobacion);
+        cambiar_CodigomaModelo_Snaprobacion = findViewById(R.id.cambiar_CodigomaModelo_Snaprobacion);
+
+
+        caja_ano_Snaprobacion = findViewById(R.id.caja_ano_Snaprobacion);
+        ano_Snaprobacion_texto = findViewById(R.id.ano_Snaprobacion_texto);
+        guardar_ano_Snaprobacion = findViewById(R.id.guardar_ano_Snaprobacion);
+        caja_ano_Snaprobacion_final = findViewById(R.id.caja_ano_Snaprobacion_final);
+        anoSnaprobacion = findViewById(R.id.anoSnaprobacion);
+        cambiar_ano_Snaprobacion = findViewById(R.id.cambiar_ano_Snaprobacion);
+
+
+
+
         caja_snAprobacion_modelo = findViewById(R.id.caja_snAprobacion_modelo);
+        marca_snAprobacion_final = findViewById(R.id.marca_snAprobacion_final);
         caja_alcanceMinSnaprobacion = findViewById(R.id.caja_alcanceMinSnaprobacion);
         alcanceMinSnAprobacion_texto = findViewById(R.id.alcanceMinSnAprobacion_texto);
         guardar_alcanceMin_snAprobacion = findViewById(R.id.guardar_alcanceMin_snAprobacion);
@@ -744,6 +791,21 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 formulario_bascula.setVisibility(View.VISIBLE);
                 caja_verificar.setVisibility(view.GONE);
+                caja_snAprobacion_marca.setVisibility(View.GONE);
+                caja_recycler_marca.setVisibility(View.VISIBLE);
+                caja_snAprobacion_modelo.setVisibility(View.GONE);
+                caja_recycler_modelo.setVisibility(View.VISIBLE);
+                caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                caja_recycler_alcance.setVisibility(View.VISIBLE);
+                caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
+                caja_recycler_minimo.setVisibility(View.VISIBLE);
+                caja_Codigomarca_Snaprobacion.setVisibility(View.GONE);
+                caja_codigo_marca.setVisibility(View.VISIBLE);
+                caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);
+                caja_codigo_modelo.setVisibility(View.VISIBLE);
+
+                caja_ano_Snaprobacion.setVisibility(View.GONE);
+                caja_ano_aprobacion.setVisibility(View.VISIBLE);
             }
         });
         aprobacion_no.setOnClickListener(new View.OnClickListener() {
@@ -759,6 +821,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                 caja_recycler_minimo.setVisibility(View.GONE);
                 caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
+                caja_codigo_marca.setVisibility(View.GONE);
+                caja_Codigomarca_Snaprobacion.setVisibility(View.VISIBLE);
+                caja_codigo_modelo.setVisibility(View.GONE);
+                caja_CodigomaModelo_Snaprobacion.setVisibility(View.VISIBLE);
+                caja_ano_aprobacion.setVisibility(View.GONE);
+                caja_ano_Snaprobacion.setVisibility(View.VISIBLE);
 
             }
         });
@@ -768,8 +836,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 conexion3=new Conexion(getApplicationContext(),"basculas",null,1);
                 database3=conexion3.getReadableDatabase();
                 nueva_aprobacion = autoAprobacion.getText().toString();
-
                 aprobacion_basc.setText(nueva_aprobacion);
+
+
                 try {
                     String[] parametros = {nueva_aprobacion.trim()};
                     Log.e("nueva_aprobacion",""+nueva_aprobacion);
@@ -783,29 +852,48 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         recycler_marca.setText(cursor3.getString(1));
                         nueva_marca = recycler_marca.getText().toString();
                         Log.e("marca",""+nueva_marca);
-                        try {
-                            String[] parametros2 = {nueva_aprobacion.trim(),nueva_marca.trim()};
-                            Log.e("parametros2",""+parametros2);
-                            cursor5= database3.rawQuery("SELECT DISTINCT numero_aprobacion,marca,modelo,codigo_marca,codigo_modelo,ano_aprobacion FROM basculas WHERE numero_aprobacion=? AND marca=? ",parametros2);
-                            Log.e("modelo",""+cursor5);
+                        if(nueva_marca.equals("")){
+                            caja_snAprobacion_marca.setVisibility(View.VISIBLE);
+                            caja_recycler_marca.setVisibility(View.GONE);
+                            caja_snAprobacion_modelo.setVisibility(View.VISIBLE);
+                            caja_recycler_modelo.setVisibility(View.GONE);
+                            caja_recycler_alcance.setVisibility(View.GONE);
+                            caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
+                            caja_recycler_minimo.setVisibility(View.GONE);
+                            caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
+                            caja_codigo_marca.setVisibility(View.GONE);
+                            caja_Codigomarca_Snaprobacion.setVisibility(View.VISIBLE);
+                            caja_codigo_modelo.setVisibility(View.GONE);
+                            caja_CodigomaModelo_Snaprobacion.setVisibility(View.VISIBLE);
+                            caja_ano_aprobacion.setVisibility(View.GONE);
+                            caja_ano_Snaprobacion.setVisibility(View.VISIBLE);
 
-                            int cuenta2 =cursor5.getCount();
-                            Log.e("modelo_cuenta",""+cuenta2);
-                            listaModelo.clear();
-                            while (cursor5.moveToNext()){
-                                Log.e("modelo",cursor5.getString(2));
+                        }else{
+                            try {
+                                String[] parametros2 = {nueva_aprobacion.trim(),nueva_marca.trim()};
+                                Log.e("parametros2",""+parametros2);
+                                cursor5= database3.rawQuery("SELECT DISTINCT numero_aprobacion,marca,modelo,codigo_marca,codigo_modelo,ano_aprobacion FROM basculas WHERE numero_aprobacion=? AND marca=? ",parametros2);
+                                Log.e("modelo",""+cursor5);
 
-                                listaModelo.add(new ModeloRecycler(cursor5.getString(2)));
-                                codigo_marca.setText(cursor5.getString(3));
-                                codigo_modelo.setText(cursor5.getString(4));
-                                ano_aprobacion.setText(cursor5.getString(5));
-                                //Log.e("lista_basculas",""+BASCULAS);
+                                int cuenta2 =cursor5.getCount();
+                                Log.e("modelo_cuenta",""+cuenta2);
+                                listaModelo.clear();
+                                while (cursor5.moveToNext()){
+                                    Log.e("modelo",cursor5.getString(2));
+
+                                    listaModelo.add(new ModeloRecycler(cursor5.getString(2)));
+                                    codigo_marca.setText(cursor5.getString(3));
+                                    codigo_modelo.setText(cursor5.getString(4));
+                                    ano_aprobacion.setText(cursor5.getString(5));
+                                    //Log.e("lista_basculas",""+BASCULAS);
+                                }
+                                setListaModelo();
+                                Log.e("lista_modelos",""+cursor5);
+                            }catch (Exception e){
+                                Log.e("basculas","no existe");
                             }
-                            setListaModelo();
-                            Log.e("lista_modelos",""+cursor5);
-                        }catch (Exception e){
-                            Log.e("basculas","no existe");
                         }
+
                         //Log.e("lista_basculas",""+BASCULAS);
                     }
 
@@ -976,6 +1064,159 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 formulario_principal.setVisibility(View.VISIBLE);
             }
         });
+        guardar_marca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_marca = marca_snAprobacion.getText().toString();
+                marca_snAprobacion_final.setText(nueva_marca);
+                if (!nueva_marca.trim().equals("")) {
+                    caja_snAprobacion_marca.setVisibility(View.GONE);
+                    caja_snAprobacion_marca_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "La marca es necesaria.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_marca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_snAprobacion_marca_final.setVisibility(view.GONE);
+                caja_snAprobacion_marca.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_modelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_modelo = modelo_snAprobacion.getText().toString();
+                modelo_snAprobacion_final.setText(nueva_modelo);
+                if (!nueva_marca.trim().equals("")) {
+                    caja_snAprobacion_modelo.setVisibility(View.GONE);
+                    caja_snAprobacion_modelo_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El modelo es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_modelo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_snAprobacion_modelo_final.setVisibility(view.GONE);
+                caja_snAprobacion_modelo.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_alcance_snAprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_alcanceMax = alcanceSnAprobacion_texto.getText().toString();
+                alcanceSnAprobacion.setText(nueva_alcanceMax);
+                if (!nueva_marca.trim().equals("")) {
+                    caja_alcanceSnaprobacion_final.setVisibility(View.VISIBLE);
+                    caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El alcance max  es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }); cambiar_alcance_snAprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_alcanceSnaprobacion_final.setVisibility(view.GONE);
+                caja_alcanceSnaprobacion.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_alcanceMin_snAprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_alcanceMin = alcanceMinSnAprobacion_texto.getText().toString();
+                alcanceMinSnAprobacion.setText(nueva_alcanceMin);
+                if (!nueva_marca.trim().equals("")) {
+                    caja_alcanceSMinnaprobacion_final.setVisibility(View.VISIBLE);
+                    caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El alcance max  es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_alcanceMin_snAprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_alcanceSMinnaprobacion_final.setVisibility(view.GONE);
+                caja_alcanceMinSnaprobacion.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_Codigomarca_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_codigoMarca = Codigomarca_Snaprobacion_texto.getText().toString();
+                CodigomarcaSnaprobacion.setText(nueva_codigoMarca);
+                if (!nueva_codigoMarca.trim().equals("")) {
+                    caja_Codigomarca_Snaprobacion_final.setVisibility(View.VISIBLE);
+                    caja_Codigomarca_Snaprobacion.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El alcance max  es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_Codigomarca_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_Codigomarca_Snaprobacion_final.setVisibility(view.GONE);
+                caja_Codigomarca_Snaprobacion.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_CodigomaModelo_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_codigoModelo = CodigomaModelo_Snaprobacion_texto.getText().toString();
+                CodigomaModeloSnaprobacion.setText(nueva_codigoModelo);
+                if (!nueva_codigoModelo.trim().equals("")) {
+                    caja_CodigomaModelo_Snaprobacion_final.setVisibility(View.VISIBLE);
+                    caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El alcance max  es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_CodigomaModelo_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_CodigomaModelo_Snaprobacion_final.setVisibility(view.GONE);
+                caja_CodigomaModelo_Snaprobacion.setVisibility(view.VISIBLE);
+            }
+        });
+        guardar_ano_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nueva_anoSnapro = ano_Snaprobacion_texto.getText().toString();
+                anoSnaprobacion.setText(nueva_anoSnapro);
+                if (!nueva_anoSnapro.trim().equals("")) {
+                    caja_ano_Snaprobacion_final.setVisibility(View.VISIBLE);
+                    caja_ano_Snaprobacion.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El alcance max  es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_ano_Snaprobacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_ano_Snaprobacion_final.setVisibility(view.GONE);
+                caja_ano_Snaprobacion.setVisibility(view.VISIBLE);
+            }
+        });
         agregar_otra_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1033,8 +1274,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3411523);
-        punto_mercado.setLongitude(-99.103033);
+        punto_mercado.setLatitude(19.3506611);
+        punto_mercado.setLongitude(-99.0864875);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -1365,6 +1606,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onBackPressed() {
 
+        formulario_bascula.setVisibility(View.GONE);
+        caja_verificar.setVisibility(View.VISIBLE);
     }
     private void limpiarAcentos(String cadena){
         String limpia=cadena.replace("á","a");
