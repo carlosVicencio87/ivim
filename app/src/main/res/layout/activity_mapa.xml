@@ -150,7 +150,6 @@
             app:layout_constraintRight_toRightOf="parent"
             android:background="@color/blanco"
             android:alpha="0.3">
-
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/caja_verificar_numAprobacion"
@@ -206,6 +205,154 @@
                 app:layout_constraintLeft_toLeftOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/caja_verificar_pregunta_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/blanco"
+            android:alpha="0.3">
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/caja_pregunta_1"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="Es la primera vez que verifica la bascula?"
+                android:textColor="@color/negro"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/primeraVez_no"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="No"
+                android:textColor="@color/negro"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:id="@+id/primeraVez_si"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="Si"
+                android:textColor="@color/negro"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/caja_verificar_pregunta_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:background="@color/blanco"
+                android:alpha="0.3">
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/caja_pregunta_2"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:background="@color/blanco"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center"
+                    android:text="¿presenta factura de compra o constancia emitida por el fabricante donde el instrumento es menor a 10 años?"
+                    android:textColor="@color/negro"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/factura_no"
+                    android:layout_width="80dp"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="70dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="No"
+                    android:textColor="@color/negro"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <TextView
+                    android:id="@+id/factura_si"
+                    android:layout_width="80dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="Si"
+                    android:textColor="@color/negro"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ScrollView
         android:id="@+id/formulario_principal"
@@ -256,21 +403,21 @@
                     <EditText
 
                         android:id="@+id/fecha"
-                        android:layout_width="match_parent"
+                        android:layout_width="250dp"
                         android:layout_height="22dp"
                         android:background="@color/blanco"
-                        android:hint="@string/texto2"
-                        android:inputType="number"
-                        android:textSize="20dp"
                         android:gravity="center"
-                     />
+                        android:textColorHint="@color/negro"
+                        android:textSize="20dp"
+                        android:hint="@string/texto2"
+                        android:inputType="number" />
                     <ImageView
                         android:id="@+id/guardar_fecha"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_margin="15dp"
                         android:layout_marginTop="30dp"
-                        android:background="@drawable/palomita"/>
+                        android:background="@drawable/palomita" />
                 </LinearLayout>
             <LinearLayout
                 android:id="@+id/caja_fecha_final"
@@ -288,7 +435,6 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="bottom"
-                    android:text="nombre de usuario"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
 
@@ -335,10 +481,9 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="bottom"
-                    android:hint="@string/texto1"
                     android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-
+                    android:textSize="20dp"
+                    android:hint="@string/texto1" />
                 <ImageView
                     android:id="@+id/guardar_nombre"
                     android:layout_width="20dp"
@@ -766,9 +911,9 @@
             android:id="@+id/caja_auto_aproba">
             <MultiAutoCompleteTextView
                 android:id="@+id/autoAprobacion"
+                android:completionThreshold="1"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:completionThreshold="1"
                 android:gravity="center"/>
             <ImageView
                 android:id="@+id/guardar_aprobacion"
@@ -780,7 +925,7 @@
         </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -790,11 +935,11 @@
 
                 <TextView
                     android:id="@+id/aprobacion_basc"
+                    android:text="numero de serie"
                     android:layout_width="250dp"
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
 
@@ -849,10 +994,12 @@
                 android:id="@+id/caja_snAprobacion_marca"
                 android:visibility="gone">
                 <EditText
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
                     android:id="@+id/marca_snAprobacion"
 
                     />
@@ -873,11 +1020,13 @@
                 android:id="@+id/caja_snAprobacion_marca_final"
                 android:visibility="gone">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/marca_snAprobacion_final"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
+                    android:id="@+id/marca_snAprobacion_final"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -926,10 +1075,12 @@
             android:id="@+id/caja_snAprobacion_modelo"
             android:visibility="gone">
             <EditText
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="11dp"
-                android:layout_gravity="center"
+                android:layout_width="250dp"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:textColorHint="@color/negro"
+                android:textSize="20dp"
                 android:id="@+id/modelo_snAprobacion"/>
             <ImageView
                 android:layout_width="20dp"
@@ -948,11 +1099,13 @@
                 android:id="@+id/caja_snAprobacion_modelo_final"
                 android:visibility="gone">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/modelo_snAprobacion_final"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="11dp"/>
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
+                    android:id="@+id/modelo_snAprobacion_final" />
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -981,6 +1134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@color/blanco"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_alcance">
                 <TextView
@@ -1001,13 +1155,13 @@
 
                 <EditText
                     android:id="@+id/alcanceSnAprobacion_texto"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
                     android:textColorHint="@color/negro"
-                    android:inputType="number"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:inputType="number"/>
 
                 <ImageView
                     android:id="@+id/guardar_alcance_snAprobacion"
@@ -1033,9 +1187,8 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -1067,6 +1220,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:background="@color/blanco"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:id="@+id/caja_recycler_minimo">
                 <TextView
@@ -1084,17 +1238,15 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
-
                 <EditText
                     android:id="@+id/alcanceMinSnAprobacion_texto"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
                     android:textColorHint="@color/negro"
-                    android:inputType="number"
-                    android:textSize="20dp" />
-
+                    android:textSize="20dp"
+                    android:inputType="number"/>
                 <ImageView
                     android:id="@+id/guardar_alcanceMin_snAprobacion"
                     android:layout_width="20dp"
@@ -1105,7 +1257,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -1119,7 +1271,6 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
 
@@ -1176,14 +1327,13 @@
 
                 <EditText
                     android:id="@+id/Codigomarca_Snaprobacion_texto"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
                     android:textColorHint="@color/negro"
-                    android:inputType="number"
-                    android:textSize="20dp" />
-
+                    android:textSize="20dp"
+                    android:inputType="number" />
                 <ImageView
                     android:id="@+id/guardar_Codigomarca_Snaprobacion"
                     android:layout_width="20dp"
@@ -1194,7 +1344,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -1208,10 +1358,8 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-
+                    android:textSize="20dp"/>
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -1264,13 +1412,13 @@
 
                 <EditText
                     android:id="@+id/CodigomaModelo_Snaprobacion_texto"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
                     android:textColorHint="@color/negro"
-                    android:inputType="number"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:inputType="number" />
 
                 <ImageView
                     android:id="@+id/guardar_CodigomaModelo_Snaprobacion"
@@ -1282,7 +1430,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -1296,10 +1444,8 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
-
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -1349,17 +1495,15 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
-
                 <EditText
                     android:id="@+id/ano_Snaprobacion_texto"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="11dp"
-                    android:layout_gravity="center"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
                     android:textColorHint="@color/negro"
-                    android:inputType="number"
-                    android:textSize="20dp" />
-
+                    android:textSize="20dp"
+                    android:inputType="number" />
                 <ImageView
                     android:id="@+id/guardar_ano_Snaprobacion"
                     android:layout_width="20dp"
@@ -1370,7 +1514,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -1384,10 +1528,8 @@
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:text="numero de serie"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
-
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
@@ -1703,78 +1845,39 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="35dp"
+                android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
-
+                android:gravity="left">
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="20dp"
                     android:background="@color/blanco"
                     android:gravity="left"
+                    android:textSize="20dp"
                     android:text="Tipo de visita"
                     android:textColor="@color/negro"
-                    android:textSize="15dp" />
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_tipo_visita"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:id="@+id/tipo_visita"
+                    android:layout_width="300dp"
+                    android:layout_height="22dp"
+                    android:textSize="20dp"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:background="@color/blanco"/>
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cons_check"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@color/blanco"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/inicial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Inicial(I)"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:checked="false"/>
-
-                <CheckBox
-                    android:id="@+id/anual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Periodica Anual(PA)"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:checked="false"/>
-
-                <CheckBox
-                    android:id="@+id/primerSemestre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:text="Periodica 1er Semestre(P1S)"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:checked="false"/>
-
-                <CheckBox
-                    android:id="@+id/segundoSemestre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Periodica 2do Semestre(P2S)"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:checked="false"/>
-
-                <CheckBox
-                    android:id="@+id/extraordinaria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:text="Extraordinaria(E)"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:checked="false"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
