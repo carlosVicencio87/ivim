@@ -1846,6 +1846,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         pesas_20kg.setText(cursor1.getString(8));
                         pesa_clase_exactitud.setText(cursor1.getString(9));
                         horario.setText(cursor1.getString(10));
+
                     }
                     Log.e("eod",cuenta2+" -- ");
                 }catch (Exception e){
