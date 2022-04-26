@@ -23,8 +23,6 @@
         <activity
             android:name=".ActaDictamen"
             android:exported="true" />
-        <activity android:name=".AlcanceMinRecycler" />
-        <activity android:name=".EodRecycler" />
         <activity android:name=".ActivarPermisos" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

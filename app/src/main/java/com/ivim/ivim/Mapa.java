@@ -75,7 +75,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
-    private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,caja_verificar,caja_pregunta_1,caja_verificar_pregunta_1,caja_verificar_pregunta_2,caja_pregunta_2;
+    private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,cons_factura;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
@@ -97,16 +97,59 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
-            seleccion_exactitud,nueva_aprobacion,valorCheckbox,fecha_final_Str,tipo_intrumento,valcatalogo,nueva_marca,
-            nueva_modelo,nueva_alcanceMax,nueva_alcanceMin,nueva_codigoMarca,nueva_codigoModelo,nueva_anoSnapro,nueva_fecha;
-    private TextView puntoPartida,fecha_final, nombre, direccion_mercado, telefono, latitud_x,
-            longitud_y, zona, alcanceSnAprobacion,costo,regresar_map, siguiente_tab,regresar_formulario,
-            agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model,aprobacion_basc,listas_intrusmento,listas_exactitud,
-            listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula,recycler_alcance,recycler_marca,
-            recycler_minimo,recycler_eod,tipoInstrumento, claseExactitud,marco_pesas,pesas_5kg,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,
-            ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,
-            CodigomarcaSnaprobacion,CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,primeraVez_no,primeraVez_si,factura_si,factura_no;
-
+            seleccion_exactitud,nueva_aprobacion,valorCheckboxPrimera,fecha_final_Str,tipo_intrumento,valcatalogo,nueva_marca,
+            nueva_modelo,nueva_alcanceMax,nueva_alcanceMin,nueva_codigoMarca,nueva_codigoModelo,nueva_anoSnapro,nueva_fecha,
+            valorCheckboxFactura,ano_global;
+    private TextView puntoPartida;
+    private TextView fecha_final;
+    private TextView nombre;
+    private TextView direccion_mercado;
+    private TextView telefono;
+    private TextView latitud_x;
+    private TextView longitud_y;
+    private TextView zona;
+    private TextView alcanceSnAprobacion;
+    private TextView costo;
+    private TextView regresar_map;
+    private TextView siguiente_tab;
+    private TextView regresar_formulario;
+    private TextView agregar_bascula;
+    private TextView finalizar_reg_bascula;
+    private TextView finalizar_no;
+    private TextView finalizar_si;
+    private TextView tip_model;
+    private TextView aprobacion_basc;
+    private TextView listas_intrusmento;
+    private TextView listas_exactitud;
+    private TextView listas_mercado;
+    private TextView listas_giro;
+    private TextView regresar_otravez_formulario;
+    private TextView agregar_otra_bascula;
+    private TextView recycler_alcance;
+    private TextView recycler_marca;
+    private TextView recycler_minimo;
+    private TextView recycler_eod;
+    private TextView tipoInstrumento;
+    private TextView claseExactitud;
+    private TextView marco_pesas;
+    private TextView pesas_5kg;
+    private TextView pesas_10kg;
+    private TextView pesas_20kg;
+    private TextView codigo_marca;
+    private TextView codigo_modelo;
+    private TextView ano_aprobacion;
+    private TextView pesa_clase_exactitud;
+    private TextView horario;
+    private TextView alcanceMinSnAprobacion;
+    private TextView aprobacion_no;
+    private TextView aprobacion_si;
+    private TextView marca_snAprobacion_final;
+    private TextView modelo_snAprobacion_final;
+    private TextView CodigomarcaSnaprobacion;
+    private TextView CodigomaModeloSnaprobacion;
+    private TextView anoSnaprobacion;
+    private TextView tipo_visita;
+    private int tipo_camino;
     private EditText nombre_texto, fecha, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
             modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,ano_Snaprobacion_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
@@ -158,6 +201,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Conexion conexion1,conexion2,conexion3,conexion4,conexion6;
     private Cursor cursor1,cursor2,cursor3,cursor4,cursor5,cursor6;
     private ArrayList<String> APROBACION;
+    private CheckBox primera_si,primera_no,factura_si,factura_no;
+    private  int numero_anoglobal,resta_anos,elementoNumeroMes,elementoNumerAno;
 
 
     @Override
@@ -326,9 +371,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         cambiar_ano_Snaprobacion = findViewById(R.id.cambiar_ano_Snaprobacion);
         caja_tipo_visita = findViewById(R.id.caja_tipo_visita);
         tipo_visita = findViewById(R.id.tipo_visita);
-        caja_pregunta_1 = findViewById(R.id.caja_pregunta_1);
-        primeraVez_si = findViewById(R.id.primeraVez_si);
-        primeraVez_no = findViewById(R.id.primeraVez_no);
 
 
 
@@ -341,17 +383,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_alcanceSMinnaprobacion_final = findViewById(R.id.caja_alcanceSMinnaprobacion_final);
         alcanceMinSnAprobacion = findViewById(R.id.alcanceMinSnAprobacion);
         cambiar_alcanceMin_snAprobacion = findViewById(R.id.cambiar_alcanceMin_snAprobacion);
-        caja_verificar_numAprobacion = findViewById(R.id.caja_verificar_numAprobacion);
-        caja_verificar = findViewById(R.id.caja_verificar);
-        tipo_visita = findViewById(R.id.tipo_visita);
-        aprobacion_no = findViewById(R.id.aprobacion_no);
-        aprobacion_si = findViewById(R.id.aprobacion_si);
-        caja_verificar_pregunta_1 = findViewById(R.id.caja_verificar_pregunta_1);
 
-        caja_verificar_pregunta_2 = findViewById(R.id.caja_verificar_pregunta_2);
-        caja_pregunta_2 = findViewById(R.id.caja_pregunta_2);
-        factura_no = findViewById(R.id.factura_no);
-        factura_si = findViewById(R.id.factura_si);
+
+         tipo_visita= findViewById(R.id.tipo_visita);
+        primera_si= findViewById(R.id.primera_si);
+        primera_no= findViewById(R.id.primera_no);
+        cons_factura= findViewById(R.id.cons_factura);
+        cons_factura= findViewById(R.id.cons_factura);
+        factura_si= findViewById(R.id.factura_si);
+        factura_no= findViewById(R.id.factura_no);
+
+
 
         SERVIDOR_CONTROLADOR = new Servidor().local;
 
@@ -704,6 +746,113 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        valorCheckboxPrimera="";
+        //inicial.setChecked(true);
+        primera_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco();
+                primera_si.setChecked(true);
+                valorCheckboxPrimera="inicial";
+                if(valorCheckboxPrimera.equals("inicial")){
+
+                    tipo_visita.setText("Inicial");
+                }
+                Log.e("cambios", "" + valorCheckboxPrimera);
+            }
+        });
+        primera_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco();
+                primera_no.setChecked(true);
+                tipo_visita.setText("");
+                valorCheckboxPrimera="";
+                Log.e("cambios", "" + valorCheckboxPrimera);
+            }
+        });
+        valorCheckboxFactura="";
+        //inicial.setChecked(true);
+        factura_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco2();
+                factura_si.setChecked(true);
+                valorCheckboxFactura="anual";
+                Log.e("cambios", "" + valorCheckboxFactura);
+                if(resta_anos<10){
+
+                    if(elementoNumeroMes<6){
+                        tipo_visita.setText("PERIODICA ANUAL");
+                    }
+                    else{
+                        tipo_visita.setText("ANUAL EXTRAORDINARIA");
+                    }
+
+                }
+                else{
+                    if ( elementoNumeroMes<4){
+                        tipo_visita.setText("1er semestre");
+                        Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                    }
+                    else{
+                        if( elementoNumeroMes>3&&elementoNumeroMes<7){
+                            tipo_visita.setText("extraordinarias");
+                            Log.e("adentro de topita2",""+tipo_visita);
+                        }
+                        else {
+                            if(elementoNumeroMes>6&&elementoNumeroMes<10){
+                                tipo_visita.setText("2do semestre");
+                                Log.e("adentro de topita3",""+tipo_visita);
+
+                            }
+                            else {
+                                if(elementoNumeroMes>9&&elementoNumeroMes==12){
+                                    tipo_visita.setText("Extraordinarias o iniciales");
+                                    Log.e("adentro de topita4",""+tipo_visita);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+        factura_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco2();
+                factura_no.setChecked(true);
+
+
+                if ( elementoNumeroMes<4){
+                        tipo_visita.setText("1er semestre");
+                        Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                    }
+                    else{
+                        if( elementoNumeroMes>3&&elementoNumeroMes<7){
+                            tipo_visita.setText("extraordinarias");
+                            Log.e("adentro de topita2",""+tipo_visita);
+                        }
+                        else {
+                            if(elementoNumeroMes>6&&elementoNumeroMes<10){
+                                tipo_visita.setText("2do semestre");
+                                Log.e("adentro de topita3",""+tipo_visita);
+
+                            }
+                            else {
+                                if(elementoNumeroMes>9&&elementoNumeroMes==12){
+                                    tipo_visita.setText("Extraordinarias o iniciales");
+                                    Log.e("adentro de topita4",""+tipo_visita);
+                                }
+                            }
+                        }
+                    }
+
+            }
+        });
 
 
 
@@ -723,9 +872,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     if(!seleccion_giro.trim().equals("Giro")){
                         if(!seleccion_mercado.trim().equals("Mercado")){
                             if (!nuevo_tel.trim().equals("")) {
+
                                 if (tel10==true){
-                                    formulario_principal.setVisibility(view.GONE);
-                                    caja_verificar_pregunta_2.setVisibility(view.VISIBLE);
+                                    if(!nueva_fecha.trim().equals("")){
+                                        formulario_principal.setVisibility(view.GONE);
+                                        formulario_bascula.setVisibility(view.VISIBLE);
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(), "Definir la fecha es necesario.", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
                             else{
@@ -744,83 +899,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         });
-        aprobacion_si.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formulario_bascula.setVisibility(View.VISIBLE);
-                caja_verificar.setVisibility(view.GONE);
-                caja_snAprobacion_marca.setVisibility(View.GONE);
-                caja_recycler_marca.setVisibility(View.VISIBLE);
-                caja_snAprobacion_modelo.setVisibility(View.GONE);
-                caja_recycler_modelo.setVisibility(View.VISIBLE);
-                caja_alcanceSnaprobacion.setVisibility(View.GONE);
-                caja_recycler_alcance.setVisibility(View.VISIBLE);
-                caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
-                caja_recycler_minimo.setVisibility(View.VISIBLE);
-                caja_Codigomarca_Snaprobacion.setVisibility(View.GONE);
-                caja_codigo_marca.setVisibility(View.VISIBLE);
-                caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);
-                caja_codigo_modelo.setVisibility(View.VISIBLE);
-
-                caja_ano_Snaprobacion.setVisibility(View.GONE);
-                caja_ano_aprobacion.setVisibility(View.VISIBLE);
-            }
-        });
-        primeraVez_si.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    tipo_visita.setText("VERIFICACION INICIAL");
-                    caja_verificar.setVisibility(View.VISIBLE);
-                    caja_verificar_pregunta_1.setVisibility(View.GONE);
-
-            }
-        });
-        primeraVez_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                caja_verificar_pregunta_2.setVisibility(View.VISIBLE);
-                caja_verificar_pregunta_1.setVisibility(View.GONE);
 
 
-            }
-        });
-        factura_si.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tipo_visita.setText("ANUAL");
-                caja_verificar.setVisibility(View.VISIBLE);
 
-            }
-        });
-        factura_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                caja_verificar.setVisibility(View.VISIBLE);
-                caja_verificar_pregunta_2.setVisibility(View.GONE);
-            }
-        });
-        aprobacion_no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formulario_bascula.setVisibility(View.VISIBLE);
-                caja_verificar.setVisibility( view.GONE);
-                caja_snAprobacion_marca.setVisibility(View.VISIBLE);
-                caja_recycler_marca.setVisibility(View.GONE);
-                caja_snAprobacion_modelo.setVisibility(View.VISIBLE);
-                caja_recycler_modelo.setVisibility(View.GONE);
-                caja_recycler_alcance.setVisibility(View.GONE);
-                caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
-                caja_recycler_minimo.setVisibility(View.GONE);
-                caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
-                caja_codigo_marca.setVisibility(View.GONE);
-                caja_Codigomarca_Snaprobacion.setVisibility(View.VISIBLE);
-                caja_codigo_modelo.setVisibility(View.GONE);
-                caja_CodigomaModelo_Snaprobacion.setVisibility(View.VISIBLE);
-                caja_ano_aprobacion.setVisibility(View.GONE);
-                caja_ano_Snaprobacion.setVisibility(View.VISIBLE);
-
-            }
-        });
         guardar_aprobacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -828,6 +909,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 database3=conexion3.getReadableDatabase();
                 nueva_aprobacion = autoAprobacion.getText().toString();
                 aprobacion_basc.setText(nueva_aprobacion);
+                String[] fecha_fragmentada=nueva_fecha.split("-");
+                String elementoMes=fecha_fragmentada[1];
+                String elementoAno=fecha_fragmentada[2];
+                elementoNumeroMes= Integer.parseInt(elementoMes);
+                 elementoNumerAno= Integer.parseInt(elementoAno);
+                Log.e("mes_chems",""+elementoMes);
+                Log.e("mes_chems1",""+elementoNumeroMes);
+                Log.e("mes_chems1",""+elementoAno);
+
+
+
 
                 try {
                     String[] parametros = {nueva_aprobacion.trim()};
@@ -837,7 +929,35 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     int cuenta =cursor3.getCount();
                     Log.e("modelo_cuenta",""+cuenta);
                     if(cuenta==0){
-                        caja_verificar.setVisibility(view.GONE);
+                        Log.e("topitas_cuenta",""+cuenta);
+                        Log.e("errodecuenta",""+elementoNumeroMes);
+                        if ( elementoNumeroMes<4){
+                            tipo_visita.setText("1er semestre");
+                            Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                        }
+                        else{
+                            if( elementoNumeroMes>3&&elementoNumeroMes<7){
+                                tipo_visita.setText("extraordinarias");
+                                Log.e("adentro de topita2",""+tipo_visita);
+                            }
+                            else {
+                                if(elementoNumeroMes>6&&elementoNumeroMes<10){
+                                    tipo_visita.setText("2do semestre");
+                                    Log.e("adentro de topita3",""+tipo_visita);
+
+                                }
+                                else {
+                                    if(elementoNumeroMes>9&&elementoNumeroMes==12){
+                                        tipo_visita.setText("Extraordinarias o iniciales");
+                                        Log.e("adentro de topita4",""+tipo_visita);
+                                    }
+                                }
+                            }
+                        }
+                        Log.e("adentro de topita",""+cuenta);
+
+                        tipo_camino=1;
                         caja_snAprobacion_marca.setVisibility(View.VISIBLE);
                         caja_recycler_marca.setVisibility(View.GONE);
                         caja_snAprobacion_modelo.setVisibility(View.VISIBLE);
@@ -871,15 +991,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                 listaModelo.clear();
                                 while (cursor5.moveToNext()){
                                     Log.e("modelo",cursor5.getString(2));
-
+                                    tipo_camino=2;
                                     listaModelo.add(new ModeloRecycler(cursor5.getString(2)));
                                     codigo_marca.setText(cursor5.getString(3));
                                     codigo_modelo.setText(cursor5.getString(4));
                                     ano_aprobacion.setText(cursor5.getString(5));
+                                    ano_global=cursor5.getString(5);
+                                    numero_anoglobal= Integer.parseInt(ano_global);
+                                    Log.e("numero globals",""+numero_anoglobal);
                                     //Log.e("lista_basculas",""+BASCULAS);
                                 }
                                 setListaModelo();
-                                Log.e("lista_modelos",""+cursor5);
+                                resta_anos=elementoNumerAno-numero_anoglobal;
+                                Log.e("año_de_aproabacion",""+resta_anos);
+
+
+                                        if(elementoNumeroMes<6){
+                                            tipo_visita.setText("PERIODICA ANUAL");
+                                        }
+                                        else{
+                                            tipo_visita.setText("ANUAL EXTRAORDINARIA");
+                                        }
+
+
+
+
                             }catch (Exception e){
                                 Log.e("basculas","no existe");
                             }
@@ -891,7 +1027,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
                     Log.e("lista_basculas",""+cursor2);
-                }catch (Exception e){
+                }
+                catch (Exception e){
                     Log.e("basculas","no existe");
                 }
                 if (!nueva_aprobacion.trim().equals("")) {
@@ -915,8 +1052,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                seleccion_instrumento = listas_intrusmento.getText().toString();
                 nueva_aprobacion = autoAprobacion.getText().toString();
+                nueva_marca = recycler_marca.getText().toString();
+                seleccion_instrumento = listas_intrusmento.getText().toString();
                 nueva_serie = alcanceSnAprobacion_texto.getText().toString();
                 checkModel=modeloSHER.getString("modelo","no");
                 checkAlcanceMax=alcanceMaxSher.getString("alcanceMax","no");
@@ -934,7 +1072,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                     if(!checkEod.trim().equals("")){
                                         if(!checkAlcanceMin.trim().equals("")){
                                             if(!seleccion_exactitud.trim().equals("Clase de exactitud")){
-                                                if(!valorCheckbox.trim().equals("")){
+                                                if(!valorCheckboxPrimera.trim().equals("")){
                                                     if(!nuevo_costo.trim().equals("")){
                                                         formulario_bascula.setVisibility(View.GONE);
                                                         almacen_basculas.setVisibility(View.VISIBLE);
@@ -950,7 +1088,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                             jsonObject.put("eod",checkEod);
                                                             jsonObject.put("alcance_min",checkAlcanceMin);
                                                             jsonObject.put("exactitud",seleccion_exactitud);
-                                                            jsonObject.put("checkbox",valorCheckbox);
+                                                            jsonObject.put("checkbox",valorCheckboxPrimera);
                                                             jsonObject.put("costo",nuevo_costo);
 
                                                             json_datos_bascula.put(jsonObject);
@@ -1137,9 +1275,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     try {
                         String[] parametros6 = {nueva_alcanceMax.trim(),nueva_alcanceMin.trim()};
                         cursor6= database6.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros6);
-                        //Log.e("tipos",""+parametros2);
+                        //Log.e("",""+parametros2);
                         int cuenta3 =cursor6.getCount();
-                        Log.e("catalogo",""+cursor6);
+                        Log.e("catalogo",""+cuenta3);
                         while (cursor6.moveToNext()){
                             Log.e("1",cursor6.getString(0));
                             Log.e("eod",cursor6.getString(1));
@@ -1252,7 +1390,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 //recycler_eod.setAdapter(adapterEoD);
                 recycler_minimo.setText("");
                 claseExactitud.setText("");
-                valorCheckbox="";
+                valorCheckboxPrimera="";
                 costo_texto.setText("");
                 caja_costo_final.setVisibility(View.GONE);
                 caja_edit_costo.setVisibility(View.VISIBLE);
@@ -1264,10 +1402,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 nueva_fecha = fecha.getText().toString();
                 fecha_final.setText(nueva_fecha);
-                String[] fecha_fragmentada=nueva_fecha.split("-");
-                for (int i=0;i<fecha_fragmentada.length;i++){
-                    Log.e("fecha_fragmentada",fecha_fragmentada[i]);
-                }
+
                 if (!nueva_fecha.trim().equals("")&&nueva_fecha!=null) {
 
                     String regexFecha ="[0-9]{2}-[0-9]{2}-[0-9]{4}";
@@ -1333,8 +1468,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3411523);
-        punto_mercado.setLongitude(-99.103033);
+        punto_mercado.setLatitude(19.3506611);
+        punto_mercado.setLongitude(-99.0864875);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -1658,7 +1793,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void onBackPressed() {
 
         formulario_bascula.setVisibility(View.GONE);
-        caja_verificar.setVisibility(View.VISIBLE);
+
     }
     private void limpiarAcentos(String cadena){
         String limpia=cadena.replace("á","a");
@@ -1691,10 +1826,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             //listaAlcance.clear();
             while (cursor4.moveToNext()){
                 Log.e("alcance",cursor4.getString(0));
-                recycler_alcance.setText(cursor4.getString(0));
-                recycler_minimo.setText(cursor4.getString(1));
+                recycler_alcance.setText(cursor4.getString(1));
+                recycler_minimo.setText(cursor4.getString(0));
                 try {
-                    String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
+                    String[] parametros2 = {cursor4.getString(1),cursor4.getString(0)};
                     cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
                      //Log.e("tipos",""+parametros2);
                     int cuenta2 =cursor1.getCount();
@@ -1724,6 +1859,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
 
     }
+    private void quitar_foco()
+    {
+        primera_no.setChecked(false);
+        primera_si.setChecked(false);
 
+    }
+
+    private void quitar_foco2()
+    {
+
+        factura_no.setChecked(false);
+        factura_si.setChecked(false);
+    }
 
 }

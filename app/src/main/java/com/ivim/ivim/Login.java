@@ -67,7 +67,7 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        SERVIDOR_CONTROLADOR = new Servidor().getLocalHost();
+        SERVIDOR_CONTROLADOR = new Servidor().local;
         datosUsuario = getSharedPreferences("Usuario",this.MODE_PRIVATE);
         editor=datosUsuario.edit();
 
@@ -210,7 +210,7 @@ public class Login extends AppCompatActivity {
                                     String strApellido_2=jsonObject.getString("apellido_2");
                                     String strTelefono=jsonObject.getString("telefono");
                                     String strCorreo=jsonObject.getString("correo");
-                                    String strContrasena=jsonObject.getString("contrasena");
+                                    String strContrasena=jsonObject.getString("contra");
                                     String strActivo = jsonObject.getString("activo");
                                     String strId_sesion=jsonObject.getString("id_sesion");
                                     String strFecha_registro = jsonObject.getString("fecha_de_ingreso");
@@ -229,7 +229,7 @@ public class Login extends AppCompatActivity {
                                     editor.putString("apellido_2",strApellido_2);
                                     editor.putString("telefono",strTelefono);
                                     editor.putString("correo",strCorreo);
-                                    editor.putString("contrasena",strContrasena);
+                                    editor.putString("contra",strContrasena);
                                     editor.putString("activo",strActivo);
                                     editor.putString("fecha_registro",strFecha_registro);
                                     editor.putString("id_sesion",strId_sesion);
@@ -282,7 +282,7 @@ public class Login extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("correo",valCorreo);
-                map.put("contrasena",valContra);
+                map.put("contra",valContra);
                 return map;
             }
         };
