@@ -16,7 +16,7 @@
         android:padding="10dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -25,28 +25,28 @@
                 android:background="@color/blanco"
                 android:gravity="left"
                 android:textSize="15dp"
-                android:text="Tipo de instrumento"
+                android:text="Numero de aprobacion"
                 android:textColor="@color/negro"
                 android:layout_height="22dp"
                 android:layout_marginRight="20dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
             <TextView
-                android:id="@+id/cantidad_tipo_instrumento"
+                android:id="@+id/cantidad_numero_aprobacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tipo de instrumento"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -62,21 +62,21 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
             <TextView
-                android:id="@+id/cantidad_bascula"
+                android:id="@+id/cantidad_marca"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Marca"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -93,7 +93,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -103,41 +103,11 @@
                 android:layout_height="wrap_content"
                 android:text="Modelo"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:layout_width="match_parent"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:textSize="15dp"
-                android:text="Numero de serie"
-                android:textColor="@color/negro"
-                android:layout_height="22dp"
-                android:layout_marginRight="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:id="@+id/cantidad_serie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Numero de serie"
-                android:gravity="center"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -153,7 +123,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -161,43 +131,13 @@
                 android:id="@+id/cantidad_AlcanceMax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alcance Maximo"
+                android:text="Alcance maximo"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:layout_width="match_parent"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:textSize="15dp"
-                android:text="Eod"
-                android:textColor="@color/negro"
-                android:layout_height="22dp"
-                android:layout_marginRight="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:id="@+id/cantidad_Eod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Eod"
-                android:gravity="center"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -213,7 +153,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -221,13 +161,163 @@
                 android:id="@+id/cantidad_AlcanceMin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alcance Minimo "
+                android:text="Alcance Minimo"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Codigo de marca"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_CodigoMarca"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="codigo marca"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Codigo modelo"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_CodigoModelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Codigo de modelo"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Año de aprobacion"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_anoAprobacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Año de aprobacion"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Eod"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_eod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="eod"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Tipo de instrumento"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_TipoInstrumento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de instrumento"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -243,67 +333,210 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
             <TextView
-                android:id="@+id/cantidad_exactitud"
+                android:id="@+id/cantidad_claseExactitud"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Clase de exactitud"
                 android:gravity="center"
-                android:textSize="20dp"/>
-        </LinearLayout>
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Marco de pesas"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
             <TextView
-                android:layout_width="match_parent"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:textSize="15dp"
-                android:text="Tipo de visita"
-                android:textColor="@color/negro"
-                android:layout_height="22dp"
-                android:layout_marginRight="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:id="@+id/cantidad_checkbox"
+                android:id="@+id/cantidad_marcoPesas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="checkbox"
+                android:text="Marco de  pesas"
                 android:gravity="center"
-                android:textSize="20dp"/>
-        </LinearLayout>
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Pesas de 5KG"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
             <TextView
+                android:id="@+id/cantidad_pesas5kg"
                 android:layout_width="match_parent"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:textSize="15dp"
-                android:text="Costo"
-                android:textColor="@color/negro"
-                android:layout_height="22dp"
-                android:layout_marginRight="20dp"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="Pesas de 5 KG"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Pesas e 10 kg"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="25dp"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_pesas10kg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="pesas de 10 kg"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Pesas 20kg"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_pesas20kg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de instrumento"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Pesas clase de exactitud"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_pesaClase_exactitud"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="pesa clase de exactitud"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Horario"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_horario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="horario"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout> <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="left">
+        <TextView
+            android:layout_width="match_parent"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:textSize="15dp"
+            android:text="Costo"
+            android:textColor="@color/negro"
+            android:layout_height="22dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
             android:orientation="vertical"
             android:background="@color/blanco"
             android:gravity="left">
@@ -313,9 +546,8 @@
                 android:layout_height="wrap_content"
                 android:text="costo"
                 android:gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="15dp"/>
         </LinearLayout>
-
     </LinearLayout>
 
 

@@ -21,8 +21,9 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
     ViewHolderRecycler viewholderCantidadBasculaso,anterior;
     private  RecyclerView recyclerView;
     private Context context;
-    private String cantidad_bascula,cantidad_tipo_instrumento,cantidad_modelo,cantidad_serie,cantidad_AlcanceMax,cantidad_Eod,
-            cantidad_AlcanceMin,cantidad_exactitud,cantidad_checkbox,cantidad_costo;
+    private String cantidad_numero_aprobacion,cantidad_marca,cantidad_modelo,cantidad_AlcanceMax,cantidad_AlcanceMin,cantidad_CodigoMarca,
+            cantidad_CodigoModelo,cantidad_anoAprobacion,cantidad_eod,cantidad_TipoInstrumento,cantidad_claseExactitud,cantidad_marcoPesas,
+            cantidad_pesas5kg,cantidad_pesas10kg,cantidad_pesas20kg,cantidad_pesaClase_exactitud,cantidad_horario,cantidad_costo;
     private SharedPreferences datosCantidadBascula;
     private SharedPreferences.Editor editor;
 
@@ -43,28 +44,57 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
     public void onBindViewHolder(@NonNull final AdapterCantidadBasculas.ViewHolderRecycler holder, int position) {
         viewholderCantidadBasculaso =holder;
 
-        cantidad_bascula = ranking6recycler.get(position).getCantidad_bascula();
-        holder.cant_bascula.setText(cantidad_bascula);
-        cantidad_tipo_instrumento=ranking6recycler.get(position).getCantidad_tipo_instrumento();
-        holder.cant_tipo_instrumento.setText(cantidad_tipo_instrumento);
+        cantidad_numero_aprobacion = ranking6recycler.get(position).getCantidad_numero_aprobacion();
+        holder.cant_numero_aprobacion.setText(cantidad_numero_aprobacion);
+        cantidad_marca=ranking6recycler.get(position).getCantidad_marca();
+        holder.cant_marca.setText(cantidad_marca);
+
         cantidad_modelo=ranking6recycler.get(position).getCantidad_modelo();
-        holder.cant__modelo.setText(cantidad_modelo);
-        cantidad_serie=ranking6recycler.get(position).getCantidad_serie();
-        holder.cant_serie.setText(cantidad_serie);
+        holder.cant_modelo.setText(cantidad_modelo);
         cantidad_AlcanceMax=ranking6recycler.get(position).getCantidad_AlcanceMax();
         holder.cant_AlcanceMax.setText(cantidad_AlcanceMax);
-        cantidad_Eod=ranking6recycler.get(position).getCantidad_Eod();
-        holder.cant_Eod.setText(cantidad_Eod);
         cantidad_AlcanceMin=ranking6recycler.get(position).getCantidad_AlcanceMin();
         holder.cant_AlcanceMin.setText(cantidad_AlcanceMin);
-        cantidad_exactitud=ranking6recycler.get(position).getCantidad_exactitud();
-        holder.cant_exactitud.setText(cantidad_exactitud);
-        cantidad_checkbox=ranking6recycler.get(position).getCantidad_checkbox();
-        holder.cant_checkbox.setText(cantidad_checkbox);
+        cantidad_CodigoMarca=ranking6recycler.get(position).getCantidad_CodigoMarca();
+        holder.cant_CodigoMarca.setText(cantidad_CodigoMarca);
+        cantidad_CodigoModelo=ranking6recycler.get(position).getCantidad_CodigoModelo();
+        holder.cant_CodigoModelo.setText(cantidad_CodigoModelo);
+
+        cantidad_anoAprobacion=ranking6recycler.get(position).getCantidad_anoAprobacion();
+        holder.cant_anoAprobacion.setText(cantidad_anoAprobacion);
+
+        cantidad_eod=ranking6recycler.get(position).getCantidad_eod();
+        holder.cant_eod.setText(cantidad_eod);
+
+        cantidad_TipoInstrumento=ranking6recycler.get(position).getCantidad_TipoInstrumento();
+        holder.cant_TipoInstrumento.setText(cantidad_TipoInstrumento);
+
+        cantidad_claseExactitud=ranking6recycler.get(position).getCantidad_claseExactitud();
+        holder.cant_claseExactitud.setText(cantidad_claseExactitud);
+
+        cantidad_marcoPesas=ranking6recycler.get(position).getCantidad_marcoPesas();
+        holder.cant_marcoPesas.setText(cantidad_marcoPesas);
+
+        cantidad_pesas5kg=ranking6recycler.get(position).getCantidad_pesas5kg();
+        holder.cant_pesas5kg.setText(cantidad_pesas5kg);
+
+        cantidad_pesas10kg=ranking6recycler.get(position).getCantidad_pesas10kg();
+        holder.cant_pesas10kg.setText(cantidad_pesas10kg);
+
+
+        cantidad_pesas20kg=ranking6recycler.get(position).getCantidad_pesas20kg();
+        holder.cant_pesas20kg.setText(cantidad_pesas20kg);
+
+        cantidad_pesaClase_exactitud=ranking6recycler.get(position).getCantidad_pesaClase_exactitud();
+        holder.cant_pesaClase_exactitud.setText(cantidad_pesaClase_exactitud);
+
+        cantidad_horario=ranking6recycler.get(position).getCantidad_horario();
+        holder.cant_horario.setText(cantidad_horario);
+
         cantidad_costo=ranking6recycler.get(position).getCantidad_costo();
         holder.cant_costo.setText(cantidad_costo);
 
-        final String modelo  =  holder.cant_bascula.getText().toString();
+        final String modelo  =  holder.cant_modelo.getText().toString();
         holder.marco5.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -78,10 +108,10 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
                 if (anterior!=null)
                 {
                     anterior.marco5.setBackgroundResource(R.color.blanco);
-                    anterior.cant_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
+                    anterior.cant_modelo.setTextColor(context.getResources().getColor(R.color.blanco));
                 }
 
-                holder.cant_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
+                holder.cant_modelo.setTextColor(context.getResources().getColor(R.color.blanco));
 
 
 
@@ -97,21 +127,31 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
 
     }
     public class ViewHolderRecycler extends RecyclerView.ViewHolder {
-        TextView cant_bascula,cant_tipo_instrumento,cant__modelo,cant_serie,cant_AlcanceMax,cant_Eod,cant_AlcanceMin,cant_exactitud,cant_checkbox,cant_costo;
+        TextView cant_numero_aprobacion,cant_marca,cant_modelo,cant_AlcanceMax,cant_AlcanceMin,cant_CodigoMarca,cant_CodigoModelo,
+                cant_anoAprobacion,cant_eod,cant_TipoInstrumento,cant_claseExactitud,cant_marcoPesas,cant_pesas5kg,cant_pesas10kg,
+                cant_pesas20kg,cant_pesaClase_exactitud,cant_horario,cant_costo;
         LinearLayout marco5;
 
 
         public ViewHolderRecycler(View itemView) {
             super(itemView);
-            cant_bascula =(TextView)itemView.findViewById(R.id.cantidad_bascula);
-            cant_tipo_instrumento =(TextView)itemView.findViewById(R.id.cantidad_tipo_instrumento);
-            cant__modelo =(TextView)itemView.findViewById(R.id.cantidad_modelo);
-            cant_serie =(TextView)itemView.findViewById(R.id.cantidad_serie);
+            cant_numero_aprobacion =(TextView)itemView.findViewById(R.id.cantidad_numero_aprobacion);
+            cant_marca =(TextView)itemView.findViewById(R.id.cantidad_marca);
+            cant_modelo =(TextView)itemView.findViewById(R.id.cantidad_modelo);
             cant_AlcanceMax =(TextView)itemView.findViewById(R.id.cantidad_AlcanceMax);
-            cant_Eod =(TextView)itemView.findViewById(R.id.cantidad_Eod);
             cant_AlcanceMin =(TextView)itemView.findViewById(R.id.cantidad_AlcanceMin);
-            cant_exactitud =(TextView)itemView.findViewById(R.id.cantidad_exactitud);
-            cant_checkbox =(TextView)itemView.findViewById(R.id.cantidad_checkbox);
+            cant_CodigoMarca =(TextView)itemView.findViewById(R.id.cantidad_CodigoMarca);
+            cant_CodigoModelo =(TextView)itemView.findViewById(R.id.cantidad_CodigoModelo);
+            cant_anoAprobacion =(TextView)itemView.findViewById(R.id.cantidad_anoAprobacion);
+            cant_eod =(TextView)itemView.findViewById(R.id.cantidad_eod);
+            cant_TipoInstrumento =(TextView)itemView.findViewById(R.id.cantidad_TipoInstrumento);
+            cant_claseExactitud =(TextView)itemView.findViewById(R.id.cantidad_claseExactitud);
+            cant_marcoPesas =(TextView)itemView.findViewById(R.id.cantidad_marcoPesas);
+            cant_pesas5kg =(TextView)itemView.findViewById(R.id.cantidad_pesas5kg);
+            cant_pesas10kg =(TextView)itemView.findViewById(R.id.cantidad_pesas10kg);
+            cant_pesas20kg =(TextView)itemView.findViewById(R.id.cantidad_pesas20kg);
+            cant_pesaClase_exactitud =(TextView)itemView.findViewById(R.id.cantidad_pesaClase_exactitud);
+            cant_horario =(TextView)itemView.findViewById(R.id.cantidad_horario);
             cant_costo =(TextView)itemView.findViewById(R.id.cantidad_costo);
             marco5=(LinearLayout)itemView.findViewById(R.id.marco5);
 
