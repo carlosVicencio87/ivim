@@ -236,7 +236,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         recyclerModelo = findViewById(R.id.recycler_modelo);
         recyclerModelo.setLayoutManager(new LinearLayoutManager(context));
-
+        recyclerModelo.setItemViewCacheSize(50);
 
         recyclerCantidad=findViewById(R.id.recycler_numero_basc);
         recyclerCantidad.setLayoutManager(new LinearLayoutManager(context));
@@ -1916,6 +1916,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     public void setListaModelo()
     {
+//        for(int i=0;i<listaModelo.size();i++){
+//            Log.e("objeto");
+//        }
         adapterModeloBasculas = new AdapterModeloBasculas(activity, R.layout.item2, listaModelo, getResources());
         recycler_modelo.setAdapter(adapterModeloBasculas);
     }
@@ -2023,5 +2026,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         factura_no.setChecked(false);
         factura_si.setChecked(false);
     }
+
 
 }

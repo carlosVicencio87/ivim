@@ -41,7 +41,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final AdapterModeloBasculas.ViewHolderRecycler holder, int position) {
+    public void onBindViewHolder(final ViewHolderRecycler holder,final int position) {
         viewholderModelo =holder;
 
         modelo_bascula = ranking2recycler.get(position).getModelo_bascula();
@@ -56,14 +56,21 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
                 editor.putString("modelo",modelo);
                 editor.apply();
                 Log.e("cambio",datosModelo.getString("modelo","no"));
+                Log.e("index", String.valueOf(holder.getAdapterPosition()));
+
+                int posicion_tmp= holder.getAdapterPosition();
 
                 if (anterior!=null)
                 {
                     anterior.marco.setBackgroundResource(R.color.blanco);
                     anterior.model_bascula.setTextColor(context.getResources().getColor(R.color.negro));
                 }
+
+                Log.e("holdr", String.valueOf(holder));
+
                 holder.marco.setBackgroundResource(R.color.negro);
                 holder.model_bascula.setTextColor(context.getResources().getColor(R.color.blanco));
+
 
                 ((Mapa)context).definirAlcance(modelo);
 
