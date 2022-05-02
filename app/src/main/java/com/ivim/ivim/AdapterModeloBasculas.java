@@ -27,7 +27,7 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
     private SharedPreferences datosModelo;
     private SharedPreferences.Editor editor;
 
-    public AdapterModeloBasculas(Mapa activity, int item, ArrayList<ModeloRecycler> ranking2recycler, Resources resources)
+    public AdapterModeloBasculas(Mapa activity, int item2, ArrayList<ModeloRecycler> ranking2recycler, Resources resources)
     {
         this.ranking2recycler=ranking2recycler;
     }
@@ -45,7 +45,6 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
         viewholderModelo =holder;
 
         modelo_bascula = ranking2recycler.get(position).getModelo_bascula();
-        holder.model_bascula.setText(modelo_bascula);
         holder.model_bascula.setText(modelo_bascula);
         final String modelo  =  holder.model_bascula.getText().toString();
         holder.marco.setOnClickListener(new View.OnClickListener()

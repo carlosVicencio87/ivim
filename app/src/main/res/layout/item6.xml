@@ -489,7 +489,8 @@
                 android:text="pesa clase de exactitud"
                 android:gravity="center"
                 android:textSize="15dp"/>
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:orientation="vertical"
@@ -516,9 +517,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="horario"
+                android:gravity="center"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Tipo de visita"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_TipoVisita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="horario"
                 android:gravity="center"
                 android:textSize="15dp"/>
-        </LinearLayout> <LinearLayout
+        </LinearLayout>
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:orientation="vertical"

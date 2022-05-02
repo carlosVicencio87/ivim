@@ -20,12 +20,13 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     private String cantidad_pesas20kg;
     private String cantidad_pesaClase_exactitud;
     private String cantidad_horario;
+    private String cantidad_TipoVisita;
     private String cantidad_costo;
 
     public CantidadBasculasRecycler(String cant_numero_aprobacion,String cant_marca,String cant_modelo,String cant_AlcanceMax,String cant_AlcanceMin,
                                     String cant_CodigoMarca,String cant_CodigoModelo,String cant_anoAprobacion, String cant_eod,
                                     String cant_TipoInstrumento,String cant_claseExactitud,String cant_marcoPesas,String cant_pesas5kg,
-                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_costo){
+                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_TipoVisita, String cant_costo){
 
         this.cantidad_numero_aprobacion =cant_numero_aprobacion;
         this.cantidad_marca =cant_marca;
@@ -44,6 +45,7 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_pesas20kg =cant_pesas20kg;
         this.cantidad_pesaClase_exactitud =cant_pesaClase_exactitud;
         this.cantidad_horario =cant_horario;
+        this.cantidad_TipoVisita =cant_TipoVisita;
         this.cantidad_costo =cant_costo;
 
     }
@@ -65,6 +67,7 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     public String getCantidad_pesas20kg() { return cantidad_pesas20kg; }
     public String getCantidad_pesaClase_exactitud() { return cantidad_pesaClase_exactitud; }
     public String getCantidad_horario() { return cantidad_horario; }
+    public String getCantidad_TipoVisita() { return cantidad_TipoVisita; }
     public String getCantidad_costo() { return cantidad_costo; }
 
     public void setCantidad_numero_aprobacion(String cantidad_numero_aprobacion) {
@@ -101,6 +104,8 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_pesaClase_exactitud = cantidad_pesaClase_exactitud; }
     public void setCantidad_horario(String cantidad_horario) {
         this.cantidad_horario = cantidad_horario; }
+    public void setCantidad_TipoVisita(String cantidad_tipoVisita) {
+        this.cantidad_TipoVisita = cantidad_tipoVisita; }
     public void setCantidad_costo(String cantidad_costo) {
         this.cantidad_costo = cantidad_costo; }
 }
