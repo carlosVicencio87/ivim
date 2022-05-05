@@ -101,3 +101,4 @@ public class AdapterModeloBasculas extends RecyclerView.Adapter<AdapterModeloBas
         }
     }
 }
+

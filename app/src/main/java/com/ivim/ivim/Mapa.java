@@ -25,6 +25,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.SpannableString;
@@ -44,6 +45,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -62,10 +70,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
@@ -77,7 +88,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Marker marker;
     private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,cons_factura;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
-            caja_direccion, caja_giro, caja_mercado, caja_edit_tel, caja_tel_final,
+            caja_direccion, caja_giro, caja_mercado, caja_mercado_final,caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
             caja_zona,caja_instrumento, caja_alcanceSnaprobacion, caja_alcanceSnaprobacion_final, caja_recycler_alcance,caja_snAprobacion_marca,
             caja_recycler_eod,caja_recycler_minimo,caja_exactitud,caja_edit_costo,
@@ -85,7 +96,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_costo_final,caja_edit_fecha,caja_fecha_final,caja_marco_pesas,caja_pesa5k,caja_pesa10k,caja_pesa20k,caja_pesa_clase_exactitud,
             caja_horario,caja_snAprobacion_marca_final,caja_alcanceMinSnaprobacion,caja_alcanceSMinnaprobacion_final,caja_snAprobacion_modelo,
             caja_snAprobacion_modelo_final,caja_Codigomarca_Snaprobacion_final,caja_Codigomarca_Snaprobacion,
-            caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita;
+            caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final
+            ,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita,
+            caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final;
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
@@ -95,7 +108,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             editorAlcanceMin,editor;
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
-    private String direccion, nuevo_nombre, seleccion_giro,seleccion_mercado, nuevo_tel, nueva_serie,
+    private String direccion, nuevo_nombre, seleccion_giro, nuevo_tel, nueva_serie,
             nuevo_costo,seleccion_instrumento,selector_modelo,checkModel,checkAlcanceMax,checkEod,checkAlcanceMin,
             seleccion_exactitud,nueva_aprobacion,valorCheckboxPrimera,fecha_final_Str,tipo_intrumento,valcatalogo,nueva_marca,
             nueva_modelo,nueva_alcanceMax,nueva_alcanceMin,nueva_codigoMarca,nueva_codigoModelo,nueva_anoSnapro,nueva_fecha,
@@ -106,7 +119,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             ,nuevo_pesas_20kg_string,nuevo_pesa_clase_exactitud_string,nuevo_horario_string,nuevo_coodigoMarca_string,
             nuevo_coodigoModelo_string,ano_global_string,nuevo_eod_str,eodSnaprobacion,tipoInstrumentoSnaprobacion,
             claseExactitudSnaprobacion,marco_pesasSnaprobacion,pesas_5kgSnaprobacion,pesas_10kgSnaprobacion,pesas_20kgSnaprobacion,
-            esa_clase_exactitudSnaprobacion,horarioSnaprobacion,nueva_codigoMarcaSnaprobacion,nueva_codigoModelo_snAprobacion,tipo_visita_string;
+            esa_clase_exactitudSnaprobacion,horarioSnaprobacion,nueva_codigoMarcaSnaprobacion,
+            nueva_codigoModelo_snAprobacion,tipo_visita_string,enviar_modelo,enviar_AlcanceMax,
+            enviar_numero_aprobacion,enviar_marca,enviar_AlcanceMin,enviar_CodigoMarca,
+            enviar_CodigoModelo,enviar_anoAprobacion,enviar_eod,enviar_TipoInstrumento,enviar_claseExactitud,
+            enviar_marcoPesas,enviar_pesas5kg,enviar_pesas10kg,enviar_pesas20kg,enviar_pesaClase_exactitud,
+            enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie;
 
 
     private TextView puntoPartida,fecha_final,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
@@ -115,27 +133,27 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             recycler_alcance,recycler_marca,recycler_minimo,recycler_eod,tipoInstrumento,claseExactitud,marco_pesas,pesas_5kg
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
-            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita;
+            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie;
 
 
 
     private int tipo_camino;
-    private EditText nombre_texto, fecha, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
-            modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,ano_Snaprobacion_texto;
+    private EditText nombre_texto, fecha,mercado_texto, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
+            modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,
+            ano_Snaprobacion_texto,rfc_texto,numSerie_texto;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
-            cambiar_telefono, guardar_alcance_snAprobacion, cambiar_alcance_snAprobacion,
+            cambiar_telefono,guardar_mercado, cambiar_mercado,guardar_alcance_snAprobacion, cambiar_alcance_snAprobacion,
             guardar_costo,cambiar_costo,guardar_aprobacion,cambiar_aprobacion,guardar_fecha,cambiar_fecha,
             guardar_alcanceMin_snAprobacion,cambiar_alcanceMin_snAprobacion,guardar_marca,cambiar_marca,
             guardar_modelo,cambiar_modelo,cambiar_Codigomarca_Snaprobacion,guardar_Codigomarca_Snaprobacion,
-            guardar_CodigomaModelo_Snaprobacion,cambiar_CodigomaModelo_Snaprobacion,guardar_ano_Snaprobacion,cambiar_ano_Snaprobacion;
+            guardar_CodigomaModelo_Snaprobacion,cambiar_CodigomaModelo_Snaprobacion,guardar_ano_Snaprobacion
+            ,cambiar_ano_Snaprobacion,guardar_rfc,cambiar_rfc,guardar_numSerie,cambiar_serie;
     private RecyclerView  recycler_modelo,recycler_numero_basc;
     private Boolean tel10,fecha_existoso;
     private ScrollView formulario_principal, formulario_bascula,almacen_basculas;
-    private Spinner giros, mercado;
+    private Spinner giros;
     private AdapterGiro adapterGiro;
     public ArrayList<SpinnerModel> listaGiro = new ArrayList<>();
-    private AdapterMercado adapterMercado;
-    public ArrayList<SpinnerModel> listaMercado = new ArrayList<>();
 
 
     private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance,recyclerEod,
@@ -165,14 +183,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private MultiAutoCompleteTextView autoAprobacion;
 
 
-   private  JSONArray json_datos_bascula;
-   private static String SERVIDOR_CONTROLADOR;
-   private   SQLiteDatabase database,database2,database3,database4,database6;
+    private  JSONArray json_datos_bascula;
+    private static String SERVIDOR_CONTROLADOR;
+    private   SQLiteDatabase database,database2,database3,database4,database6;
     private Conexion conexion1,conexion2,conexion3,conexion4,conexion6;
     private Cursor cursor1,cursor2,cursor3,cursor4,cursor5,cursor6;
     private ArrayList<String> APROBACION;
     private CheckBox primera_si,primera_no,factura_si,factura_no;
     private  int numero_anoglobal,resta_anos,elementoNumeroMes,elementoNumerAno;
+    private AsincronaEnviarBasculas asincronaEnviarBasculas;
 
 
     @Override
@@ -190,7 +209,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         nombre = findViewById(R.id.nombre);
         nombre_texto = findViewById(R.id.nombre_texto);
         formulario_principal = findViewById(R.id.formulario_principal);
-        caja_punto_partida = findViewById(R.id.caja_punto_partida);
+         caja_punto_partida = findViewById(R.id.caja_punto_partida);
         caja_edit_nombre = findViewById(R.id.caja_edit_nombre);
         caja_nombre_final = findViewById(R.id.caja_nombre_final);
         guardar_nombre = findViewById(R.id.guardar_nombre);
@@ -202,13 +221,26 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         fecha_final = findViewById(R.id.fecha_final);
         cambiar_fecha = findViewById(R.id.cambiar_fecha);
 
+        caja_edit_rfc = findViewById(R.id.caja_edit_rfc);
+        rfc_texto = findViewById(R.id.rfc_texto);
+        guardar_rfc = findViewById(R.id.guardar_rfc);
+        caja_rfc_final = findViewById(R.id.caja_rfc_final);
+        rfc = findViewById(R.id.rfc);
+        cambiar_rfc = findViewById(R.id.cambiar_rfc);
+
+
 
         caja_direccion = findViewById(R.id.caja_direccion);
         direccion_mercado = findViewById(R.id.direccion_mercado);
         caja_giro = findViewById(R.id.caja_giro);
         giros = findViewById(R.id.giros);
         caja_mercado = findViewById(R.id.caja_mercado);
-        mercado = findViewById(R.id.mercado);
+        mercado_texto = findViewById(R.id.mercado_texto);
+        guardar_mercado = findViewById(R.id.guardar_mercado);
+        caja_mercado_final = findViewById(R.id.caja_mercado_final);
+        mercado_vista = findViewById(R.id.mercado_vista);
+        cambiar_mercado = findViewById(R.id.cambiar_mercado);
+
         caja_edit_tel = findViewById(R.id.caja_edit_tel);
         tel_texto = findViewById(R.id.tel_texto);
         guardar_tel = findViewById(R.id.guardar_tel);
@@ -218,7 +250,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         activity = this;
         setListaGiro();
-        setListaMercado();
 
 
 
@@ -274,6 +305,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_costo_final = findViewById(R.id.caja_costo_final);
         costo = findViewById(R.id.costo);
         cambiar_costo = findViewById(R.id.cambiar_costo);
+
+        caja_edit_numSerie = findViewById(R.id.caja_edit_numSerie);
+        numSerie_texto = findViewById(R.id.numSerie_texto);
+        guardar_numSerie = findViewById(R.id.guardar_numSerie);
+        caja_numSerie_final = findViewById(R.id.caja_numSerie_final);
+        numSerie = findViewById(R.id.numSerie);
+        cambiar_serie = findViewById(R.id.cambiar_serie);
+
+
+
+
+
         caja_siguiente_basc = findViewById(R.id.caja_siguiente_basc);
         regresar_formulario = findViewById(R.id.regresar_formulario);
         agregar_bascula = findViewById(R.id.agregar_bascula);
@@ -355,7 +398,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         cambiar_alcanceMin_snAprobacion = findViewById(R.id.cambiar_alcanceMin_snAprobacion);
 
 
-         tipo_visita= findViewById(R.id.tipo_visita);
+        tipo_visita= findViewById(R.id.tipo_visita);
         primera_si= findViewById(R.id.primera_si);
         primera_no= findViewById(R.id.primera_no);
         cons_factura= findViewById(R.id.cons_factura);
@@ -498,6 +541,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_edit_nombre.setVisibility(view.VISIBLE);
             }
         });
+        guardar_rfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nuevo_rfc = rfc_texto.getText().toString();
+                rfc.setText(nuevo_rfc);
+                if (!nuevo_rfc.trim().equals("")) {
+                    caja_edit_rfc.setVisibility(View.GONE);
+                    caja_rfc_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_rfc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_rfc_final.setVisibility(view.GONE);
+                caja_edit_rfc.setVisibility(view.VISIBLE);
+            }
+        });
         guardar_tel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -538,31 +603,62 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 Locale.getDefault()).format(new Date());
         Log.e("fecha", "" + date);
         fecha.setText(date);
+        guardar_fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                nueva_fecha = fecha.getText().toString();
+                fecha_final.setText(nueva_fecha);
+                nueva_fecha_final= fecha_final.getText().toString();
+                if (!nueva_fecha.trim().equals("")&&nueva_fecha!=null) {
+
+                    String regexFecha ="[0-9]{2}-[0-9]{2}-[0-9]{4}";
+                    Pattern pattern = Pattern.compile(regexFecha);
+                    Matcher matcher = pattern.matcher(nueva_fecha);
+                    if(matcher.matches()==true){
+
+                        fecha_existoso=true;
+                        caja_fecha_final.setVisibility(View.VISIBLE);
+                        caja_edit_fecha.setVisibility(View.GONE);
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "El formato de fecha es necesario 99-99-9999 es necesario.", Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "La formato es necesario.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        cambiar_fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_fecha_final.setVisibility(view.GONE);
+                caja_edit_fecha.setVisibility(view.VISIBLE);
+            }
+        });
         /*fecha.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean tieneFoco) {
-
                 if(!tieneFoco)
                 {
                     fecha_final_Str=fecha.getText().toString().trim().toLowerCase();
                     if (!fecha_final_Str.equals("")&&fecha_final_Str!=null)
                     {
                         // String regex = "^(.+)@(.+)$";
-
                         String regexUsuario = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
                         Pattern pattern = Pattern.compile(regexUsuario);
                         Matcher matcher = pattern.matcher(fecha_final_Str);
                         if(matcher.matches()==true){
-
                             correo_exitoso=true;
-
                         }
                     }
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Ingrese correo valido.",Toast.LENGTH_LONG).show();
-
                 }
             }
         });*/
@@ -573,8 +669,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         adapterGiro = new AdapterGiro(activity, R.layout.lista_giro, listaGiro, getResources());
         giros.setAdapter(adapterGiro);
 
-        adapterMercado = new AdapterMercado(activity, R.layout.lista_mercado, listaMercado, getResources());
-        mercado.setAdapter(adapterMercado);
 
 
 
@@ -632,6 +726,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_edit_costo.setVisibility(view.VISIBLE);
             }
         });
+        guardar_numSerie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                nuevo_numSerie = numSerie_texto.getText().toString();
+                numSerie.setText(nuevo_numSerie);
+                if (!nuevo_numSerie.trim().equals("")) {
+                    caja_edit_numSerie.setVisibility(View.GONE);
+                    caja_numSerie_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_serie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_numSerie_final.setVisibility(view.GONE);
+                caja_edit_numSerie.setVisibility(view.VISIBLE);
+            }
+        });
         regresar_formulario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -644,56 +760,52 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_reg_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                formulario_bascula.setVisibility(view.GONE);
-                caja_finalizar_basc.setVisibility(view.VISIBLE);
-
                 for (int i=0; i<listaCantidadBasc.size();i++){
-                    String enviar_numero_aprobacion=listaCantidadBasc.get(i).getCantidad_numero_aprobacion().toString();
+                    enviar_numero_aprobacion=listaCantidadBasc.get(i).getCantidad_numero_aprobacion().toString();
                     Log.e("lista_Array1",""+enviar_numero_aprobacion);
-                    String enviar_marca=listaCantidadBasc.get(i).getCantidad_marca();
+                    enviar_marca=listaCantidadBasc.get(i).getCantidad_marca();
                     Log.e("lista_Array1",""+enviar_marca);
-
-                    String enviar_modelo=listaCantidadBasc.get(i).getCantidad_modelo();
+                    enviar_modelo=listaCantidadBasc.get(i).getCantidad_modelo();
                     Log.e("lista_Array1",""+enviar_modelo);
-                    String enviar_AlcanceMax=listaCantidadBasc.get(i).getCantidad_AlcanceMax();
+                    enviar_AlcanceMax=listaCantidadBasc.get(i).getCantidad_AlcanceMax();
                     Log.e("lista_Array1",""+enviar_AlcanceMax);
-                    String enviar_AlcanceMin=listaCantidadBasc.get(i).getCantidad_AlcanceMin();
+                    enviar_AlcanceMin=listaCantidadBasc.get(i).getCantidad_AlcanceMin();
                     Log.e("lista_Array1",""+enviar_AlcanceMin);
-                    String enviar_CodigoMarca=listaCantidadBasc.get(i).getCantidad_CodigoMarca();
+                    enviar_CodigoMarca=listaCantidadBasc.get(i).getCantidad_CodigoMarca();
                     Log.e("lista_Array1",""+enviar_CodigoMarca);
-                    String enviar_CodigoModelo=listaCantidadBasc.get(i).getCantidad_CodigoModelo();
+                    enviar_CodigoModelo=listaCantidadBasc.get(i).getCantidad_CodigoModelo();
                     Log.e("lista_Array1",""+enviar_CodigoModelo);
-                    String enviar_anoAprobacion=listaCantidadBasc.get(i).getCantidad_anoAprobacion();
+                    enviar_anoAprobacion=listaCantidadBasc.get(i).getCantidad_anoAprobacion();
                     Log.e("lista_Array1",""+enviar_anoAprobacion);
-                    String enviar_eod=listaCantidadBasc.get(i).getCantidad_eod();
+                    enviar_eod=listaCantidadBasc.get(i).getCantidad_eod();
                     Log.e("lista_Array1",""+enviar_eod);
-                    String enviar_TipoInstrumento=listaCantidadBasc.get(i).getCantidad_TipoInstrumento();
+                    enviar_TipoInstrumento=listaCantidadBasc.get(i).getCantidad_TipoInstrumento();
                     Log.e("lista_Array1",""+enviar_TipoInstrumento);
-                    String enviar_claseExactitud=listaCantidadBasc.get(i).getCantidad_claseExactitud();
+                    enviar_claseExactitud=listaCantidadBasc.get(i).getCantidad_claseExactitud();
                     Log.e("lista_Array1",""+enviar_claseExactitud);
-                    String enviar_marcoPesas=listaCantidadBasc.get(i).getCantidad_marcoPesas();
+                    enviar_marcoPesas=listaCantidadBasc.get(i).getCantidad_marcoPesas();
                     Log.e("lista_Array1",""+enviar_marcoPesas);
-                    String enviar_pesas5kg=listaCantidadBasc.get(i).getCantidad_pesas5kg();
+                    enviar_pesas5kg=listaCantidadBasc.get(i).getCantidad_pesas5kg();
                     Log.e("lista_Array1",""+enviar_pesas5kg);
-                    String enviar_pesas10kg=listaCantidadBasc.get(i).getCantidad_pesas10kg();
+                    enviar_pesas10kg=listaCantidadBasc.get(i).getCantidad_pesas10kg();
                     Log.e("lista_Array1",""+enviar_pesas10kg);
-                    String enviar_pesas20kg=listaCantidadBasc.get(i).getCantidad_pesas20kg();
+                    enviar_pesas20kg=listaCantidadBasc.get(i).getCantidad_pesas20kg();
                     Log.e("lista_Array1",""+enviar_pesas20kg);
-                    String enviar_pesaClase_exactitud=listaCantidadBasc.get(i).getCantidad_pesaClase_exactitud();
+                    enviar_pesaClase_exactitud=listaCantidadBasc.get(i).getCantidad_pesaClase_exactitud();
                     Log.e("lista_Array1",""+enviar_pesaClase_exactitud);
-                    String enviar_horario=listaCantidadBasc.get(i).getCantidad_horario();
+                    enviar_horario=listaCantidadBasc.get(i).getCantidad_horario();
                     Log.e("lista_Array1",""+enviar_horario);
-                    String enviar_TipoVisita=listaCantidadBasc.get(i).getCantidad_TipoVisita();
+                    enviar_TipoVisita=listaCantidadBasc.get(i).getCantidad_TipoVisita();
                     Log.e("lista_Array1",""+enviar_TipoVisita);
-                    String enviar_costo=listaCantidadBasc.get(i).getCantidad_costo();
+                    enviar_costo=listaCantidadBasc.get(i).getCantidad_costo();
                     Log.e("lista_Array1",""+enviar_costo);
 
 
-
-
-
                 }
+                formulario_bascula.setVisibility(view.GONE);
+                caja_finalizar_basc.setVisibility(view.VISIBLE);
+
+
             }
         });
         finalizar_no.setOnClickListener(new View.OnClickListener() {
@@ -706,15 +818,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_si.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-               Intent cambio_form= new Intent(Mapa.this,ActaDictamen.class);
-               startActivity(cambio_form);
+                caja_finalizar_basc.setVisibility(view.GONE);
+                mapaid.setVisibility(view.VISIBLE);
+                asincronaEnviarBasculas=new AsincronaEnviarBasculas();
+                asincronaEnviarBasculas.execute();
             }
         });
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               listas_giro = findViewById(R.id.listaGiro);
+                listas_giro = findViewById(R.id.listaGiro);
                 if (listas_giro == null) {
                     listas_giro = (TextView) view.findViewById(R.id.listaGiro);
                 } else {
@@ -732,22 +845,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        mercado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                listas_mercado = findViewById(R.id.listaMercado);
-                if (listas_mercado == null) {
-                    listas_mercado = (TextView) view.findViewById(R.id.listaMercado);
-                } else {
-                    listas_mercado = (TextView) view.findViewById(R.id.listaMercado);
-                }
-                seleccion_mercado = listas_mercado.getText().toString();
-                Log.e("tipogiro", "" + seleccion_mercado);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+
         valorCheckboxPrimera="";
         //inicial.setChecked(true);
         primera_si.setOnClickListener(new View.OnClickListener() {
@@ -755,7 +853,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco();
                 primera_si.setChecked(true);
-                valorCheckboxPrimera="inicial";
+                valorCheckboxPrimera="primera_si";
                 if(valorCheckboxPrimera.equals("inicial")){
 
                     tipo_visita.setText("Inicial");
@@ -769,7 +867,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 quitar_foco();
                 primera_no.setChecked(true);
                 tipo_visita.setText("");
-                valorCheckboxPrimera="";
+                valorCheckboxPrimera="primera_no";
                 Log.e("cambios", "" + valorCheckboxPrimera);
             }
         });
@@ -780,45 +878,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco2();
                 factura_si.setChecked(true);
-                valorCheckboxFactura="anual";
+                valorCheckboxFactura="factura_si";
                 Log.e("cambios", "" + valorCheckboxFactura);
-                if(resta_anos<10){
 
-                    if(elementoNumeroMes<6){
-                        tipo_visita.setText("PERIODICA ANUAL");
-                    }
-                    else{
-                        tipo_visita.setText("ANUAL EXTRAORDINARIA");
-                    }
-
-                }
-                else{
-                    if ( elementoNumeroMes<4){
-                        tipo_visita.setText("1er semestre");
-                        Log.e("adentro de topita1",""+elementoNumeroMes);
-
-                    }
-                    else{
-                        if( elementoNumeroMes>3&&elementoNumeroMes<7){
-                            tipo_visita.setText("extraordinarias");
-                            Log.e("adentro de topita2",""+tipo_visita);
-                        }
-                        else {
-                            if(elementoNumeroMes>6&&elementoNumeroMes<10){
-                                tipo_visita.setText("2do semestre");
-                                Log.e("adentro de topita3",""+tipo_visita);
-
-                            }
-                            else {
-                                if(elementoNumeroMes>9&&elementoNumeroMes==12){
-                                    tipo_visita.setText("Extraordinarias o iniciales");
-                                    Log.e("adentro de topita4",""+tipo_visita);
-                                }
-                            }
-                        }
-                    }
-
-                }
             }
         });
         factura_no.setOnClickListener(new View.OnClickListener() {
@@ -826,36 +888,41 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco2();
                 factura_no.setChecked(true);
+                valorCheckboxFactura="factura_no";
+                Log.e("cambios", "" + valorCheckboxFactura);
+                if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_no"))
+                {
 
 
-                if ( elementoNumeroMes<4){
-                        tipo_visita.setText("1er semestre");
-                        Log.e("adentro de topita1",""+elementoNumeroMes);
+                        mapaid.setVisibility(View.VISIBLE);
+                }
 
-                    }
-                    else{
-                        if( elementoNumeroMes>3&&elementoNumeroMes<7){
-                            tipo_visita.setText("extraordinarias");
-                            Log.e("adentro de topita2",""+tipo_visita);
-                        }
-                        else {
-                            if(elementoNumeroMes>6&&elementoNumeroMes<10){
-                                tipo_visita.setText("2do semestre");
-                                Log.e("adentro de topita3",""+tipo_visita);
 
-                            }
-                            else {
-                                if(elementoNumeroMes>9&&elementoNumeroMes==12){
-                                    tipo_visita.setText("Extraordinarias o iniciales");
-                                    Log.e("adentro de topita4",""+tipo_visita);
-                                }
-                            }
-                        }
-                    }
 
             }
         });
+        guardar_mercado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                nuevo_mercado = mercado_texto.getText().toString();
+                mercado_vista.setText(nuevo_mercado);
+                if (!nuevo_mercado.trim().equals("")) {
+                    caja_mercado.setVisibility(View.GONE);
+                    caja_mercado_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "El costo es necesario.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_mercado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                caja_mercado_final.setVisibility(view.GONE);
+                caja_mercado.setVisibility(view.VISIBLE);
+            }
+        });
 
 
 
@@ -870,35 +937,41 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 nuevo_nombre = nombre_texto.getText().toString();
                 nuevo_tel = tel_texto.getText().toString();
-                if (!nuevo_nombre.trim().equals("")) {
-                    if(!seleccion_giro.trim().equals("Giro")){
-                        if(!seleccion_mercado.trim().equals("Mercado")){
-                            if (!nuevo_tel.trim().equals("")) {
+                nueva_fecha = fecha.getText().toString();
+                nueva_fecha_final= fecha_final.getText().toString();
+                if(!nueva_fecha_final.trim().equals("")){
+                        if (!nuevo_nombre.trim().equals("")) {
+                            if(!seleccion_giro.trim().equals("Giro")){
+                                if(!nuevo_mercado.trim().equals("")){
+                                    if (!nuevo_tel.trim().equals("")) {
 
-                                if (tel10==true){
-                                    if(!nueva_fecha.trim().equals("")){
-                                        formulario_principal.setVisibility(view.GONE);
-                                        formulario_bascula.setVisibility(view.VISIBLE);
+                                        if (tel10==true){
+                                            formulario_principal.setVisibility(view.GONE);
+                                            formulario_bascula.setVisibility(view.VISIBLE);
+
+                                        }
                                     }
                                     else{
-                                        Toast.makeText(getApplicationContext(), "Definir la fecha es necesario.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
                                     }
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(), "Seleccionar mercado es necesario.", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
                             }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
                         }
-                        else{
-                            Toast.makeText(getApplicationContext(), "Seleccionar mercado es necesario.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "Definir la fecha es necesario.", Toast.LENGTH_LONG).show();
+                }
+
+
             }
         });
 
@@ -915,7 +988,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 String elementoMes=fecha_fragmentada[1];
                 String elementoAno=fecha_fragmentada[2];
                 elementoNumeroMes= Integer.parseInt(elementoMes);
-                 elementoNumerAno= Integer.parseInt(elementoAno);
+                elementoNumerAno= Integer.parseInt(elementoAno);
                 Log.e("mes_chems",""+elementoMes);
                 Log.e("mes_chems1",""+elementoNumeroMes);
                 Log.e("mes_chems1",""+elementoAno);
@@ -933,30 +1006,34 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     if(cuenta==0){
                         Log.e("topitas_cuenta",""+cuenta);
                         Log.e("errodecuenta",""+elementoNumeroMes);
-                        if ( elementoNumeroMes<4){
+                        if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
                             tipo_visita.setText("1er semestre");
                             Log.e("adentro de topita1",""+elementoNumeroMes);
 
                         }
                         else{
-                            if( elementoNumeroMes>3&&elementoNumeroMes<7){
-                                tipo_visita.setText("extraordinarias");
+                            if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                                tipo_visita.setText("1er semestre extraordinarias");
                                 Log.e("adentro de topita2",""+tipo_visita);
                             }
                             else {
-                                if(elementoNumeroMes>6&&elementoNumeroMes<10){
+                                if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
                                     tipo_visita.setText("2do semestre");
                                     Log.e("adentro de topita3",""+tipo_visita);
 
                                 }
                                 else {
-                                    if(elementoNumeroMes>9&&elementoNumeroMes==12){
-                                        tipo_visita.setText("Extraordinarias o iniciales");
+                                    if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                                        tipo_visita.setText("2do semestre Extraordinarias o iniciales");
                                         Log.e("adentro de topita4",""+tipo_visita);
                                     }
                                 }
                             }
                         }
+                        if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
+                            tipo_visita.setText("Inicial");
+                        }
+
                         Log.e("adentro de topita",""+cuenta);
 
                         tipo_camino=1;
@@ -976,6 +1053,20 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         caja_ano_Snaprobacion.setVisibility(View.VISIBLE);
                     }
                     else{
+                        caja_snAprobacion_marca.setVisibility(View.GONE);
+                        caja_recycler_marca.setVisibility(View.VISIBLE);
+                        caja_snAprobacion_modelo.setVisibility(View.GONE);
+                        caja_recycler_modelo.setVisibility(View.VISIBLE);
+                        caja_recycler_alcance.setVisibility(View.VISIBLE);
+                        caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                        caja_recycler_minimo.setVisibility(View.VISIBLE);
+                        caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
+                        caja_codigo_marca.setVisibility(View.VISIBLE);
+                        caja_Codigomarca_Snaprobacion.setVisibility(View.GONE);
+                        caja_codigo_modelo.setVisibility(View.VISIBLE);
+                        caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);
+                        caja_ano_aprobacion.setVisibility(View.VISIBLE);
+                        caja_ano_Snaprobacion.setVisibility(View.GONE);
                         while (cursor3.moveToNext()){
                             Log.e("marca",cursor3.getString(1));
                             recycler_marca.setText(cursor3.getString(1));
@@ -1010,17 +1101,67 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                 resta_anos=elementoNumerAno-numero_anoglobal;
                                 Log.e("año_de_aproabacion",""+resta_anos);
 
+                                if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
 
-                                        if(elementoNumeroMes<6){
-                                            tipo_visita.setText("PERIODICA ANUAL");
+                                    tipo_visita.setText("Inicial");
+                                }
+
+
+                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos<10&&elementoNumeroMes<7){
+                                    tipo_visita.setText("Periodica anual");
+                                }
+                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos<10&&elementoNumeroMes>6){
+                                    tipo_visita.setText("Anual Extraordinaria");
+                                }
+
+                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&resta_anos>10){
+                                    tipo_visita.setText("1er semestre");
+                                    Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                                }
+                                else{
+                                    if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                                        tipo_visita.setText("1er semestre extraordinarias");
+                                        Log.e("adentro de topita2",""+tipo_visita);
+                                    }
+                                    else {
+                                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                                            tipo_visita.setText("2do semestre");
+                                            Log.e("adentro de topita3",""+tipo_visita);
+
                                         }
-                                        else{
-                                            tipo_visita.setText("ANUAL EXTRAORDINARIA");
+                                        else {
+                                            if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                                                tipo_visita.setText("2do semestre Extraordinarias o iniciales");
+                                                Log.e("adentro de topita4",""+tipo_visita);
+                                            }
                                         }
+                                    }
+                                }
+                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
+                                    tipo_visita.setText("1er semestre");
+                                    Log.e("adentro de topita1",""+elementoNumeroMes);
 
+                                }
+                                else{
+                                    if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
+                                        tipo_visita.setText("1er semestre extraordinarias");
+                                        Log.e("adentro de topita2",""+tipo_visita);
+                                    }
+                                    else {
+                                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
+                                            tipo_visita.setText("2do semestre");
+                                            Log.e("adentro de topita3",""+tipo_visita);
 
-
-
+                                        }
+                                        else {
+                                            if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
+                                                tipo_visita.setText("2do semestre Extraordinarias o iniciales");
+                                                Log.e("adentro de topita4",""+tipo_visita);
+                                            }
+                                        }
+                                    }
+                                }
                             }catch (Exception e){
                                 Log.e("basculas","no existe");
                             }
@@ -1028,6 +1169,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                             //Log.e("lista_basculas",""+BASCULAS);
                         }
+
                     }
 
 
@@ -1082,6 +1224,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     nuevo_horario_string=nuevo_horario;
                     tipo_visita_string=tipo_visita.getText().toString();
                     nuevo_costo = costo_texto.getText().toString();
+                    nuevo_numSerie = numSerie_texto.getText().toString();
 
                 }
                 else{
@@ -1106,6 +1249,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     nuevo_horario_string=horarioSnaprobacion;
                     tipo_visita_string=tipo_visita.getText().toString();
                     nuevo_costo = costo_texto.getText().toString();
+                    nuevo_numSerie = numSerie_texto.getText().toString();
 
                 }
 
@@ -1127,106 +1271,116 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                                         if(!nuevo_pesas_20kg_string.trim().equals("")){
                                                                             if(!nuevo_pesa_clase_exactitud_string.trim().equals("")){
                                                                                 if(!nuevo_horario_string.trim().equals("")){
-                                                                                      if(!tipo_visita_string.trim().equals("")){
-                                                                                          if(!nuevo_costo.trim().equals("")){
-                                                                                              formulario_bascula.setVisibility(View.GONE);
-                                                                                              almacen_basculas.setVisibility(View.VISIBLE);
-                                                                                              Log.e("prueba1",""+nueva_aprobacion);
-                                                                                              Log.e("prueba2",""+nueva_marca);
-                                                                                              Log.e("prueba3",""+checkModel);
-                                                                                              Log.e("prueba4",""+nuevo_alcanceMax_aprobado_str);
-                                                                                              JSONObject jsonObject=new JSONObject();
-                                                                                              json_datos_bascula=new JSONArray();
-                                                                                              try {
-                                                                                                  jsonObject.put("numero_aprobacion",nueva_aprobacion);
-                                                                                                  jsonObject.put("marca",nueva_marca);
-                                                                                                  jsonObject.put("modelo",checkModel);
-                                                                                                  jsonObject.put("Alcance_max",nuevo_alcanceMax_aprobado_str);
-                                                                                                  jsonObject.put("Alcance_min",nuevo_alcanceMin_aprobado_str);
-                                                                                                  jsonObject.put("codigo_marca",nuevo_coodigoMarca_string);
-                                                                                                  jsonObject.put("codigo_modelo",nuevo_coodigoModelo_string);
-                                                                                                  jsonObject.put("ano_modelo",ano_global_string);
-                                                                                                  jsonObject.put("eod",nuevo_eod_str);
-                                                                                                  jsonObject.put("tipo_instrumento",nuevo_tipoInstrumento_string);
-                                                                                                  jsonObject.put("clase_exactitud",nueva_claseExactitud_string);
-                                                                                                  jsonObject.put("marco_pesas",nuevo_marco_pesas_string);
-                                                                                                  jsonObject.put("pesas_5kg",nuevo_pesas_5kg_string);
-                                                                                                  jsonObject.put("pesas_10kg",nuevo_pesas_10kg_string);
-                                                                                                  jsonObject.put("pesas_20kg",nuevo_pesas_20kg_string);
-                                                                                                  jsonObject.put("pesa_clase_exactitud",nuevo_pesa_clase_exactitud_string);
-                                                                                                  jsonObject.put("horario",nuevo_horario_string);
-                                                                                                  jsonObject.put("tipo_visita",tipo_visita_string);
-                                                                                                  jsonObject.put("costo",nuevo_costo);
-                                                                                                  json_datos_bascula.put(jsonObject);
+                                                                                    if(!tipo_visita_string.trim().equals("")){
+                                                                                        if(!nuevo_costo.trim().equals("")){
+                                                                                            if(!nuevo_numSerie.trim().equals("")){
+                                                                                                formulario_bascula.setVisibility(View.GONE);
+                                                                                                almacen_basculas.setVisibility(View.VISIBLE);
+                                                                                                Log.e("prueba1",""+nueva_aprobacion);
+                                                                                                Log.e("prueba2",""+nueva_marca);
+                                                                                                Log.e("prueba3",""+checkModel);
+                                                                                                Log.e("prueba4",""+nuevo_alcanceMax_aprobado_str);
+                                                                                                JSONObject jsonObject=new JSONObject();
+                                                                                                json_datos_bascula=new JSONArray();
+                                                                                                try {
+                                                                                                    jsonObject.put("numero_aprobacion",nueva_aprobacion);
+                                                                                                    jsonObject.put("marca",nueva_marca);
+                                                                                                    jsonObject.put("modelo",checkModel);
+                                                                                                    jsonObject.put("Alcance_max",nuevo_alcanceMax_aprobado_str);
+                                                                                                    jsonObject.put("Alcance_min",nuevo_alcanceMin_aprobado_str);
+                                                                                                    jsonObject.put("codigo_marca",nuevo_coodigoMarca_string);
+                                                                                                    jsonObject.put("codigo_modelo",nuevo_coodigoModelo_string);
+                                                                                                    jsonObject.put("ano_modelo",ano_global_string);
+                                                                                                    jsonObject.put("eod",nuevo_eod_str);
+                                                                                                    jsonObject.put("tipo_instrumento",nuevo_tipoInstrumento_string);
+                                                                                                    jsonObject.put("clase_exactitud",nueva_claseExactitud_string);
+                                                                                                    jsonObject.put("marco_pesas",nuevo_marco_pesas_string);
+                                                                                                    jsonObject.put("pesas_5kg",nuevo_pesas_5kg_string);
+                                                                                                    jsonObject.put("pesas_10kg",nuevo_pesas_10kg_string);
+                                                                                                    jsonObject.put("pesas_20kg",nuevo_pesas_20kg_string);
+                                                                                                    jsonObject.put("pesa_clase_exactitud",nuevo_pesa_clase_exactitud_string);
+                                                                                                    jsonObject.put("horario",nuevo_horario_string);
+                                                                                                    jsonObject.put("tipo_visita",tipo_visita_string);
+                                                                                                    jsonObject.put("costo",nuevo_costo);
+                                                                                                    jsonObject.put("numero_serie",nuevo_numSerie);
+                                                                                                    json_datos_bascula.put(jsonObject);
 
-                                                                                                  Log.e("1", String.valueOf(jsonObject));
-                                                                                                  Log.e("2", String.valueOf(json_datos_bascula));
-                                                                                                  for (int i=0; i<json_datos_bascula.length();i++)
-                                                                                                  {
-                                                                                                      try { JSONObject jsonSacando= json_datos_bascula.getJSONObject(i);
-                                                                                                          String strAprobacion=jsonSacando.get("numero_aprobacion").toString();
-                                                                                                          String strMarca=jsonSacando.get("marca").toString();
-                                                                                                          String strModelo=jsonSacando.get("modelo").toString();
-                                                                                                          String strAlcance_max=jsonSacando.get("Alcance_max").toString();
-                                                                                                          String strAlcance_min=jsonSacando.get("Alcance_min").toString();
-                                                                                                          String strCodigo_marca=jsonSacando.get("codigo_marca").toString();
-                                                                                                          String strCodigo_modelo=jsonSacando.get("codigo_modelo").toString();
-                                                                                                          String strAno_modelo=jsonSacando.get("ano_modelo").toString();
-                                                                                                          String strEod=jsonSacando.get("eod").toString();
-                                                                                                          String stTipo_instrumento=jsonSacando.get("tipo_instrumento").toString();
-                                                                                                          String strClase_exactitud=jsonSacando.get("clase_exactitud").toString();
-                                                                                                          String strMarco_pesas=jsonSacando.get("marco_pesas").toString();
-                                                                                                          String strPesas_5kg=jsonSacando.get("pesas_5kg").toString();
-                                                                                                          String stPesas_10kg=jsonSacando.get("pesas_10kg").toString();
-                                                                                                          String strPesas_20kg=jsonSacando.get("pesas_20kg").toString();
-                                                                                                          String strPesa_clase_exactitud=jsonSacando.get("pesa_clase_exactitud").toString();
-                                                                                                          String strHorario=jsonSacando.get("horario").toString();
-                                                                                                          String strTipoVisita=jsonSacando.get("tipo_visita").toString();
-                                                                                                          String strCosto=jsonSacando.get("costo").toString();
-
-
-                                                                                                          //listaCantidadBasc.clear();
-
-                                                                                                          listaCantidadBasc.add(new CantidadBasculasRecycler(strAprobacion,strMarca,strModelo,strAlcance_max,strAlcance_min,
-                                                                                                                  strCodigo_marca,strCodigo_modelo,strAno_modelo,strEod,stTipo_instrumento,
-                                                                                                                  strClase_exactitud,strMarco_pesas,strPesas_5kg,stPesas_10kg,strPesas_20kg,strPesa_clase_exactitud,strHorario,strTipoVisita,strCosto));
-                                                                                                          adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
-                                                                                                          recycler_numero_basc.setAdapter(adapterCantidadBasculas);
-
-                                                                                                          Log.e("t1",strAprobacion);
-                                                                                                          Log.e("t2",strMarca);
-                                                                                                          Log.e("t3",strModelo);
-                                                                                                          Log.e("t4",strAlcance_max);
-                                                                                                          Log.e("t5",strAlcance_min);
-                                                                                                          Log.e("t6",strCodigo_marca);
-                                                                                                          Log.e("t7",strCodigo_modelo);
-                                                                                                          Log.e("t8",strAno_modelo);
-                                                                                                          Log.e("t9",strEod);
-                                                                                                          Log.e("t10",stTipo_instrumento);
-                                                                                                          Log.e("t11",strClase_exactitud);
-                                                                                                          Log.e("t12",strMarco_pesas);
-                                                                                                          Log.e("t13",strPesas_5kg);
-                                                                                                          Log.e("t14",stPesas_10kg);                                                                                                    Log.e("t13",strMarco_pesas);
-                                                                                                          Log.e("t15",strPesas_20kg);
-                                                                                                          Log.e("t16",strPesa_clase_exactitud);
-                                                                                                          Log.e("t17",strHorario);
-                                                                                                          Log.e("t19",strTipoVisita);
-                                                                                                          Log.e("t18",strCosto);
-
-                                                                                                          //Log.e("json"+i,jsonObject.getString(nueva_marca));
-                                                                                                      } catch (JSONException e) {
-                                                                                                          e.printStackTrace();
-                                                                                                      }
-                                                                                                  }
+                                                                                                    Log.e("1", String.valueOf(jsonObject));
+                                                                                                    Log.e("2", String.valueOf(json_datos_bascula));
+                                                                                                    for (int i=0; i<json_datos_bascula.length();i++)
+                                                                                                    {
+                                                                                                        try { JSONObject jsonSacando= json_datos_bascula.getJSONObject(i);
+                                                                                                            String strAprobacion=jsonSacando.get("numero_aprobacion").toString();
+                                                                                                            String strMarca=jsonSacando.get("marca").toString();
+                                                                                                            String strModelo=jsonSacando.get("modelo").toString();
+                                                                                                            String strAlcance_max=jsonSacando.get("Alcance_max").toString();
+                                                                                                            String strAlcance_min=jsonSacando.get("Alcance_min").toString();
+                                                                                                            String strCodigo_marca=jsonSacando.get("codigo_marca").toString();
+                                                                                                            String strCodigo_modelo=jsonSacando.get("codigo_modelo").toString();
+                                                                                                            String strAno_modelo=jsonSacando.get("ano_modelo").toString();
+                                                                                                            String strEod=jsonSacando.get("eod").toString();
+                                                                                                            String stTipo_instrumento=jsonSacando.get("tipo_instrumento").toString();
+                                                                                                            String strClase_exactitud=jsonSacando.get("clase_exactitud").toString();
+                                                                                                            String strMarco_pesas=jsonSacando.get("marco_pesas").toString();
+                                                                                                            String strPesas_5kg=jsonSacando.get("pesas_5kg").toString();
+                                                                                                            String stPesas_10kg=jsonSacando.get("pesas_10kg").toString();
+                                                                                                            String strPesas_20kg=jsonSacando.get("pesas_20kg").toString();
+                                                                                                            String strPesa_clase_exactitud=jsonSacando.get("pesa_clase_exactitud").toString();
+                                                                                                            String strHorario=jsonSacando.get("horario").toString();
+                                                                                                            String strTipoVisita=jsonSacando.get("tipo_visita").toString();
+                                                                                                            String strCosto=jsonSacando.get("costo").toString();
+                                                                                                            String strNumSerie=jsonSacando.get("numero_serie").toString();
 
 
-                                                                                              } catch (JSONException e) {
-                                                                                                  e.printStackTrace();
-                                                                                              }
+                                                                                                            //listaCantidadBasc.clear();
 
-                                                                                          }
+                                                                                                            listaCantidadBasc.add(new CantidadBasculasRecycler(strAprobacion,strMarca,strModelo,strAlcance_max,strAlcance_min,
+                                                                                                                    strCodigo_marca,strCodigo_modelo,strAno_modelo,strEod,stTipo_instrumento,
+                                                                                                                    strClase_exactitud,strMarco_pesas,strPesas_5kg,stPesas_10kg,strPesas_20kg,strPesa_clase_exactitud,strHorario,strTipoVisita,strCosto,strNumSerie));
+                                                                                                            adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
+                                                                                                            recycler_numero_basc.setAdapter(adapterCantidadBasculas);
 
-                                                                                      }
+                                                                                                            Log.e("t1",strAprobacion);
+                                                                                                            Log.e("t2",strMarca);
+                                                                                                            Log.e("t3",strModelo);
+                                                                                                            Log.e("t4",strAlcance_max);
+                                                                                                            Log.e("t5",strAlcance_min);
+                                                                                                            Log.e("t6",strCodigo_marca);
+                                                                                                            Log.e("t7",strCodigo_modelo);
+                                                                                                            Log.e("t8",strAno_modelo);
+                                                                                                            Log.e("t9",strEod);
+                                                                                                            Log.e("t10",stTipo_instrumento);
+                                                                                                            Log.e("t11",strClase_exactitud);
+                                                                                                            Log.e("t12",strMarco_pesas);
+                                                                                                            Log.e("t13",strPesas_5kg);
+                                                                                                            Log.e("t14",stPesas_10kg);                                                                                                    Log.e("t13",strMarco_pesas);
+                                                                                                            Log.e("t15",strPesas_20kg);
+                                                                                                            Log.e("t16",strPesa_clase_exactitud);
+                                                                                                            Log.e("t17",strHorario);
+                                                                                                            Log.e("t19",strTipoVisita);
+                                                                                                            Log.e("t18",strCosto);
+                                                                                                            Log.e("t18",strNumSerie);
+
+                                                                                                            //Log.e("json"+i,jsonObject.getString(nueva_marca));
+                                                                                                        } catch (JSONException e) {
+                                                                                                            e.printStackTrace();
+                                                                                                        }
+                                                                                                    }
+
+
+                                                                                                } catch (JSONException e) {
+                                                                                                    e.printStackTrace();
+                                                                                                }
+                                                                                            }
+                                                                                            else{
+                                                                                                Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
+
+                                                                                            }
+
+
+                                                                                        }
+
+                                                                                    }
 
 
                                                                                     else{
@@ -1535,43 +1689,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
-        guardar_fecha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                nueva_fecha = fecha.getText().toString();
-                fecha_final.setText(nueva_fecha);
-
-                if (!nueva_fecha.trim().equals("")&&nueva_fecha!=null) {
-
-                    String regexFecha ="[0-9]{2}-[0-9]{2}-[0-9]{4}";
-                    Pattern pattern = Pattern.compile(regexFecha);
-                    Matcher matcher = pattern.matcher(nueva_fecha);
-                    if(matcher.matches()==true){
-
-                        fecha_existoso=true;
-                        caja_fecha_final.setVisibility(View.VISIBLE);
-                        caja_edit_fecha.setVisibility(View.GONE);
-
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "El formato de fecha es necesario 99-99-9999 es necesario.", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "La formato es necesario.", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-        cambiar_fecha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                caja_fecha_final.setVisibility(view.GONE);
-                caja_edit_fecha.setVisibility(view.VISIBLE);
-            }
-        });
     }
 
     /**
@@ -1607,8 +1725,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3506611);
-        punto_mercado.setLongitude(-99.0864875);
+        punto_mercado.setLatitude(19.3411523);
+        punto_mercado.setLongitude(-99.103033);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -1681,28 +1799,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Log.e("lon",""+longitud);
             coordenadas =coord;
             direccion_mercado.setText(direccion);
-             UTMPoint conver=fromGeodeticToUTM(punto);
-             Log.e("con",""+conver);
-             UTMPoint conver1=fromGeodeticToUTM(longitud,latitud);
-             Log.e("con1",""+conver1);
-             UTMPoint conver2=fromGeodeticToUTM(longitud,latitud,WGS84);
-             Log.e("con2",""+conver2);
+            UTMPoint conver=fromGeodeticToUTM(punto);
+            Log.e("con",""+conver);
+            UTMPoint conver1=fromGeodeticToUTM(longitud,latitud);
+            Log.e("con1",""+conver1);
+            UTMPoint conver2=fromGeodeticToUTM(longitud,latitud,WGS84);
+            Log.e("con2",""+conver2);
 
-             String strConver= String.valueOf(conver2);
-             Log.e("str",""+strConver);
+            String strConver= String.valueOf(conver2);
+            Log.e("str",""+strConver);
 
-             String[] X_Y_Z=strConver.split(" ");
-             Log.e("corte",""+X_Y_Z[3].toString().replace(",","").replace("(",""));
-             String x= String.valueOf(conver2.getX());
-             String y=String.valueOf(conver2.getY());
-             String z=String.valueOf(conver2.getZone());
+            String[] X_Y_Z=strConver.split(" ");
+            Log.e("corte",""+X_Y_Z[3].toString().replace(",","").replace("(",""));
+            String x= String.valueOf(conver2.getX());
+            String y=String.valueOf(conver2.getY());
+            String z=String.valueOf(conver2.getZone());
 
             latitud_x.setText(X_Y_Z[0].toString().replace(",","").replace("(",""));
             longitud_y.setText(X_Y_Z[1].toString().replace(",","").replace("(",""));
-             GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
+            GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
             zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")","")+"N");
 
-             Log.e("con3",""+conver3);
+            Log.e("con3",""+conver3);
 
 
 
@@ -1856,11 +1974,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 Log.e("horario",cursor1.getString(1));
             }
             Log.e("horario",cuenta+" -- ");
-            }catch (Exception e){
+        }catch (Exception e){
             Log.e("catalogo","no existe");
-            }
+        }
         try {
-             cursor2= database2.rawQuery("SELECT DISTINCT numero_aprobacion FROM basculas  ",null);
+            cursor2= database2.rawQuery("SELECT DISTINCT numero_aprobacion FROM basculas  ",null);
             // Log.e("tipos",""+cursor1);
             int cuenta =cursor2.getCount();
             Log.e("basculas",""+cuenta);
@@ -1895,20 +2013,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             //sched.ponerImagen("spinner"+i);
             sched.ponerImagen("spi_"+i);
             listaGiro.add(sched);
-        }
-    }
-    public void setListaMercado()
-    {
-        listaMercado.clear();
-        String coy[] = {"", "Mercado topo","M.D.C y columnas de concreto",
-                "M.D.C y columnas de acero", "M.D.C y columnas mixtas"};
-        for (int i=0; i<coy.length;i++)
-        {
-            final SpinnerModel sched = new SpinnerModel();
-            sched.ponerNombre(coy[i]);
-            //sched.ponerImagen("spinner"+i);
-            sched.ponerImagen("spi_"+i);
-            listaMercado.add(sched);
         }
     }
 
@@ -1962,50 +2066,60 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Log.e("parametros",""+modelo);
             cursor4= database4.rawQuery("SELECT alcance_maximo,alcance_minimo,modelo FROM basculas WHERE modelo=?",parametros);
             Log.e("alcance",""+cursor4);
-
             int cuenta =cursor4.getCount();
+
+
+                while (cursor4.moveToNext()){
+                    Log.e("alcance",cursor4.getString(0));
+                    recycler_alcance.setText(cursor4.getString(0));
+                    recycler_minimo.setText(cursor4.getString(1));
+                    nuevo_alcanceMax_aprobado=cursor4.getString(0);
+                    nuevo_alcanceMin_aprobado=cursor4.getString(1);
+                    try {
+                        String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
+                        cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
+                        //Log.e("tipos",""+parametros2);
+                        int cuenta2 =cursor1.getCount();
+                        Log.e("catalogo",""+cuenta2);
+                        while (cursor1.moveToNext()){
+                            Log.e("1",cursor1.getString(0));
+                            Log.e("eod",cursor1.getString(1));
+                            recycler_eod.setText(cursor1.getString(2));
+                            nuevo_eod=cursor1.getString(2);
+                            tipoInstrumento.setText(cursor1.getString(3));
+                            claseExactitud.setText(cursor1.getString(4));
+                            marco_pesas.setText(cursor1.getString(5));
+                            pesas_5kg.setText(cursor1.getString(6));
+                            pesas_10kg.setText(cursor1.getString(7));
+                            pesas_20kg.setText(cursor1.getString(8));
+                            pesa_clase_exactitud.setText(cursor1.getString(9));
+                            horario.setText(cursor1.getString(10));
+                            nuevo_tipoInstrumento=cursor1.getString(3);
+                            nueva_claseExactitud=cursor1.getString(4);
+                            nuevo_marco_pesas=cursor1.getString(5);
+                            nuevo_pesas_5kg=cursor1.getString(6);
+                            nuevo_pesas_10kg=cursor1.getString(7);
+                            nuevo_pesas_20kg=cursor1.getString(8);
+                            nuevo_pesa_clase_exactitud= cursor1.getString(9);
+                            nuevo_horario=cursor1.getString(10);
+
+                        }
+                        Log.e("eod",cuenta2+" -- ");
+                    }catch (Exception e){
+                        Log.e("catalogo","no existe");
+                    }
+                }
+                if(!nuevo_alcanceMax_aprobado.trim().equals("")&&nuevo_alcanceMin_aprobado.trim().equals("")){
+
+                    caja_recycler_alcance.setVisibility(View.GONE);
+                    caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
+                    caja_recycler_minimo.setVisibility(View.GONE);
+                    caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
+                }
+
             Log.e("alcance_cuenta",""+cuenta);
             //listaAlcance.clear();
-            while (cursor4.moveToNext()){
-                Log.e("alcance",cursor4.getString(0));
-                recycler_alcance.setText(cursor4.getString(0));
-                recycler_minimo.setText(cursor4.getString(1));
-                nuevo_alcanceMax_aprobado=cursor4.getString(0);
-                nuevo_alcanceMin_aprobado=cursor4.getString(1);
-                try {
-                    String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
-                    cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
-                     //Log.e("tipos",""+parametros2);
-                    int cuenta2 =cursor1.getCount();
-                    Log.e("catalogo",""+cuenta2);
-                    while (cursor1.moveToNext()){
-                        Log.e("1",cursor1.getString(0));
-                        Log.e("eod",cursor1.getString(1));
-                        recycler_eod.setText(cursor1.getString(2));
-                        nuevo_eod=cursor1.getString(2);
-                        tipoInstrumento.setText(cursor1.getString(3));
-                        claseExactitud.setText(cursor1.getString(4));
-                        marco_pesas.setText(cursor1.getString(5));
-                        pesas_5kg.setText(cursor1.getString(6));
-                        pesas_10kg.setText(cursor1.getString(7));
-                        pesas_20kg.setText(cursor1.getString(8));
-                        pesa_clase_exactitud.setText(cursor1.getString(9));
-                        horario.setText(cursor1.getString(10));
-                        nuevo_tipoInstrumento=cursor1.getString(3);
-                        nueva_claseExactitud=cursor1.getString(4);
-                        nuevo_marco_pesas=cursor1.getString(5);
-                        nuevo_pesas_5kg=cursor1.getString(6);
-                        nuevo_pesas_10kg=cursor1.getString(7);
-                        nuevo_pesas_20kg=cursor1.getString(8);
-                        nuevo_pesa_clase_exactitud= cursor1.getString(9);
-                        nuevo_horario=cursor1.getString(10);
 
-                    }
-                    Log.e("eod",cuenta2+" -- ");
-                }catch (Exception e){
-                    Log.e("catalogo","no existe");
-                }
-            }
 
             Log.e("LISTA_aLCANCE",""+cursor4);
         }catch (Exception e){
@@ -2027,5 +2141,82 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         factura_si.setChecked(false);
     }
 
+    private class AsincronaEnviarBasculas extends AsyncTask<Void, Integer,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            enviarBasculas();
+            return null;
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+    public void enviarBasculas()
+    {
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"enviar_basculas.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("respuesta4:",response + "sal");
+                        if(response.equals("success")){
+//                            Intent intent = new Intent(Registro.this,Login.class);
+//                            startActivity(intent);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("respuesta4Error:",error + "error");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+
+
+                map.put("numero_aprobacion",enviar_numero_aprobacion);
+                map.put("marca",enviar_marca);
+                map.put("modelo",enviar_modelo);
+                map.put("alcance_maximo",enviar_AlcanceMax);
+                map.put("alcance_minimo",enviar_AlcanceMin);
+                map.put("codigo_marca",enviar_CodigoMarca);
+                map.put("codigo_modelo",enviar_CodigoModelo);
+                map.put("ano_aprobacion",enviar_anoAprobacion);
+                map.put("eod",enviar_eod);
+                map.put("tipo_instrumento",enviar_TipoInstrumento);
+                map.put("clase_exactitud",enviar_claseExactitud);
+                map.put("marco_pesas",enviar_marcoPesas);
+                map.put("pesas5kg",enviar_pesas5kg);
+                map.put("pesas10kg",enviar_pesas10kg);
+                map.put("pesas20kg",enviar_pesas20kg);
+                map.put("pesa_clase_exactitud",enviar_pesaClase_exactitud);
+                map.put("horario",enviar_horario);
+                map.put("tipo_visita",enviar_TipoVisita);
+                map.put("costo",enviar_costo);
+
+
+
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
 
 }

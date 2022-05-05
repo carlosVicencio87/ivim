@@ -2,6 +2,7 @@ package com.ivim.ivim;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class CantidadBasculasRecycler extends AppCompatActivity {
     private String cantidad_numero_aprobacion;
     private String cantidad_marca;
@@ -22,11 +23,12 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     private String cantidad_horario;
     private String cantidad_TipoVisita;
     private String cantidad_costo;
+    private String cantidad_numeroSerie;
 
     public CantidadBasculasRecycler(String cant_numero_aprobacion,String cant_marca,String cant_modelo,String cant_AlcanceMax,String cant_AlcanceMin,
                                     String cant_CodigoMarca,String cant_CodigoModelo,String cant_anoAprobacion, String cant_eod,
                                     String cant_TipoInstrumento,String cant_claseExactitud,String cant_marcoPesas,String cant_pesas5kg,
-                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_TipoVisita, String cant_costo){
+                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_TipoVisita, String cant_costo,String cant_numeroSerie){
 
         this.cantidad_numero_aprobacion =cant_numero_aprobacion;
         this.cantidad_marca =cant_marca;
@@ -47,11 +49,12 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_horario =cant_horario;
         this.cantidad_TipoVisita =cant_TipoVisita;
         this.cantidad_costo =cant_costo;
+        this.cantidad_numeroSerie =cant_numeroSerie;
 
     }
 
     public String getCantidad_numero_aprobacion() { return cantidad_numero_aprobacion; }
-   public String getCantidad_marca() { return cantidad_marca; }
+    public String getCantidad_marca() { return cantidad_marca; }
     public String getCantidad_modelo() { return cantidad_modelo; }
     public String getCantidad_AlcanceMax() { return cantidad_AlcanceMax; }
     public String getCantidad_AlcanceMin() { return cantidad_AlcanceMin; }
@@ -69,6 +72,7 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     public String getCantidad_horario() { return cantidad_horario; }
     public String getCantidad_TipoVisita() { return cantidad_TipoVisita; }
     public String getCantidad_costo() { return cantidad_costo; }
+    public String getCantidad_numeroSerie() { return cantidad_numeroSerie; }
 
     public void setCantidad_numero_aprobacion(String cantidad_numero_aprobacion) {
         this.cantidad_numero_aprobacion = cantidad_numero_aprobacion; }
@@ -108,4 +112,6 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_TipoVisita = cantidad_tipoVisita; }
     public void setCantidad_costo(String cantidad_costo) {
         this.cantidad_costo = cantidad_costo; }
+    public void setCantidad_numeroSerie(String cantidad_numeroSerie) {
+        this.cantidad_numeroSerie = cantidad_numeroSerie; }
 }

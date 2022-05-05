@@ -67,17 +67,17 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@color/blanco"
-        android:alpha="0.3">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/blanco"
+            android:alpha="0.3">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/caja_mensaje_basc"
             android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-       <ScrollView
+    <ScrollView
         android:id="@+id/formulario_principal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -172,33 +172,33 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <LinearLayout
-                    android:id="@+id/caja_edit_fecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_margin="10dp"
+            <LinearLayout
+                android:id="@+id/caja_edit_fecha"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <EditText
+
+                    android:id="@+id/fecha"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="center"
-                    android:orientation="horizontal">
-                    <EditText
-
-                        android:id="@+id/fecha"
-                        android:layout_width="250dp"
-                        android:layout_height="22dp"
-                        android:background="@color/blanco"
-                        android:gravity="center"
-                        android:textColorHint="@color/negro"
-                        android:textSize="20dp"
-                        android:hint="@string/texto2"
-                        android:inputType="number" />
-                    <ImageView
-                        android:id="@+id/guardar_fecha"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="15dp"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/palomita" />
-                </LinearLayout>
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
+                    android:hint="@string/texto2"
+                    android:inputType="number" />
+                <ImageView
+                    android:id="@+id/guardar_fecha"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/caja_fecha_final"
                 android:layout_width="match_parent"
@@ -301,7 +301,79 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/palomita"/>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="RFC usuario"
+                    android:textColor="@color/negro"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_edit_rfc"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/rfc_texto"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
+                    android:hint="@string/texto1" />
+                <ImageView
+                    android:id="@+id/guardar_rfc"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_rfc_final"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/rfc"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:text="nombre de usuario"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/cambiar_rfc"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
@@ -406,17 +478,50 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/mercado"
-                    android:layout_width="300dp"
+                <EditText
+                    android:id="@+id/mercado_texto"
+                    android:layout_width="200dp"
                     android:layout_height="22dp"
                     android:background="@color/blanco"
                     android:gravity="bottom"
                     android:hint="@string/texto3"
                     android:textColorHint="@color/negro"
                     android:textSize="20dp" />
+                <ImageView
+                    android:id="@+id/guardar_mercado"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_mercado_final"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
+                <TextView
+                    android:id="@+id/mercado_vista"
+                    android:layout_width="200dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+                <ImageView
+                    android:id="@+id/cambiar_mercado"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
@@ -648,15 +753,15 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/formulario_bascula"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintBottom_toTopOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:visibility="gone">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/formulario_bascula"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -664,6 +769,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:background="@color/blanco">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -713,70 +819,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:orientation="vertical"
-                android:background="@color/blanco"
-                android:gravity="left">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:textSize="20dp"
-                    android:text="Numero de aprobacion"
-                    android:textColor="@color/negro"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"/>
-            </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/blanco"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/caja_auto_aproba">
-            <MultiAutoCompleteTextView
-                android:id="@+id/autoAprobacion"
-                android:completionThreshold="1"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"/>
-            <ImageView
-                android:id="@+id/guardar_aprobacion"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="15dp"
-                android:layout_marginTop="30dp"
-                android:background="@color/negro"/>
-        </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:id="@+id/caja_aprobacion_final"
-                android:layout_margin="10dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/aprobacion_basc"
-                    android:text="numero de serie"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@color/negro"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/cambiar_aprobacion"/>
-            </LinearLayout>   <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:orientation="horizontal"
@@ -827,6 +869,71 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Numero de aprobacion"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_auto_aproba">
+                <MultiAutoCompleteTextView
+                    android:id="@+id/autoAprobacion"
+                    android:completionThreshold="1"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"/>
+                <ImageView
+                    android:id="@+id/guardar_aprobacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/negro"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_aprobacion_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/aprobacion_basc"
+                    android:text="numero de serie"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_aprobacion"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:background="@color/blanco"
                 android:gravity="left">
@@ -840,24 +947,24 @@
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/blanco"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/caja_recycler_marca"
-            android:visibility="visible">
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/recycler_marca"
-                android:layout_gravity="center"
-                android:textSize="20dp"
+                android:layout_height="70dp"
+                android:background="@color/blanco"
                 android:gravity="center"
-                android:layout_marginVertical="11dp"/>
+                android:orientation="horizontal"
+                android:id="@+id/caja_recycler_marca"
+                android:visibility="visible">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recycler_marca"
+                    android:layout_gravity="center"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:layout_marginVertical="11dp"/>
 
-        </LinearLayout>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -940,29 +1047,29 @@
                     android:layout_marginVertical="11dp"/>
             </LinearLayout>
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/blanco"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:id="@+id/caja_snAprobacion_modelo"
-            android:visibility="gone">
-            <EditText
-                android:layout_width="250dp"
-                android:layout_height="22dp"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
                 android:background="@color/blanco"
                 android:gravity="center"
-                android:textColorHint="@color/negro"
-                android:textSize="20dp"
-                android:id="@+id/modelo_snAprobacion"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@color/negro"
-                android:layout_margin="15dp"
-                android:layout_marginTop="30dp"
-                android:id="@+id/guardar_modelo"/>
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:id="@+id/caja_snAprobacion_modelo"
+                android:visibility="gone">
+                <EditText
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:textColorHint="@color/negro"
+                    android:textSize="20dp"
+                    android:id="@+id/modelo_snAprobacion"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/guardar_modelo"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -1516,7 +1623,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1534,7 +1642,8 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/marco_pesas"
                     android:layout_width="300dp"
@@ -1549,7 +1658,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1567,7 +1677,8 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/pesas_5kg"
                     android:layout_width="300dp"
@@ -1582,7 +1693,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1600,13 +1712,13 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/pesas_10kg"
                     android:layout_width="300dp"
                     android:layout_height="22dp"
                     android:textSize="20dp"
-
                     android:textColorHint="@color/negro"
                     android:gravity="center"
                     android:background="@color/blanco"/>
@@ -1616,7 +1728,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1634,7 +1747,8 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/pesas_20kg"
                     android:layout_width="300dp"
@@ -1650,7 +1764,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1668,7 +1783,8 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/pesa_clase_exactitud"
                     android:layout_width="300dp"
@@ -1684,7 +1800,8 @@
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1702,7 +1819,8 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_margin="10dp"
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/horario"
                     android:layout_width="300dp"
@@ -1815,6 +1933,73 @@
                     android:layout_margin="15dp"
                     android:layout_marginTop="30dp"
                     android:id="@+id/cambiar_costo" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="vertical"
+                android:background="@color/blanco"
+                android:gravity="left">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="20dp"
+                    android:text="Numero de Sreie"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_edit_numSerie"
+                android:layout_margin="10dp">
+                <EditText
+                    android:id="@+id/numSerie_texto"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:textSize="20dp"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center"
+                    android:inputType="text"/>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/guardar_numSerie"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/caja_numSerie_final"
+                android:layout_margin="10dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/numSerie"
+                    android:layout_width="250dp"
+                    android:layout_height="22dp"
+                    android:background="@color/blanco"
+                    android:text="numero de serie"
+                    android:textSize="20dp"
+                    android:textColorHint="@color/negro"
+                    android:gravity="center" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@color/negro"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/cambiar_serie" />
             </LinearLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/caja_siguiente_basc"
