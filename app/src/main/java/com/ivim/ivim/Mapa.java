@@ -77,7 +77,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -86,7 +85,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private LocationManager locationManager;
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
-    private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,cons_factura;
+    private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,
+            cons_factura,caja_integridad,cons_relacion_comercial,cons_conflicto_intereses;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_mercado_final,caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
@@ -98,14 +98,17 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_snAprobacion_modelo_final,caja_Codigomarca_Snaprobacion_final,caja_Codigomarca_Snaprobacion,
             caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final
             ,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita,
-            caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final;
+            caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final,caja_orden_tipoVerificacion,caja_orden_merca,caja_orden_modelo,caja_orden_numSerie,
+            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion;
+
     private Fragment map;
     private int check = 0;
     private int tiempo_actualizacion = 20000;
     private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,
-            alcanceMinSher;
+            alcanceMinSher,idSher,id_SesionSher;
     private SharedPreferences.Editor editormodelo,editorAlcanceMax,editorEod,
-            editorAlcanceMin,editor;
+            editorAlcanceMin,editor,z;
+
     private Mapa activity;
     private double latitud, longitud, altitud, latUpdate, longUpdate;
     private String direccion, nuevo_nombre, seleccion_giro, nuevo_tel, nueva_serie,
@@ -124,7 +127,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             enviar_numero_aprobacion,enviar_marca,enviar_AlcanceMin,enviar_CodigoMarca,
             enviar_CodigoModelo,enviar_anoAprobacion,enviar_eod,enviar_TipoInstrumento,enviar_claseExactitud,
             enviar_marcoPesas,enviar_pesas5kg,enviar_pesas10kg,enviar_pesas20kg,enviar_pesaClase_exactitud,
-            enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie;
+            enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie,enviar_numSerie,str_final,
+            calle_str,colonia_str,delegacion_str,cp_str,ciudad_str,pais_str,nueva_zona,nueva_x,nueva_y,id_usuer,id_SesionUsuer,
+            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion;
 
 
     private TextView puntoPartida,fecha_final,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
@@ -133,11 +138,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             recycler_alcance,recycler_marca,recycler_minimo,recycler_eod,tipoInstrumento,claseExactitud,marco_pesas,pesas_5kg
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
-            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie;
+            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,ir_preguntas,orden_tipoVerificacion,
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion;
 
 
 
-    private int tipo_camino;
+
+    private int tipo_camino,cuenta_basculas;
     private EditText nombre_texto, fecha,mercado_texto, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
             modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,
             ano_Snaprobacion_texto,rfc_texto,numSerie_texto;
@@ -149,8 +156,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             guardar_CodigomaModelo_Snaprobacion,cambiar_CodigomaModelo_Snaprobacion,guardar_ano_Snaprobacion
             ,cambiar_ano_Snaprobacion,guardar_rfc,cambiar_rfc,guardar_numSerie,cambiar_serie;
     private RecyclerView  recycler_modelo,recycler_numero_basc;
-    private Boolean tel10,fecha_existoso;
-    private ScrollView formulario_principal, formulario_bascula,almacen_basculas;
+    private Boolean tel10,fecha_existoso,rfc_existoso;
+    private ScrollView formulario_principal, formulario_bascula,almacen_basculas,ultimas_preguntas,acta_dictamen_final;
     private Spinner giros;
     private AdapterGiro adapterGiro;
     public ArrayList<SpinnerModel> listaGiro = new ArrayList<>();
@@ -189,7 +196,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Conexion conexion1,conexion2,conexion3,conexion4,conexion6;
     private Cursor cursor1,cursor2,cursor3,cursor4,cursor5,cursor6;
     private ArrayList<String> APROBACION;
-    private CheckBox primera_si,primera_no,factura_si,factura_no;
+    private CheckBox primera_si,primera_no,factura_si,factura_no,amenaza_integridad_si,amenaza_integridad_no,
+            relacion_comercial_si,relacion_comercial_no,conflicto_intereses_si,conflicto_intereses_no;
     private  int numero_anoglobal,resta_anos,elementoNumeroMes,elementoNumerAno;
     private AsincronaEnviarBasculas asincronaEnviarBasculas;
 
@@ -209,7 +217,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         nombre = findViewById(R.id.nombre);
         nombre_texto = findViewById(R.id.nombre_texto);
         formulario_principal = findViewById(R.id.formulario_principal);
-         caja_punto_partida = findViewById(R.id.caja_punto_partida);
+        caja_punto_partida = findViewById(R.id.caja_punto_partida);
         caja_edit_nombre = findViewById(R.id.caja_edit_nombre);
         caja_nombre_final = findViewById(R.id.caja_nombre_final);
         guardar_nombre = findViewById(R.id.guardar_nombre);
@@ -399,12 +407,43 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         tipo_visita= findViewById(R.id.tipo_visita);
+        cons_factura= findViewById(R.id.cons_factura);
+        cons_factura= findViewById(R.id.cons_factura);
         primera_si= findViewById(R.id.primera_si);
         primera_no= findViewById(R.id.primera_no);
-        cons_factura= findViewById(R.id.cons_factura);
-        cons_factura= findViewById(R.id.cons_factura);
         factura_si= findViewById(R.id.factura_si);
         factura_no= findViewById(R.id.factura_no);
+
+        relacion_comercial_si= findViewById(R.id.relacion_comercial_si);
+        relacion_comercial_no= findViewById(R.id.relacion_comercial_no);
+        amenaza_integridad_si= findViewById(R.id.amenaza_integridad_si);
+        amenaza_integridad_no= findViewById(R.id.amenaza_integridad_no);
+        conflicto_intereses_si= findViewById(R.id.conflicto_intereses_si);
+        conflicto_intereses_no= findViewById(R.id.conflicto_intereses_no);
+
+
+        acta_dictamen_final= findViewById(R.id.acta_dictamen_final);
+        caja_orden_tipoVerificacion= findViewById(R.id.caja_orden_tipoVerificacion);
+        orden_tipoVerificacion= findViewById(R.id.orden_tipoVerificacion);
+        caja_orden_merca= findViewById(R.id.caja_orden_merca);
+        orden_merca= findViewById(R.id.orden_merca);
+        caja_orden_modelo= findViewById(R.id.caja_orden_modelo);
+        orden_modelo= findViewById(R.id.orden_modelo);
+        caja_orden_numSerie= findViewById(R.id.caja_orden_numSerie);
+        orden_numSerie= findViewById(R.id.orden_numSerie);
+        caja_orden_alcanceMax= findViewById(R.id.caja_orden_alcanceMax);
+        orden_alcanceMax= findViewById(R.id.orden_alcanceMax);
+        caja_orden_eod= findViewById(R.id.caja_orden_eod);
+        orden_eod= findViewById(R.id.orden_eod);
+        caja_orden_alcanceMin= findViewById(R.id.caja_orden_alcanceMin);
+        orden_alcanceMin= findViewById(R.id.orden_alcanceMin);
+        caja_orden_modeloPrototipo= findViewById(R.id.caja_orden_modeloPrototipo);
+        orden_modeloPrototipo= findViewById(R.id.orden_modeloPrototipo);
+        caja_orden_claseExactitud= findViewById(R.id.caja_orden_claseExactitud);
+        orden_claseExactitud= findViewById(R.id.orden_claseExactitud);
+        caja_orden_alcanceMedicion= findViewById(R.id.caja_orden_alcanceMedicion);
+        orden_alcanceMedicion= findViewById(R.id.orden_alcanceMedicion);
+
 
 
 
@@ -420,6 +459,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
+        idSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
+        id_usuer=idSher.getString("id","no");
+        Log.e("ID",""+id_usuer);
+        id_SesionSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
+        id_SesionUsuer=id_SesionSher.getString("id_sesion","no");
+        Log.e("ID",""+id_SesionUsuer);
 
         almacen_basculas = findViewById(R.id.almacen_basculas);
         recycler_numero_basc = findViewById(R.id.recycler_numero_basc);
@@ -427,6 +472,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         regresar_otravez_formulario = findViewById(R.id.regresar_otravez_formulario);
         agregar_otra_bascula = findViewById(R.id.agregar_otra_bascula);
+        ir_preguntas = findViewById(R.id.ir_preguntas);
+        ultimas_preguntas = findViewById(R.id.ultimas_preguntas);
+
+        caja_integridad = findViewById(R.id.caja_integridad);
+        amenaza_integridad_si = findViewById(R.id.amenaza_integridad_si);
+        amenaza_integridad_no = findViewById(R.id.amenaza_integridad_no);
+        cons_relacion_comercial = findViewById(R.id.cons_relacion_comercial);
+        relacion_comercial_si = findViewById(R.id.relacion_comercial_si);
+        relacion_comercial_no = findViewById(R.id.relacion_comercial_no);
+        cons_conflicto_intereses = findViewById(R.id.cons_conflicto_intereses);
+        conflicto_intereses_si = findViewById(R.id.conflicto_intereses_si);
+        conflicto_intereses_no = findViewById(R.id.conflicto_intereses_no);
 
 
 
@@ -547,12 +604,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 nuevo_rfc = rfc_texto.getText().toString();
                 rfc.setText(nuevo_rfc);
-                if (!nuevo_rfc.trim().equals("")) {
-                    caja_edit_rfc.setVisibility(View.GONE);
+
+                if (!nuevo_rfc.trim().equals("")&&nuevo_rfc!=null) {
                     caja_rfc_final.setVisibility(View.VISIBLE);
-                } else {
-                    Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+                    caja_edit_rfc.setVisibility(View.GONE);
+                    /*String regexFecha ="[a-zA-Z]+[0-9]+-[a-zA-Z]+";
+                    Pattern pattern = Pattern.compile(regexFecha);
+                    Matcher matcher = pattern.matcher(nuevo_rfc);*/
+                 /*   if(matcher.matches()==true){
+
+                        rfc_existoso=true;
+
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "El formato oficial de rfc es necesario.", Toast.LENGTH_LONG).show();
+                    }*/
+
                 }
+                else {
+                    Toast.makeText(getApplicationContext(), "el rfc es necesario.", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
         cambiar_rfc.setOnClickListener(new View.OnClickListener() {
@@ -760,8 +833,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_reg_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                    str_final="";
+                    cuenta_basculas=0;
                 for (int i=0; i<listaCantidadBasc.size();i++){
-                    enviar_numero_aprobacion=listaCantidadBasc.get(i).getCantidad_numero_aprobacion().toString();
+                    enviar_numero_aprobacion=listaCantidadBasc.get(i).getCantidad_numero_aprobacion();
                     Log.e("lista_Array1",""+enviar_numero_aprobacion);
                     enviar_marca=listaCantidadBasc.get(i).getCantidad_marca();
                     Log.e("lista_Array1",""+enviar_marca);
@@ -799,13 +874,38 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     Log.e("lista_Array1",""+enviar_TipoVisita);
                     enviar_costo=listaCantidadBasc.get(i).getCantidad_costo();
                     Log.e("lista_Array1",""+enviar_costo);
-
-
+                    enviar_numSerie=listaCantidadBasc.get(i).getCantidad_numeroSerie();
+                    Log.e("lista_Array1",""+enviar_numSerie);
+                    cuenta_basculas++;
+                    String str_tmp=enviar_numero_aprobacion+" /*-*/ "+enviar_marca+" /*-*/ "+enviar_modelo+" /*-*/ "+enviar_AlcanceMax
+                            +" /*-*/ "+enviar_AlcanceMin+" /*-*/ "+enviar_CodigoMarca+" /*-*/ "+enviar_CodigoModelo+
+                            " /*-*/ "+enviar_anoAprobacion+" /*-*/ "+enviar_eod+" /*-*/ "+enviar_TipoInstrumento+" /*-*/ "+
+                            enviar_claseExactitud+" /*-*/ "+enviar_marcoPesas+" /*-*/ "+enviar_pesas5kg+
+                            " /*-*/ "+enviar_pesas10kg+" /*-*/ "+enviar_pesas20kg+" /*-*/ "+enviar_pesaClase_exactitud+" /*-*/ "+
+                            enviar_horario+" /*-*/ "+enviar_TipoVisita+" /*-*/ "+enviar_costo+
+                            " /*-*/ "+enviar_numSerie;
+                    Log.e("topiteishon",""+str_tmp);
+                    if(str_final.equals("")){
+                        str_final=str_tmp;
+                    }
+                    else{
+                        str_final=str_final+" /*??*/ "+str_tmp;
+                    }
                 }
+                Log.e("numero_basc",""+cuenta_basculas);
+                Log.e("final",""+str_final);
+
                 formulario_bascula.setVisibility(view.GONE);
                 caja_finalizar_basc.setVisibility(view.VISIBLE);
 
 
+            }
+        });
+        ir_preguntas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                almacen_basculas.setVisibility(view.GONE);
+                ultimas_preguntas.setVisibility(View.VISIBLE);
             }
         });
         finalizar_no.setOnClickListener(new View.OnClickListener() {
@@ -818,10 +918,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_si.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                caja_finalizar_basc.setVisibility(view.GONE);
-                mapaid.setVisibility(view.VISIBLE);
+
+
+
                 asincronaEnviarBasculas=new AsincronaEnviarBasculas();
                 asincronaEnviarBasculas.execute();
+
+                    orden_tipoVerificacion.setText(enviar_TipoVisita);
+                    orden_merca.setText(enviar_marca);
+                    orden_modelo.setText(enviar_modelo);
+                    orden_numSerie.setText(enviar_numSerie);
+                    orden_alcanceMax.setText(enviar_AlcanceMax);
+                    orden_eod.setText(enviar_eod);
+                    orden_alcanceMin.setText(enviar_AlcanceMin);
+                    orden_modeloPrototipo.setText(enviar_numero_aprobacion);
+                    orden_claseExactitud.setText(enviar_claseExactitud);
+                    orden_alcanceMedicion.setText(nuevo_alcanceMedicion);;
+
+                    caja_mensaje_basc.setVisibility(view.GONE);
+
+
+                   mapaid.setVisibility(view.VISIBLE);
+                /*   int height_tmp=acta_dictamen_final.getHeight();
+                   Log.e("height!!!!!!",height_tmp+"!!!");*/
+
+
             }
         });
         giros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -894,10 +1015,75 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 {
 
 
-                        mapaid.setVisibility(View.VISIBLE);
+                    mapaid.setVisibility(View.VISIBLE);
                 }
 
 
+
+            }
+        });
+        valorCheckboxComercial="";
+        relacion_comercial_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco3();
+                relacion_comercial_si.setChecked(true);
+                valorCheckboxComercial="relacion_comercial_si";
+
+                Log.e("cambios", "" + valorCheckboxComercial);
+            }
+        });
+        relacion_comercial_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco3();
+                relacion_comercial_no.setChecked(true);
+                valorCheckboxComercial="relacion_comercial_no";
+                Log.e("cambios", "" + valorCheckboxComercial);
+            }
+        });
+        valorCheckboxIntegridad="";
+        //inicial.setChecked(true);
+        amenaza_integridad_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco4();
+                amenaza_integridad_si.setChecked(true);
+                valorCheckboxIntegridad="amenaza_si";
+                Log.e("cambios", "" + valorCheckboxFactura);
+
+            }
+        });
+        amenaza_integridad_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco4();
+                amenaza_integridad_no.setChecked(true);
+                valorCheckboxIntegridad="amenaza_no";
+                Log.e("cambios", "" + valorCheckboxFactura);
+
+            }
+        });
+        valorCheckboxIntereses="";
+        //inicial.setChecked(true);
+
+        conflicto_intereses_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco5();
+                conflicto_intereses_si.setChecked(true);
+                valorCheckboxIntereses="intereses_si";
+                Log.e("cambios", "" + valorCheckboxFactura);
+
+            }
+        });
+        conflicto_intereses_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco5();
+                conflicto_intereses_no.setChecked(true);
+                valorCheckboxIntereses="intereses_no";
+                Log.e("cambios", "" + valorCheckboxFactura);
 
             }
         });
@@ -940,31 +1126,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 nueva_fecha = fecha.getText().toString();
                 nueva_fecha_final= fecha_final.getText().toString();
                 if(!nueva_fecha_final.trim().equals("")){
-                        if (!nuevo_nombre.trim().equals("")) {
-                            if(!seleccion_giro.trim().equals("Giro")){
-                                if(!nuevo_mercado.trim().equals("")){
-                                    if (!nuevo_tel.trim().equals("")) {
+                    if (!nuevo_nombre.trim().equals("")) {
+                        if(!seleccion_giro.trim().equals("Giro")){
+                            if(!nuevo_mercado.trim().equals("")){
+                                if (!nuevo_tel.trim().equals("")) {
 
-                                        if (tel10==true){
-                                            formulario_principal.setVisibility(view.GONE);
-                                            formulario_bascula.setVisibility(view.VISIBLE);
+                                    if (tel10==true){
+                                        formulario_principal.setVisibility(view.GONE);
+                                        formulario_bascula.setVisibility(view.VISIBLE);
 
-                                        }
-                                    }
-                                    else{
-                                        Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
                                     }
                                 }
                                 else{
-                                    Toast.makeText(getApplicationContext(), "Seleccionar mercado es necesario.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "El telefono debe ser de 10 digitos.", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Seleccionar mercado es necesario.", Toast.LENGTH_LONG).show();
                             }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
                         }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Seleccionar giro es necesario.", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "El nombre es necesario.", Toast.LENGTH_LONG).show();
+                    }
 
                 }
                 else{
@@ -1057,6 +1243,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         caja_recycler_marca.setVisibility(View.VISIBLE);
                         caja_snAprobacion_modelo.setVisibility(View.GONE);
                         caja_recycler_modelo.setVisibility(View.VISIBLE);
+                        caja_snAprobacion_modelo.setVisibility(View.GONE);
                         caja_recycler_alcance.setVisibility(View.VISIBLE);
                         caja_alcanceSnaprobacion.setVisibility(View.GONE);
                         caja_recycler_minimo.setVisibility(View.VISIBLE);
@@ -1207,21 +1394,44 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     nueva_marca = recycler_marca.getText().toString();
                     checkModel=modeloSHER.getString("modelo","no");
                     nuevo_alcanceMax_aprobado_str=nuevo_alcanceMax_aprobado;
+                   if(nuevo_alcanceMax_aprobado.equals(" ")){
+                       nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
+                       Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
+                   }
                     nuevo_alcanceMin_aprobado_str=nuevo_alcanceMin_aprobado;
+                    if(nuevo_alcanceMin_aprobado.equals(" ")){
+                        nuevo_alcanceMin_aprobado_str=alcanceMinSnAprobacion_texto.getText().toString();
+                        Log.e("valor_cambiadoMin",""+nuevo_alcanceMin_aprobado_str);
+                        nuevo_eod_str=eodSnaprobacion;
+                        Log.e("valor_cambiadoMin",""+nuevo_alcanceMin_aprobado_str);
+                        nuevo_tipoInstrumento_string=tipoInstrumentoSnaprobacion;
+                        Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
+                        Log.e("instrumento_a222222",""+tipoInstrumentoSnaprobacion);
+                        nueva_claseExactitud_string=claseExactitudSnaprobacion;
+                        nuevo_marco_pesas_string=marco_pesasSnaprobacion;
+                        nuevo_pesas_5kg_string=pesas_5kgSnaprobacion;
+                        nuevo_pesas_10kg_string=pesas_10kgSnaprobacion;
+                        nuevo_pesas_20kg_string=pesas_20kgSnaprobacion;
+                        nuevo_pesa_clase_exactitud_string= esa_clase_exactitudSnaprobacion;
+                        nuevo_horario_string=horarioSnaprobacion;
+                    }
+                    else{
+                        nuevo_eod_str=nuevo_eod;
+                        nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
+                        Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
+                        Log.e("instrumento_a222222",""+nuevo_tipoInstrumento);
+                        nueva_claseExactitud_string=nueva_claseExactitud;
+                        nuevo_marco_pesas_string=nuevo_marco_pesas;
+                        nuevo_pesas_5kg_string=nuevo_pesas_5kg;
+                        nuevo_pesas_10kg_string=nuevo_pesas_10kg;
+                        nuevo_pesas_20kg_string=nuevo_pesas_20kg;
+                        nuevo_pesa_clase_exactitud_string= nuevo_pesa_clase_exactitud;
+                        nuevo_horario_string=nuevo_horario;
+                    }
                     nuevo_coodigoMarca_string=nuevo_coodigoMarca;
                     nuevo_coodigoModelo_string=nuevo_coodigoModelo;
                     ano_global_string=ano_global;
-                    nuevo_eod_str=nuevo_eod;
-                    nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
-                    Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
-                    Log.e("instrumento_a222222",""+nuevo_tipoInstrumento);
-                    nueva_claseExactitud_string=nueva_claseExactitud;
-                    nuevo_marco_pesas_string=nuevo_marco_pesas;
-                    nuevo_pesas_5kg_string=nuevo_pesas_5kg;
-                    nuevo_pesas_10kg_string=nuevo_pesas_10kg;
-                    nuevo_pesas_20kg_string=nuevo_pesas_20kg;
-                    nuevo_pesa_clase_exactitud_string= nuevo_pesa_clase_exactitud;
-                    nuevo_horario_string=nuevo_horario;
+
                     tipo_visita_string=tipo_visita.getText().toString();
                     nuevo_costo = costo_texto.getText().toString();
                     nuevo_numSerie = numSerie_texto.getText().toString();
@@ -1544,14 +1754,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
                     try {
                         String[] parametros6 = {nueva_alcanceMax.trim(),nueva_alcanceMin.trim()};
-                        cursor6= database6.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros6);
+                        cursor6= database6.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario,alcance_medicion FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros6);
                         //Log.e("",""+parametros2);
                         int cuenta3 =cursor6.getCount();
                         Log.e("catalogo",""+cuenta3);
                         while (cursor6.moveToNext()){
-                            Log.e("1",cursor6.getString(0));
-                            Log.e("eod",cursor6.getString(1));
+                            Log.e("2",cursor6.getString(0));
+
                             recycler_eod.setText(cursor6.getString(2));
+                            Log.e("eod2",cursor6.getString(2));
                             tipoInstrumento.setText(cursor6.getString(3));
                             claseExactitud.setText(cursor6.getString(4));
                             marco_pesas.setText(cursor6.getString(5));
@@ -1560,7 +1771,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                             pesas_20kg.setText(cursor6.getString(8));
                             pesa_clase_exactitud.setText(cursor6.getString(9));
                             horario.setText(cursor6.getString(10));
-
+                            Log.e("alcance de instrumnento",cursor6.getString(11));
                             eodSnaprobacion=cursor6.getString(2);
                             tipoInstrumentoSnaprobacion=cursor6.getString(3);
                             claseExactitudSnaprobacion=cursor6.getString(4);
@@ -1570,6 +1781,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                             pesas_20kgSnaprobacion=cursor6.getString(8);
                             esa_clase_exactitudSnaprobacion=cursor6.getString(9);
                             horarioSnaprobacion=cursor6.getString(10);
+                            nuevo_alcanceMedicion=cursor6.getString(11);
 
                         }
                         Log.e("eod",cursor6+" -- ");
@@ -1660,14 +1872,20 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 formulario_bascula.setVisibility(View.VISIBLE);
                 autoAprobacion.setText("");
+                recycler_marca.setText("");
                 caja_auto_aproba.setVisibility(View.VISIBLE);
                 caja_aprobacion_final.setVisibility(View.GONE);
                 tipoInstrumento.setText("");
                 recycler_modelo.setAdapter(adapterModeloBasculas);
-                alcanceSnAprobacion_texto.setText("");
-                caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
-                caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                 recycler_alcance.setText("");
+                alcanceSnAprobacion_texto.setText("");
+                caja_recycler_alcance.setVisibility(View.VISIBLE);
+                caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                alcanceMinSnAprobacion_texto.setText("");
+                caja_recycler_minimo.setVisibility(View.VISIBLE);
+                caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                caja_alcanceSMinnaprobacion_final.setVisibility(View.GONE);
                 //recycler_eod.setAdapter(adapterEoD);
                 recycler_minimo.setText("");
                 codigo_marca.setText("");
@@ -1686,7 +1904,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 pesa_clase_exactitud.setText("");
                 caja_costo_final.setVisibility(View.GONE);
                 caja_edit_costo.setVisibility(View.VISIBLE);
-
+                numSerie_texto.setText("");
+                caja_numSerie_final.setVisibility(View.GONE);
+                caja_edit_numSerie.setVisibility(View.VISIBLE);
+                primera_si.setChecked(false);
+                primera_no.setChecked(false);
+                factura_si.setChecked(false);
+                factura_no.setChecked(false);
             }
         });
 
@@ -1725,8 +1949,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3411523);
-        punto_mercado.setLongitude(-99.103033);
+        punto_mercado.setLatitude(19.3506611);
+        punto_mercado.setLongitude(-99.0864875);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -1781,7 +2005,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     }
 
 
-
     private void actualizarUbicacion(Location location) {
         if (location != null) {
             latitud = location.getLatitude();
@@ -1793,6 +2016,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             LatLng coord = new LatLng(latitud,longitud);
             String[] direccion_fragmentada=direccion.split(",");
             for (int i=0;i<direccion_fragmentada.length;i++){
+                calle_str=direccion_fragmentada[0];
+                colonia_str=direccion_fragmentada[1];
+                delegacion_str=direccion_fragmentada[2];
+                cp_str=direccion_fragmentada[3];
+                ciudad_str=direccion_fragmentada[4];
+                pais_str=direccion_fragmentada[5];
                 Log.e("direccion_fragmentada",direccion_fragmentada[i]);
             }
             Log.e("lat",""+latitud);
@@ -1816,10 +2045,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             String z=String.valueOf(conver2.getZone());
 
             latitud_x.setText(X_Y_Z[0].toString().replace(",","").replace("(",""));
+            nueva_x=latitud_x.getText().toString();
             longitud_y.setText(X_Y_Z[1].toString().replace(",","").replace("(",""));
+            nueva_y=longitud_y.getText().toString();
             GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
             zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")","")+"N");
-
+            nueva_zona=zona.getText().toString();
             Log.e("con3",""+conver3);
 
 
@@ -2068,54 +2299,61 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             Log.e("alcance",""+cursor4);
             int cuenta =cursor4.getCount();
 
+            while (cursor4.moveToNext()){
+                Log.e("alcance",cursor4.getString(0));
+                recycler_alcance.setText(cursor4.getString(0));
+                recycler_minimo.setText(cursor4.getString(1));
+                nuevo_alcanceMax_aprobado=cursor4.getString(0);
+                nuevo_alcanceMin_aprobado=cursor4.getString(1);
 
-                while (cursor4.moveToNext()){
-                    Log.e("alcance",cursor4.getString(0));
-                    recycler_alcance.setText(cursor4.getString(0));
-                    recycler_minimo.setText(cursor4.getString(1));
-                    nuevo_alcanceMax_aprobado=cursor4.getString(0);
-                    nuevo_alcanceMin_aprobado=cursor4.getString(1);
-                    try {
-                        String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
-                        cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
-                        //Log.e("tipos",""+parametros2);
-                        int cuenta2 =cursor1.getCount();
-                        Log.e("catalogo",""+cuenta2);
-                        while (cursor1.moveToNext()){
-                            Log.e("1",cursor1.getString(0));
-                            Log.e("eod",cursor1.getString(1));
-                            recycler_eod.setText(cursor1.getString(2));
-                            nuevo_eod=cursor1.getString(2);
-                            tipoInstrumento.setText(cursor1.getString(3));
-                            claseExactitud.setText(cursor1.getString(4));
-                            marco_pesas.setText(cursor1.getString(5));
-                            pesas_5kg.setText(cursor1.getString(6));
-                            pesas_10kg.setText(cursor1.getString(7));
-                            pesas_20kg.setText(cursor1.getString(8));
-                            pesa_clase_exactitud.setText(cursor1.getString(9));
-                            horario.setText(cursor1.getString(10));
-                            nuevo_tipoInstrumento=cursor1.getString(3);
-                            nueva_claseExactitud=cursor1.getString(4);
-                            nuevo_marco_pesas=cursor1.getString(5);
-                            nuevo_pesas_5kg=cursor1.getString(6);
-                            nuevo_pesas_10kg=cursor1.getString(7);
-                            nuevo_pesas_20kg=cursor1.getString(8);
-                            nuevo_pesa_clase_exactitud= cursor1.getString(9);
-                            nuevo_horario=cursor1.getString(10);
-
-                        }
-                        Log.e("eod",cuenta2+" -- ");
-                    }catch (Exception e){
-                        Log.e("catalogo","no existe");
-                    }
-                }
-                if(!nuevo_alcanceMax_aprobado.trim().equals("")&&nuevo_alcanceMin_aprobado.trim().equals("")){
-
+              if(nuevo_alcanceMax_aprobado.equals(" ")&&nuevo_alcanceMin_aprobado.equals(" ")){
+                    Log.e("quepasa",""+nueva_alcanceMax);
                     caja_recycler_alcance.setVisibility(View.GONE);
                     caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                     caja_recycler_minimo.setVisibility(View.GONE);
                     caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
-                }
+                }else{
+                  try {
+                      String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
+                      cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario,alcance_medicion FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
+                      //Log.e("tipos",""+parametros2);
+                      int cuenta2 =cursor1.getCount();
+                      Log.e("catalogo",""+cuenta2);
+                      while (cursor1.moveToNext()){
+                          Log.e("1",cursor1.getString(0));
+                          Log.e("eod",cursor1.getString(2));
+                          recycler_eod.setText(cursor1.getString(2));
+                          nuevo_eod=cursor1.getString(2);
+                          Log.e("putoeod",""+nuevo_eod);
+                          tipoInstrumento.setText(cursor1.getString(3));
+                          claseExactitud.setText(cursor1.getString(4));
+                          marco_pesas.setText(cursor1.getString(5));
+                          pesas_5kg.setText(cursor1.getString(6));
+                          pesas_10kg.setText(cursor1.getString(7));
+                          pesas_20kg.setText(cursor1.getString(8));
+                          pesa_clase_exactitud.setText(cursor1.getString(9));
+                          horario.setText(cursor1.getString(10));
+                          nuevo_tipoInstrumento=cursor1.getString(3);
+                          nueva_claseExactitud=cursor1.getString(4);
+                          nuevo_marco_pesas=cursor1.getString(5);
+                          nuevo_pesas_5kg=cursor1.getString(6);
+                          nuevo_pesas_10kg=cursor1.getString(7);
+                          nuevo_pesas_20kg=cursor1.getString(8);
+                          nuevo_pesa_clase_exactitud= cursor1.getString(9);
+                          nuevo_horario=cursor1.getString(10);
+                          nuevo_alcanceMedicion=cursor1.getString(11);
+
+                      }
+                      Log.e("eod",cuenta2+" -- ");
+                  }catch (Exception e){
+                      Log.e("catalogo","no existe");
+                  }
+
+              }
+
+
+            }
+
 
             Log.e("alcance_cuenta",""+cuenta);
             //listaAlcance.clear();
@@ -2139,6 +2377,25 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         factura_no.setChecked(false);
         factura_si.setChecked(false);
+    }
+    private void quitar_foco3()
+    {
+        relacion_comercial_si.setChecked(false);
+        relacion_comercial_no.setChecked(false);
+
+    }
+
+    private void quitar_foco4()
+    {
+
+        amenaza_integridad_si.setChecked(false);
+        amenaza_integridad_no.setChecked(false);
+    }
+    private void quitar_foco5()
+    {
+
+        conflicto_intereses_si.setChecked(false);
+        conflicto_intereses_no.setChecked(false);
     }
 
     private class AsincronaEnviarBasculas extends AsyncTask<Void, Integer,Void>
@@ -2191,27 +2448,30 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 HashMap<String,String> map = new HashMap<>();
 
 
-                map.put("numero_aprobacion",enviar_numero_aprobacion);
-                map.put("marca",enviar_marca);
-                map.put("modelo",enviar_modelo);
-                map.put("alcance_maximo",enviar_AlcanceMax);
-                map.put("alcance_minimo",enviar_AlcanceMin);
-                map.put("codigo_marca",enviar_CodigoMarca);
-                map.put("codigo_modelo",enviar_CodigoModelo);
-                map.put("ano_aprobacion",enviar_anoAprobacion);
-                map.put("eod",enviar_eod);
-                map.put("tipo_instrumento",enviar_TipoInstrumento);
-                map.put("clase_exactitud",enviar_claseExactitud);
-                map.put("marco_pesas",enviar_marcoPesas);
-                map.put("pesas5kg",enviar_pesas5kg);
-                map.put("pesas10kg",enviar_pesas10kg);
-                map.put("pesas20kg",enviar_pesas20kg);
-                map.put("pesa_clase_exactitud",enviar_pesaClase_exactitud);
-                map.put("horario",enviar_horario);
-                map.put("tipo_visita",enviar_TipoVisita);
-                map.put("costo",enviar_costo);
-
-
+                map.put("id",id_usuer);
+                map.put("id_sesion",id_SesionUsuer);
+                map.put("fecha",nueva_fecha);
+                map.put("nombre_usuario",nuevo_nombre);
+                map.put("rfc",nuevo_rfc);
+                map.put("calle",calle_str);
+                map.put("colonia",colonia_str);
+                map.put("delegacion",delegacion_str);
+                map.put("codigo_postal",cp_str);
+                map.put("ciudad",ciudad_str);
+                map.put("pais",pais_str);
+                map.put("giro",seleccion_giro);
+                map.put("mercado",nuevo_mercado);
+                map.put("telefono",nuevo_tel);
+                map.put("zona",nueva_zona);
+                map.put("coordenadax",nueva_x);
+                map.put("coordenaday",nueva_y);
+                map.put("basculas",str_final);
+                map.put("numero_basculas", String.valueOf(cuenta_basculas));
+                map.put("primera_vez", String.valueOf(valorCheckboxPrimera));
+                map.put("factura", String.valueOf(valorCheckboxFactura));
+                map.put("intereses_comercial", String.valueOf(valorCheckboxComercial));
+                map.put("intereses_integridad", String.valueOf(valorCheckboxIntegridad));
+                map.put("intereses_personales", String.valueOf(valorCheckboxIntereses));
 
                 return map;
             }

@@ -222,6 +222,8 @@ public class Login extends AppCompatActivity {
                                     String strUltima_alt=jsonObject.getString("ultima_alt");
                                     String strUltima_long=jsonObject.getString("ultima_long");
                                     String strZona=jsonObject.getString("zona");
+                                    Log.e("idsesion",strId_sesion);
+
 
                                     editor.putString("id",strId);
                                     editor.putString("nombres",strNombre);
@@ -249,7 +251,7 @@ public class Login extends AppCompatActivity {
                                     Log.e("5",strContrasena);
                                     Log.e("6",strActivo);
                                     Log.e("7",""+strFecha_registro);
-                                    Log.e("8",strId_sesion);
+                                    Log.e("idsesion",strId_sesion);
                                     Log.e("9",strFecha_de_ingreso);
                                     Log.e("10",strAltitud);
                                     Log.e("11",strLongitud);
@@ -509,7 +511,12 @@ public class Login extends AppCompatActivity {
                                 Log.e("77",strAnoAprobacion);
                                 Log.e("88",""+strAlcanceMinimo);
                                 Log.e("99",strAlcanceMaximo);
-
+                                if(strAlcanceMinimo.equals("")){
+                                    strAlcanceMinimo=" ";
+                                }
+                                if(strAlcanceMaximo.equals("")){
+                                    strAlcanceMaximo=" ";
+                                }
                                 String string = "";
                                 ContentValues valores2 = new ContentValues();
                                 valores2.put("marca",strMarca);
@@ -519,6 +526,7 @@ public class Login extends AppCompatActivity {
                                 valores2.put("codigo_modelo",strCodigoModelo);
                                 valores2.put("ano_aprobacion",strAnoAprobacion);
                                 valores2.put("alcance_minimo",strAlcanceMinimo);
+
                                 valores2.put("alcance_maximo",strAlcanceMaximo);
                                 Long id_res2= database2.insert("basculas","id",valores2);
                                 Log.e("respuesta",""+id_res2);
