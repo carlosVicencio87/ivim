@@ -833,8 +833,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         finalizar_reg_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    str_final="";
-                    cuenta_basculas=0;
+                str_final="";
+                cuenta_basculas=0;
                 for (int i=0; i<listaCantidadBasc.size();i++){
                     enviar_numero_aprobacion=listaCantidadBasc.get(i).getCantidad_numero_aprobacion();
                     Log.e("lista_Array1",""+enviar_numero_aprobacion);
@@ -923,22 +923,27 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                 asincronaEnviarBasculas=new AsincronaEnviarBasculas();
                 asincronaEnviarBasculas.execute();
-
-                    orden_tipoVerificacion.setText(enviar_TipoVisita);
-                    orden_merca.setText(enviar_marca);
-                    orden_modelo.setText(enviar_modelo);
-                    orden_numSerie.setText(enviar_numSerie);
-                    orden_alcanceMax.setText(enviar_AlcanceMax);
-                    orden_eod.setText(enviar_eod);
-                    orden_alcanceMin.setText(enviar_AlcanceMin);
-                    orden_modeloPrototipo.setText(enviar_numero_aprobacion);
-                    orden_claseExactitud.setText(enviar_claseExactitud);
-                    orden_alcanceMedicion.setText(nuevo_alcanceMedicion);;
-
-                    caja_mensaje_basc.setVisibility(view.GONE);
+                caja_mensaje_basc.setVisibility(view.GONE);
 
 
-                   mapaid.setVisibility(view.VISIBLE);
+                mapaid.setVisibility(view.VISIBLE);
+                orden_tipoVerificacion.setText(enviar_TipoVisita);
+                orden_merca.setText(enviar_marca);
+                orden_modelo.setText(enviar_modelo);
+                orden_numSerie.setText(enviar_numSerie);
+                orden_alcanceMax.setText(enviar_AlcanceMax);
+                orden_eod.setText(enviar_eod);
+                orden_alcanceMin.setText(enviar_AlcanceMin);
+                orden_modeloPrototipo.setText(enviar_numero_aprobacion);
+                orden_claseExactitud.setText(enviar_claseExactitud);
+                orden_alcanceMedicion.setText(nuevo_alcanceMedicion);;
+
+                caja_mensaje_basc.setVisibility(view.GONE);
+                caja_finalizar_basc.setVisibility(view.GONE);
+                acta_dictamen_final.setVisibility(view.VISIBLE);
+
+
+                //mapaid.setVisibility(view.VISIBLE);
                 /*   int height_tmp=acta_dictamen_final.getHeight();
                    Log.e("height!!!!!!",height_tmp+"!!!");*/
 
@@ -1394,10 +1399,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     nueva_marca = recycler_marca.getText().toString();
                     checkModel=modeloSHER.getString("modelo","no");
                     nuevo_alcanceMax_aprobado_str=nuevo_alcanceMax_aprobado;
-                   if(nuevo_alcanceMax_aprobado.equals(" ")){
-                       nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
-                       Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
-                   }
+                    if(nuevo_alcanceMax_aprobado.equals(" ")){
+                        nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
+                        Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
+                    }
                     nuevo_alcanceMin_aprobado_str=nuevo_alcanceMin_aprobado;
                     if(nuevo_alcanceMin_aprobado.equals(" ")){
                         nuevo_alcanceMin_aprobado_str=alcanceMinSnAprobacion_texto.getText().toString();
@@ -2306,50 +2311,50 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 nuevo_alcanceMax_aprobado=cursor4.getString(0);
                 nuevo_alcanceMin_aprobado=cursor4.getString(1);
 
-              if(nuevo_alcanceMax_aprobado.equals(" ")&&nuevo_alcanceMin_aprobado.equals(" ")){
+                if(nuevo_alcanceMax_aprobado.equals(" ")&&nuevo_alcanceMin_aprobado.equals(" ")){
                     Log.e("quepasa",""+nueva_alcanceMax);
                     caja_recycler_alcance.setVisibility(View.GONE);
                     caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                     caja_recycler_minimo.setVisibility(View.GONE);
                     caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
                 }else{
-                  try {
-                      String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
-                      cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario,alcance_medicion FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
-                      //Log.e("tipos",""+parametros2);
-                      int cuenta2 =cursor1.getCount();
-                      Log.e("catalogo",""+cuenta2);
-                      while (cursor1.moveToNext()){
-                          Log.e("1",cursor1.getString(0));
-                          Log.e("eod",cursor1.getString(2));
-                          recycler_eod.setText(cursor1.getString(2));
-                          nuevo_eod=cursor1.getString(2);
-                          Log.e("putoeod",""+nuevo_eod);
-                          tipoInstrumento.setText(cursor1.getString(3));
-                          claseExactitud.setText(cursor1.getString(4));
-                          marco_pesas.setText(cursor1.getString(5));
-                          pesas_5kg.setText(cursor1.getString(6));
-                          pesas_10kg.setText(cursor1.getString(7));
-                          pesas_20kg.setText(cursor1.getString(8));
-                          pesa_clase_exactitud.setText(cursor1.getString(9));
-                          horario.setText(cursor1.getString(10));
-                          nuevo_tipoInstrumento=cursor1.getString(3);
-                          nueva_claseExactitud=cursor1.getString(4);
-                          nuevo_marco_pesas=cursor1.getString(5);
-                          nuevo_pesas_5kg=cursor1.getString(6);
-                          nuevo_pesas_10kg=cursor1.getString(7);
-                          nuevo_pesas_20kg=cursor1.getString(8);
-                          nuevo_pesa_clase_exactitud= cursor1.getString(9);
-                          nuevo_horario=cursor1.getString(10);
-                          nuevo_alcanceMedicion=cursor1.getString(11);
+                    try {
+                        String[] parametros2 = {cursor4.getString(0),cursor4.getString(1)};
+                        cursor1= database.rawQuery("SELECT alcance_maximo,alcance_minimo,eod,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario,alcance_medicion FROM catalogo WHERE alcance_maximo=? AND alcance_minimo=?",parametros2);
+                        //Log.e("tipos",""+parametros2);
+                        int cuenta2 =cursor1.getCount();
+                        Log.e("catalogo",""+cuenta2);
+                        while (cursor1.moveToNext()){
+                            Log.e("1",cursor1.getString(0));
+                            Log.e("eod",cursor1.getString(2));
+                            recycler_eod.setText(cursor1.getString(2));
+                            nuevo_eod=cursor1.getString(2);
+                            Log.e("putoeod",""+nuevo_eod);
+                            tipoInstrumento.setText(cursor1.getString(3));
+                            claseExactitud.setText(cursor1.getString(4));
+                            marco_pesas.setText(cursor1.getString(5));
+                            pesas_5kg.setText(cursor1.getString(6));
+                            pesas_10kg.setText(cursor1.getString(7));
+                            pesas_20kg.setText(cursor1.getString(8));
+                            pesa_clase_exactitud.setText(cursor1.getString(9));
+                            horario.setText(cursor1.getString(10));
+                            nuevo_tipoInstrumento=cursor1.getString(3);
+                            nueva_claseExactitud=cursor1.getString(4);
+                            nuevo_marco_pesas=cursor1.getString(5);
+                            nuevo_pesas_5kg=cursor1.getString(6);
+                            nuevo_pesas_10kg=cursor1.getString(7);
+                            nuevo_pesas_20kg=cursor1.getString(8);
+                            nuevo_pesa_clase_exactitud= cursor1.getString(9);
+                            nuevo_horario=cursor1.getString(10);
+                            nuevo_alcanceMedicion=cursor1.getString(11);
 
-                      }
-                      Log.e("eod",cuenta2+" -- ");
-                  }catch (Exception e){
-                      Log.e("catalogo","no existe");
-                  }
+                        }
+                        Log.e("eod",cuenta2+" -- ");
+                    }catch (Exception e){
+                        Log.e("catalogo","no existe");
+                    }
 
-              }
+                }
 
 
             }

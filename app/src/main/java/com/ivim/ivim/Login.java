@@ -91,17 +91,17 @@ public class Login extends AppCompatActivity {
                     if(!valContra.trim().equals("")){
                         if(correo_exitoso==true){
 
-                                
-                                recuperarContra.setVisibility(View.GONE);
-                                ingresar.setVisibility(View.GONE);
-                                mensaje.setText("Iniciando sesión ...");
-                                mensaje.setVisibility(View.VISIBLE);
-                                asincrona= new Asincrona();
-                                asincrona.execute();
-                                asincronaCatalogo= new Login.AsincronaCatalogo();
-                                asincronaCatalogo.execute();
-                                asincronaBascula= new AsincronaBascula();
-                                asincronaBascula.execute();
+
+                            recuperarContra.setVisibility(View.GONE);
+                            ingresar.setVisibility(View.GONE);
+                            mensaje.setText("Iniciando sesión ...");
+                            mensaje.setVisibility(View.VISIBLE);
+                            asincrona= new Asincrona();
+                            asincrona.execute();
+                            asincronaCatalogo= new Login.AsincronaCatalogo();
+                            asincronaCatalogo.execute();
+                            asincronaBascula= new AsincronaBascula();
+                            asincronaBascula.execute();
 
                         }
                         else{
@@ -199,8 +199,8 @@ public class Login extends AppCompatActivity {
                         {
                             try {
 
-                                  json_datos_usuario=new JSONArray(response);
-                                    Log.e("lala",""+json_datos_usuario);
+                                json_datos_usuario=new JSONArray(response);
+                                Log.e("lala",""+json_datos_usuario);
                                 for (int i=0;i<json_datos_usuario.length();i++){
                                     JSONObject jsonObject = json_datos_usuario.getJSONObject(i);
                                     //Log.e("nombreMovies", String.valueOf(jsonObject));
