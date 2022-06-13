@@ -927,7 +927,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 caja_finalizar_basc.setVisibility(view.GONE);
                 ultimas_preguntas.setVisibility(view.GONE);
                 acta_dictamen_final.setVisibility(view.VISIBLE);
-          /*      orden_tipoVerificacion.setText(enviar_TipoVisita);
+                orden_tipoVerificacion.setText(enviar_TipoVisita);
                 orden_merca.setText(enviar_marca);
                 orden_modelo.setText(enviar_modelo);
                 orden_numSerie.setText(enviar_numSerie);
@@ -936,7 +936,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 orden_alcanceMin.setText(enviar_AlcanceMin);
                 orden_modeloPrototipo.setText(enviar_numero_aprobacion);
                 orden_claseExactitud.setText(enviar_claseExactitud);
-                orden_alcanceMedicion.setText(nuevo_alcanceMedicion);;*/
+                orden_alcanceMedicion.setText(nuevo_alcanceMedicion);;
 
 
                 //mapaid.setVisibility(view.VISIBLE);
@@ -1971,6 +1971,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         }
 
     }
+
 
     private void solicitarPermisoLocation() {
         ActivityCompat.requestPermissions(this,
