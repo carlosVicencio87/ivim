@@ -175,6 +175,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
     private ArrayList<ModeloRecycler> listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
+    private String[] arreglo_de_basc;
 
 
     private ArrayList<CantidadBasculasRecycler>listaCantidadBasc;
@@ -894,6 +895,22 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 }
                 Log.e("numero_basc",""+cuenta_basculas);
                 Log.e("final",""+str_final);
+                arreglo_de_basc= str_final.split(" /\\*\\?\\?\\*/ ");
+                for (int i=0;i<arreglo_de_basc.length;i++){
+
+                    Log.e("separacion",arreglo_de_basc[i]);
+                     String[] separacion=arreglo_de_basc[i].split(" /\\*-\\*/ ");
+                      Log.e("pitochu",""+separacion[i]);
+//                    for (int i2=0;i<separacion.length;i2++){
+//                        if(separacion[i2]!=null){
+//                            Log.e("pitochu",""+separacion[i2]);
+//                        }
+//
+//                    }
+
+                }
+
+
 
                 formulario_bascula.setVisibility(view.GONE);
                 caja_finalizar_basc.setVisibility(view.VISIBLE);
