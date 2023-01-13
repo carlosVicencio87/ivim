@@ -1967,8 +1967,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         Location punto_mercado = new Location("Bascula");
-        punto_mercado.setLatitude(19.3506611);
-        punto_mercado.setLongitude(-99.0864875);
+        punto_mercado.setLatitude(19.3411523);
+        punto_mercado.setLongitude(-99.103033);
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
@@ -2268,7 +2268,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-    public void setListaModelo()
+        public void setListaModelo()
     {
 //        for(int i=0;i<listaModelo.size();i++){
 //            Log.e("objeto");
