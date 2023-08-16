@@ -54,7 +54,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:background="@color/blanco"
             android:id="@+id/iniciar_verificacion"
-            android:visibility="gone"
+            android:visibility="visible"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

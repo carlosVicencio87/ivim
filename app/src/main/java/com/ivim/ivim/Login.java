@@ -35,14 +35,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
 
-    private AsincronaCatalogo asincronaCatalogo;
-    private AsincronaBascula asincronaBascula;
-    private Asincrona asincrona;
+    private ExecutorService executorService;
+
+
     private EditText correo,contrasena;
     private TextView ingresar,recuperarContra,mensaje;
     private String valCorreo,valContra,correo_final;
@@ -67,6 +69,7 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
+        executorService= Executors.newSingleThreadExecutor();
         SERVIDOR_CONTROLADOR = new Servidor().local;
         datosUsuario = getSharedPreferences("Usuario",this.MODE_PRIVATE);
         editor=datosUsuario.edit();
@@ -96,12 +99,16 @@ public class Login extends AppCompatActivity {
                             ingresar.setVisibility(View.GONE);
                             mensaje.setText("Iniciando sesión ...");
                             mensaje.setVisibility(View.VISIBLE);
-                            asincrona= new Asincrona();
-                            asincrona.execute();
-                            asincronaCatalogo= new Login.AsincronaCatalogo();
-                            asincronaCatalogo.execute();
-                            asincronaBascula= new AsincronaBascula();
-                            asincronaBascula.execute();
+                            executorService.execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hacerPeticion();
+                                    pedir_tabla();
+                                    pedir_bascula();
+
+                                }
+                            });
+
 
                         }
                         else{
@@ -156,32 +163,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private class Asincrona extends AsyncTask<Void, Integer,Void>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            hacerPeticion();
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
 
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
     public void hacerPeticion()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
@@ -210,17 +192,16 @@ public class Login extends AppCompatActivity {
                                     String strApellido_2=jsonObject.getString("apellido_2");
                                     String strTelefono=jsonObject.getString("telefono");
                                     String strCorreo=jsonObject.getString("correo");
-                                    String strContrasena=jsonObject.getString("contra");
-                                    String strActivo = jsonObject.getString("activo");
+                                    String strContrasena=jsonObject.getString("password");
+                                    String strActivo = jsonObject.getString("estatus");
                                     String strId_sesion=jsonObject.getString("id_sesion");
-                                    String strFecha_registro = jsonObject.getString("fecha_de_ingreso");
+                                    String strFecha_registro = jsonObject.getString("fecha_ingreso");
 
-                                    String strFecha_de_ingreso=jsonObject.getString("fecha_de_ingreso");
-                                    String strAltitud=jsonObject.getString("altitud");
+
+                                    String strAltitud=jsonObject.getString("latitud");
                                     String strLongitud=jsonObject.getString("longitud");
-                                    String strUltima_fecha_de_conexion=jsonObject.getString("ultima_fecha_de_conexion");
-                                    String strUltima_alt=jsonObject.getString("ultima_alt");
-                                    String strUltima_long=jsonObject.getString("ultima_long");
+                                    String strUltima_fecha_de_conexion=jsonObject.getString("ultima_fecha_conexion");
+
                                     String strZona=jsonObject.getString("zona");
                                     Log.e("idsesion",strId_sesion);
 
@@ -231,16 +212,15 @@ public class Login extends AppCompatActivity {
                                     editor.putString("apellido_2",strApellido_2);
                                     editor.putString("telefono",strTelefono);
                                     editor.putString("correo",strCorreo);
-                                    editor.putString("contra",strContrasena);
-                                    editor.putString("activo",strActivo);
+                                    editor.putString("password",strContrasena);
+                                    editor.putString("estatus",strActivo);
                                     editor.putString("fecha_registro",strFecha_registro);
                                     editor.putString("id_sesion",strId_sesion);
-                                    editor.putString("fecha_de_ingreso",strFecha_de_ingreso);
-                                    editor.putString("altitud",strAltitud);
+                                    editor.putString("fecha_de_ingreso",strFecha_registro);
+                                    editor.putString("latitud",strAltitud);
                                     editor.putString("longitud",strLongitud);
                                     editor.putString("ultima_fecha_de_conexion",strUltima_fecha_de_conexion);
-                                    editor.putString("ultima_alt",strUltima_alt);
-                                    editor.putString("ultima_long",strUltima_long);
+
                                     editor.putString("zona",strZona);
                                     editor.apply();
                                     Log.e("1",""+strNombre);
@@ -252,15 +232,15 @@ public class Login extends AppCompatActivity {
                                     Log.e("6",strActivo);
                                     Log.e("7",""+strFecha_registro);
                                     Log.e("idsesion",strId_sesion);
-                                    Log.e("9",strFecha_de_ingreso);
+                                    Log.e("9",strFecha_registro);
                                     Log.e("10",strAltitud);
                                     Log.e("11",strLongitud);
                                     Log.e("12",strUltima_fecha_de_conexion);
-                                    Log.e("13",strUltima_alt);
-                                    Log.e("14",""+strUltima_long);
+
+
                                     Log.e("15",strZona);
 
-                                    Intent intent = new Intent(Login.this, Mapa.class);
+                                    Intent intent = new Intent(Login.this, Principal.class);
                                     startActivity(intent);
 
 
@@ -290,63 +270,7 @@ public class Login extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
-    private class AsincronaBD extends AsyncTask<Void, Integer,Void>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            //Aqui va la funcion a Ejecutar en Segundo plano
-            cargarBDS();
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //Toast.makeText(getApplicationContext(), "Termino asynck", Toast.LENGTH_LONG).show();
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
 
-    public void cargarBDS(){
-
-    }
-
-    private class AsincronaCatalogo extends AsyncTask<Void, Integer,Void>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            pedir_tabla();
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
-
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
     public void pedir_tabla()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
@@ -357,7 +281,6 @@ public class Login extends AppCompatActivity {
                         Log.e("respuesta2:",response + "");
                         try{
                             json_datos_tabla=new JSONArray(response);
-                            Log.e("tabla",""+json_datos_tabla);
                             conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
                             SQLiteDatabase database1 = conexion1.getWritableDatabase();
                             database1.execSQL(Sentencias.DROP_CATALOGO);
@@ -383,19 +306,7 @@ public class Login extends AppCompatActivity {
                                 String  strPesa20kg= jsonObject.getString("pesa_20kg");
                                 String  strPesaClaseExactitud= jsonObject.getString("pesa_clase_exactitud");
                                 String  strHorario= jsonObject.getString("horario");
-                                Log.e("1",""+strId);
-                                Log.e("2",strAlcanceMaximo);
-                                Log.e("3",strEod);
-                                Log.e("4",strTipo);
-                                Log.e("5",strAlcanceMinimo);
-                                Log.e("6",strAlcanceMedicion);
-                                Log.e("7",strClaseExactitud);
-                                Log.e("8",""+strMarcoPesas);
-                                Log.e("9",strPesa5kg);
-                                Log.e("10",strPesa10kg);
-                                Log.e("11",strPesa20kg);
-                                Log.e("12",strPesaClaseExactitud);
-                                Log.e("13",strHorario);
+
 
                                 ContentValues valores = new ContentValues();
                                 String str = "";
@@ -412,7 +323,7 @@ public class Login extends AppCompatActivity {
                                 valores.put("pesa_clase_exactitud",strPesaClaseExactitud);
                                 valores.put("horario",strHorario);
                                 Long id_res= database1.insert("catalogo","id",valores);
-                                Log.e("respuesta",""+id_res);
+
                             }
 
                         }
@@ -426,7 +337,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("respuesta1", error.getMessage());
+                Log.    e("respuesta1", error.getMessage());
             }
         }){
             @Override
@@ -438,32 +349,7 @@ public class Login extends AppCompatActivity {
         };
         requestQueue.add(request);
     }
-    private class AsincronaBascula extends AsyncTask<Void, Integer,Void>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            pedir_bascula();
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
 
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
     public void pedir_bascula()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
@@ -502,15 +388,7 @@ public class Login extends AppCompatActivity {
                                 String  strAnoAprobacion= jsonObject.getString("ano_aprobacion");
                                 String  strAlcanceMinimo=jsonObject.getString("alcance_minimo");
                                 String  strAlcanceMaximo= jsonObject.getString("alcance_maximo");
-                                Log.e("11",""+strId);
-                                Log.e("22",strMarca);
-                                Log.e("33",strModelo);
-                                Log.e("44",strNumeroAprobacion);
-                                Log.e("55",strCodigoMarca);
-                                Log.e("66",strCodigoModelo);
-                                Log.e("77",strAnoAprobacion);
-                                Log.e("88",""+strAlcanceMinimo);
-                                Log.e("99",strAlcanceMaximo);
+
                                 if(strAlcanceMinimo.equals("")){
                                     strAlcanceMinimo=" ";
                                 }
@@ -529,7 +407,6 @@ public class Login extends AppCompatActivity {
 
                                 valores2.put("alcance_maximo",strAlcanceMaximo);
                                 Long id_res2= database2.insert("basculas","id",valores2);
-                                Log.e("respuesta",""+id_res2);
 
                             }
                         }
@@ -561,7 +438,7 @@ public class Login extends AppCompatActivity {
         {
 
             Log.e("idsesion_main",strInicio);
-            Intent agenda= new Intent(Login.this, Mapa.class);
+            Intent agenda= new Intent(Login.this, Principal.class);
             startActivity(agenda);
         }
     }

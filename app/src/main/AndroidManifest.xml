@@ -19,7 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CantidadBasculasRecycler"></activity>
+        <activity
+            android:name=".Principal"
+            android:exported="false" />
+        <activity android:name=".CantidadBasculasRecycler" />
         <activity
             android:name=".ActaDictamen"
             android:exported="true" />
@@ -38,17 +41,16 @@
 
         <activity
             android:name=".Mapa"
-            android:label="@string/title_activity_mapa"></activity>
+            android:label="@string/title_activity_mapa" />
         <activity android:name=".Orden_servicio" />
-        <activity android:name=".Login"
-            android:exported="true"><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".Login"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
-
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
 

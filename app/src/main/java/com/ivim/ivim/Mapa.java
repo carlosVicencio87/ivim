@@ -105,7 +105,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private int check = 0;
     private int tiempo_actualizacion = 20000;
     private SharedPreferences sharedPreferences,modeloSHER,alcanceMaxSher,eodSher,
-            alcanceMinSher,idSher,id_SesionSher;
+            alcanceMinSher,idSher,id_SesionSher,folioSher;
     private SharedPreferences.Editor editormodelo,editorAlcanceMax,editorEod,
             editorAlcanceMin,editor,z;
 
@@ -129,7 +129,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             enviar_marcoPesas,enviar_pesas5kg,enviar_pesas10kg,enviar_pesas20kg,enviar_pesaClase_exactitud,
             enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie,enviar_numSerie,str_final,
             calle_str,colonia_str,delegacion_str,cp_str,ciudad_str,pais_str,nueva_zona,nueva_x,nueva_y,id_usuer,id_SesionUsuer,
-            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion;
+            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion,folio_str;
 
 
     private TextView puntoPartida,fecha_final,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
@@ -211,7 +211,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        folioSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
+        folio_str=folioSher.getString("folio","no hay");
 
+        Log.e("folioActual",""+folio_str);
         mapaid = findViewById(R.id.mapaid);
         puntoPartida = findViewById(R.id.puntoPartida);
         iniciar_verificacion = findViewById(R.id.iniciar_verificacion);
