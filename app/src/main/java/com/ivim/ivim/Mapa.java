@@ -74,10 +74,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mapa extends FragmentActivity implements OnMapReadyCallback {
+
+    private ExecutorService executorService;
 
     private GoogleMap mMap;
     private static final int PERMISO_LOCATION = 1;
@@ -99,7 +103,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final
             ,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita,
             caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final,caja_orden_tipoVerificacion,caja_orden_merca,caja_orden_modelo,caja_orden_numSerie,
-            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion;
+            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion,ultimas_preguntas;
 
     private Fragment map;
     private int check = 0;
@@ -138,8 +142,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             recycler_alcance,recycler_marca,recycler_minimo,recycler_eod,tipoInstrumento,claseExactitud,marco_pesas,pesas_5kg
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
-            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,ir_preguntas,orden_tipoVerificacion,
-            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion;
+            CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,orden_tipoVerificacion,
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta;
 
 
 
@@ -157,27 +161,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             ,cambiar_ano_Snaprobacion,guardar_rfc,cambiar_rfc,guardar_numSerie,cambiar_serie;
     private RecyclerView  recycler_modelo,recycler_numero_basc;
     private Boolean tel10,fecha_existoso,rfc_existoso;
-    private ScrollView formulario_principal, formulario_bascula,almacen_basculas,ultimas_preguntas,acta_dictamen_final;
+    private ScrollView formulario_principal, formulario_bascula,almacen_basculas,acta_dictamen_final;
     private Spinner giros;
     private AdapterGiro adapterGiro;
     public ArrayList<SpinnerModel> listaGiro = new ArrayList<>();
-
-
     private RecyclerView recyclerMarca,recyclerModelo,recyclerAlcance,recyclerEod,
             recyclerMinimo,recyclerCantidad;
-
-
     private AdapterMarcaBasculas adapterMarcaBasculas;
     private AdapterModeloBasculas adapterModeloBasculas;
-
-
     private AdapterCantidadBasculas adapterCantidadBasculas;
-
     private ArrayList<ModeloRecycler> listaModelo;
     private ArrayList<MarcaRecycler> listaMarca;
     private String[] arreglo_de_basc;
-
-
     private ArrayList<CantidadBasculasRecycler>listaCantidadBasc;
     private Context context;
     public final static int WGS84 = 0;
@@ -187,9 +182,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public UTMPoint p;
     public CoordinateConverter convertidor;
     public GeodeticPoint punto = new GeodeticPoint(latitud, longitud, altitud);
-
     private MultiAutoCompleteTextView autoAprobacion;
-
 
     private  JSONArray json_datos_bascula;
     private static String SERVIDOR_CONTROLADOR;
@@ -200,9 +193,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private CheckBox primera_si,primera_no,factura_si,factura_no,amenaza_integridad_si,amenaza_integridad_no,
             relacion_comercial_si,relacion_comercial_no,conflicto_intereses_si,conflicto_intereses_no;
     private  int numero_anoglobal,resta_anos,elementoNumeroMes,elementoNumerAno;
-    private AsincronaEnviarBasculas asincronaEnviarBasculas;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,11 +204,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         folioSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
         folio_str=folioSher.getString("folio","no hay");
+        executorService= Executors.newSingleThreadExecutor();
 
         Log.e("folioActual",""+folio_str);
         mapaid = findViewById(R.id.mapaid);
         puntoPartida = findViewById(R.id.puntoPartida);
         iniciar_verificacion = findViewById(R.id.iniciar_verificacion);
+        comenzar_encuesta=findViewById(R.id.comenzar_encuesta);
         nombre = findViewById(R.id.nombre);
         nombre_texto = findViewById(R.id.nombre_texto);
         formulario_principal = findViewById(R.id.formulario_principal);
@@ -232,16 +225,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_fecha_final = findViewById(R.id.caja_fecha_final);
         fecha_final = findViewById(R.id.fecha_final);
         cambiar_fecha = findViewById(R.id.cambiar_fecha);
-
         caja_edit_rfc = findViewById(R.id.caja_edit_rfc);
         rfc_texto = findViewById(R.id.rfc_texto);
         guardar_rfc = findViewById(R.id.guardar_rfc);
         caja_rfc_final = findViewById(R.id.caja_rfc_final);
         rfc = findViewById(R.id.rfc);
         cambiar_rfc = findViewById(R.id.cambiar_rfc);
-
-
-
         caja_direccion = findViewById(R.id.caja_direccion);
         direccion_mercado = findViewById(R.id.direccion_mercado);
         caja_giro = findViewById(R.id.caja_giro);
@@ -252,24 +241,18 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_mercado_final = findViewById(R.id.caja_mercado_final);
         mercado_vista = findViewById(R.id.mercado_vista);
         cambiar_mercado = findViewById(R.id.cambiar_mercado);
-
         caja_edit_tel = findViewById(R.id.caja_edit_tel);
         tel_texto = findViewById(R.id.tel_texto);
         guardar_tel = findViewById(R.id.guardar_tel);
         caja_tel_final = findViewById(R.id.caja_tel_final);
         cambiar_telefono = findViewById(R.id.cambiar_telefono);
         telefono = findViewById(R.id.telefono);
-
         activity = this;
         setListaGiro();
-
-
-
         listaCantidadBasc = new ArrayList<>();
         setListaCantidadBasc();
         listaModelo = new ArrayList<>();
         APROBACION =new ArrayList<>();
-
 
         caja_siguiente_tab = findViewById(R.id.caja_siguiente_tab);
         regresar_map = findViewById(R.id.regresar_map);
@@ -476,7 +459,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         regresar_otravez_formulario = findViewById(R.id.regresar_otravez_formulario);
         agregar_otra_bascula = findViewById(R.id.agregar_otra_bascula);
-        ir_preguntas = findViewById(R.id.ir_preguntas);
+
+
         ultimas_preguntas = findViewById(R.id.ultimas_preguntas);
 
         caja_integridad = findViewById(R.id.caja_integridad);
@@ -561,11 +545,23 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formulario_principal.setVisibility(View.VISIBLE);
+                ultimas_preguntas.setVisibility(View.VISIBLE);
                 consultarFormaMedicamento();
+                quitar_foco2();
+                quitar_foco3();
+                quitar_foco4();
+
                 mapaid.setVisibility(View.GONE);
                 caja_punto_partida.setVisibility(View.GONE);
 
+
+            }
+        });
+        comenzar_encuesta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ultimas_preguntas.setVisibility(View.GONE);
+                formulario_principal.setVisibility(View.VISIBLE);
 
             }
         });
@@ -921,13 +917,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
-        ir_preguntas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                almacen_basculas.setVisibility(view.GONE);
-                ultimas_preguntas.setVisibility(View.VISIBLE);
-            }
-        });
+
         finalizar_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -940,9 +930,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
 
 
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        enviarBasculas();
 
-                asincronaEnviarBasculas=new AsincronaEnviarBasculas();
-                asincronaEnviarBasculas.execute();
+                    }
+                });
                 caja_mensaje_basc.setVisibility(view.GONE);
                 caja_finalizar_basc.setVisibility(view.GONE);
                 ultimas_preguntas.setVisibility(view.GONE);
@@ -1048,8 +1042,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 quitar_foco3();
-                relacion_comercial_si.setChecked(true);
-                valorCheckboxComercial="relacion_comercial_si";
+                ultimas_preguntas.setVisibility(View.GONE);
+                mapaid.setVisibility(View.VISIBLE);
+               /* valorCheckboxComercial="relacion_comercial_si";*/
 
                 Log.e("cambios", "" + valorCheckboxComercial);
             }
@@ -1069,8 +1064,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 quitar_foco4();
-                amenaza_integridad_si.setChecked(true);
-                valorCheckboxIntegridad="amenaza_si";
+                ultimas_preguntas.setVisibility(View.GONE);
+                mapaid.setVisibility(View.VISIBLE);
+               /* valorCheckboxIntegridad="amenaza_si";*/
                 Log.e("cambios", "" + valorCheckboxFactura);
 
             }
@@ -1092,8 +1088,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 quitar_foco5();
-                conflicto_intereses_si.setChecked(true);
-                valorCheckboxIntereses="intereses_si";
+                ultimas_preguntas.setVisibility(View.GONE);
+                mapaid.setVisibility(View.VISIBLE);
+                /*valorCheckboxIntereses="intereses_si";*/
                 Log.e("cambios", "" + valorCheckboxFactura);
 
             }
@@ -1105,9 +1102,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 conflicto_intereses_no.setChecked(true);
                 valorCheckboxIntereses="intereses_no";
                 Log.e("cambios", "" + valorCheckboxFactura);
+                if(valorCheckboxComercial.equals("relacion_comercial_no")&&valorCheckboxIntegridad.equals("amenaza_no")&&valorCheckboxIntereses.equals("intereses_no")){
+                    comenzar_encuesta.setVisibility(View.VISIBLE);
+                }
 
             }
         });
+
         guardar_mercado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2420,32 +2421,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         conflicto_intereses_no.setChecked(false);
     }
 
-    private class AsincronaEnviarBasculas extends AsyncTask<Void, Integer,Void>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... voids) {
-            enviarBasculas();
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-        @Override
 
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
     public void enviarBasculas()
     {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
