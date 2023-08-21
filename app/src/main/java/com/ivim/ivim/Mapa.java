@@ -103,7 +103,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final
             ,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita,
             caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final,caja_orden_tipoVerificacion,caja_orden_merca,caja_orden_modelo,caja_orden_numSerie,
-            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion,ultimas_preguntas;
+            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion,ultimas_preguntas,alerta_conflictos;
 
     private Fragment map;
     private int check = 0;
@@ -133,7 +133,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             enviar_marcoPesas,enviar_pesas5kg,enviar_pesas10kg,enviar_pesas20kg,enviar_pesaClase_exactitud,
             enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie,enviar_numSerie,str_final,
             calle_str,colonia_str,delegacion_str,cp_str,ciudad_str,pais_str,nueva_zona,nueva_x,nueva_y,id_usuer,id_SesionUsuer,
-            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion,folio_str;
+            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion,folio_str,valorCheckboxAprobacion;
 
 
     private TextView puntoPartida,fecha_final,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
@@ -143,7 +143,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
             CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,orden_tipoVerificacion,
-            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta;
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto;
 
 
 
@@ -191,7 +191,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private Cursor cursor1,cursor2,cursor3,cursor4,cursor5,cursor6;
     private ArrayList<String> APROBACION;
     private CheckBox primera_si,primera_no,factura_si,factura_no,amenaza_integridad_si,amenaza_integridad_no,
-            relacion_comercial_si,relacion_comercial_no,conflicto_intereses_si,conflicto_intereses_no;
+            relacion_comercial_si,relacion_comercial_no,conflicto_intereses_si,conflicto_intereses_no,numero_aprob_no,numero_aprob_si;
     private  int numero_anoglobal,resta_anos,elementoNumeroMes,elementoNumerAno;
     
     @Override
@@ -431,9 +431,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         caja_orden_alcanceMedicion= findViewById(R.id.caja_orden_alcanceMedicion);
         orden_alcanceMedicion= findViewById(R.id.orden_alcanceMedicion);
 
-
-
-
+        alerta_conflictos=findViewById(R.id.alertaConflictos);
+        aceptar_conflicto=findViewById(R.id.aceptar_conflicto);
+        numero_aprob_si=findViewById(R.id.numero_aprob_si);
+        numero_aprob_no=findViewById(R.id.numero_aprob_no);
         SERVIDOR_CONTROLADOR = new Servidor().local;
 
 
@@ -1028,12 +1029,30 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 Log.e("cambios", "" + valorCheckboxFactura);
                 if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_no"))
                 {
-
-
-                    mapaid.setVisibility(View.VISIBLE);
+                    alerta_conflictos.setVisibility(View.VISIBLE);
+                    formulario_principal.setVisibility(View.GONE);
+                    formulario_bascula.setVisibility(View.GONE);
                 }
+            }
+        });
+        valorCheckboxAprobacion="";
+        numero_aprob_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco7();
+                numero_aprob_si.setChecked(true);
+                valorCheckboxAprobacion="aprobacion_si";
+                Log.e("cambios", "" + valorCheckboxAprobacion);
 
-
+            }
+        });
+        numero_aprob_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                quitar_foco7();
+                numero_aprob_no.setChecked(true);
+                valorCheckboxAprobacion="aprobacion_no";
+                Log.e("cambios", "" + valorCheckboxAprobacion);
 
             }
         });
@@ -1043,8 +1062,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco3();
                 ultimas_preguntas.setVisibility(View.GONE);
-                mapaid.setVisibility(View.VISIBLE);
-               /* valorCheckboxComercial="relacion_comercial_si";*/
+                alerta_conflictos.setVisibility(View.VISIBLE);
+
+                /* valorCheckboxComercial="relacion_comercial_si";*/
 
                 Log.e("cambios", "" + valorCheckboxComercial);
             }
@@ -1065,9 +1085,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco4();
                 ultimas_preguntas.setVisibility(View.GONE);
-                mapaid.setVisibility(View.VISIBLE);
-               /* valorCheckboxIntegridad="amenaza_si";*/
-                Log.e("cambios", "" + valorCheckboxFactura);
+                alerta_conflictos.setVisibility(View.VISIBLE);
+
+                /* valorCheckboxIntegridad="amenaza_si";*/
 
             }
         });
@@ -1077,7 +1097,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 quitar_foco4();
                 amenaza_integridad_no.setChecked(true);
                 valorCheckboxIntegridad="amenaza_no";
-                Log.e("cambios", "" + valorCheckboxFactura);
+
 
             }
         });
@@ -1089,9 +1109,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 quitar_foco5();
                 ultimas_preguntas.setVisibility(View.GONE);
-                mapaid.setVisibility(View.VISIBLE);
                 /*valorCheckboxIntereses="intereses_si";*/
-                Log.e("cambios", "" + valorCheckboxFactura);
+                alerta_conflictos.setVisibility(View.VISIBLE);
+
 
             }
         });
@@ -1101,14 +1121,23 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 quitar_foco5();
                 conflicto_intereses_no.setChecked(true);
                 valorCheckboxIntereses="intereses_no";
-                Log.e("cambios", "" + valorCheckboxFactura);
+
                 if(valorCheckboxComercial.equals("relacion_comercial_no")&&valorCheckboxIntegridad.equals("amenaza_no")&&valorCheckboxIntereses.equals("intereses_no")){
                     comenzar_encuesta.setVisibility(View.VISIBLE);
+
                 }
 
             }
         });
+        aceptar_conflicto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapaid.setVisibility(View.VISIBLE);
+                alerta_conflictos.setVisibility(View.GONE);
 
+                ultimas_preguntas.setVisibility(View.GONE);
+            }
+        });
         guardar_mercado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1214,32 +1243,32 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     if(cuenta==0){
                         Log.e("topitas_cuenta",""+cuenta);
                         Log.e("errodecuenta",""+elementoNumeroMes);
-                        if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
+                        Log.e("errodecuenta",""+valorCheckboxPrimera);
+                        Log.e("errodecuenta",""+valorCheckboxFactura);
+                        Log.e("errodecuenta",""+valorCheckboxAprobacion);
+
+
+                        if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+
                             tipo_visita.setText("1er semestre");
                             Log.e("adentro de topita1",""+elementoNumeroMes);
 
                         }
-                        else{
-                            if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                tipo_visita.setText("1er semestre extraordinarias");
-                                Log.e("adentro de topita2",""+tipo_visita);
-                            }
-                            else {
-                                if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                    tipo_visita.setText("2do semestre");
-                                    Log.e("adentro de topita3",""+tipo_visita);
+                        if( elementoNumeroMes>=4&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                            tipo_visita.setText("extraordinarias");
+                            Log.e("adentro de topita2",""+tipo_visita);
+                        }
+                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                            tipo_visita.setText("2do semestre");
+                            Log.e("adentro de topita3",""+tipo_visita.getText());
 
-                                }
-                                else {
-                                    if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                        tipo_visita.setText("2do semestre Extraordinarias o iniciales");
-                                        Log.e("adentro de topita4",""+tipo_visita);
-                                    }
-                                }
-                            }
+                        }
+                        if(elementoNumeroMes>=10&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                            tipo_visita.setText("Extraordinarias o iniciales");
+                            Log.e("adentro de topita4",""+tipo_visita);
                         }
                         if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
-                            tipo_visita.setText("Inicial");
+                            tipo_visita.setText("Anual Inicial");
                         }
 
                         Log.e("adentro de topita",""+cuenta);
@@ -1316,14 +1345,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                 }
 
 
-                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos<10&&elementoNumeroMes<7){
+                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes<7){
                                     tipo_visita.setText("Periodica anual");
                                 }
-                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos<10&&elementoNumeroMes>6){
+                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes>6){
                                     tipo_visita.setText("Anual Extraordinaria");
                                 }
 
-                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&resta_anos>10){
+                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
                                     tipo_visita.setText("1er semestre");
                                     Log.e("adentro de topita1",""+elementoNumeroMes);
 
@@ -2420,7 +2449,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         conflicto_intereses_si.setChecked(false);
         conflicto_intereses_no.setChecked(false);
     }
+    private void quitar_foco7()
+    {
 
+        numero_aprob_si.setChecked(false);
+        numero_aprob_no.setChecked(false);
+    }
 
     public void enviarBasculas()
     {

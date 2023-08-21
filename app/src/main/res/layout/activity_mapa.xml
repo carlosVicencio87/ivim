@@ -867,6 +867,56 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:id="@+id/caja_pregunta_aproba"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:textSize="15dp"
+                    android:text="¿La bascula cuenta con aprobación de modelo o prototipo?"
+                    android:textColor="@color/negro"
+                    android:layout_height="22dp"
+                    android:layout_marginRight="20dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons_pregunta_apro"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/numero_aprob_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:checked="false"
+                android:text="SI"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/numero_aprob_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="NO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:orientation="vertical"
                 android:background="@color/blanco"
@@ -2317,7 +2367,35 @@
                 android:layout_gravity="center"/>
         </LinearLayout>
 
-
+    <LinearLayout
+        android:id="@+id/alertaConflictos"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:textColor="@color/black"
+            android:textSize="21dp"
+            android:text="No puedes continuar con la verificacion ponte en contacto con tu distribuidor"
+            android:gravity="center" />
+        <TextView
+           android:id="@+id/aceptar_conflicto"
+            android:layout_width="70dp"
+            android:layout_height="52dp"
+            android:background="@color/black"
+            android:textColor="@color/blanco"
+            android:text="Aceptar"
+            android:textSize="16dp"
+            android:gravity="center"/>
+    </LinearLayout>
     <ScrollView
         android:id="@+id/acta_dictamen_final"
         android:layout_width="match_parent"
