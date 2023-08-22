@@ -25,7 +25,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.SpannableString;
@@ -103,7 +102,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             caja_CodigomaModelo_Snaprobacion,caja_CodigomaModelo_Snaprobacion_final
             ,caja_ano_Snaprobacion,caja_ano_Snaprobacion_final,caja_tipo_visita,
             caja_edit_rfc,caja_rfc_final,caja_edit_numSerie,caja_numSerie_final,caja_orden_tipoVerificacion,caja_orden_merca,caja_orden_modelo,caja_orden_numSerie,
-            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion,ultimas_preguntas,alerta_conflictos;
+            caja_orden_alcanceMax,caja_orden_eod,caja_orden_alcanceMin,caja_orden_modeloPrototipo,caja_orden_claseExactitud,caja_orden_alcanceMedicion,ultimas_preguntas,alerta_conflictos,caja_direccion_final;
 
     private Fragment map;
     private int check = 0;
@@ -133,32 +132,29 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             enviar_marcoPesas,enviar_pesas5kg,enviar_pesas10kg,enviar_pesas20kg,enviar_pesaClase_exactitud,
             enviar_horario,enviar_TipoVisita,enviar_costo,nuevo_mercado,nueva_fecha_final,nuevo_rfc,nuevo_numSerie,enviar_numSerie,str_final,
             calle_str,colonia_str,delegacion_str,cp_str,ciudad_str,pais_str,nueva_zona,nueva_x,nueva_y,id_usuer,id_SesionUsuer,
-            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion,folio_str,valorCheckboxAprobacion;
+            valorCheckboxComercial,valorCheckboxIntegridad,valorCheckboxIntereses,nuevo_alcanceMedicion,folio_str,valorCheckboxAprobacion,direccion_mercado_str;
 
 
-    private TextView puntoPartida,fecha_final,nombre,direccion_mercado,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
+    private TextView puntoPartida,fecha_final,nombre,telefono,latitud_x,longitud_y,zona,alcanceSnAprobacion,costo,
             regresar_map,siguiente_tab,regresar_formulario,agregar_bascula,finalizar_reg_bascula,finalizar_no,finalizar_si,tip_model
             ,aprobacion_basc,listas_intrusmento,listas_exactitud,listas_mercado,listas_giro,regresar_otravez_formulario,agregar_otra_bascula,
             recycler_alcance,recycler_marca,recycler_minimo,recycler_eod,tipoInstrumento,claseExactitud,marco_pesas,pesas_5kg
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario,alcanceMinSnAprobacion,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
             CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,orden_tipoVerificacion,
-            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto;
-
-
-
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto,direccion_vista;
 
     private int tipo_camino,cuenta_basculas;
     private EditText nombre_texto, fecha,mercado_texto, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto,alcanceMinSnAprobacion_texto,
             modelo_snAprobacion,Codigomarca_Snaprobacion_texto,CodigomaModelo_Snaprobacion_texto,
-            ano_Snaprobacion_texto,rfc_texto,numSerie_texto;
+            ano_Snaprobacion_texto,rfc_texto,numSerie_texto,direccion_mercado;
     private ImageView iniciar_verificacion, guardar_nombre, cambiar_nombre, guardar_tel,
             cambiar_telefono,guardar_mercado, cambiar_mercado,guardar_alcance_snAprobacion, cambiar_alcance_snAprobacion,
             guardar_costo,cambiar_costo,guardar_aprobacion,cambiar_aprobacion,guardar_fecha,cambiar_fecha,
             guardar_alcanceMin_snAprobacion,cambiar_alcanceMin_snAprobacion,guardar_marca,cambiar_marca,
             guardar_modelo,cambiar_modelo,cambiar_Codigomarca_Snaprobacion,guardar_Codigomarca_Snaprobacion,
             guardar_CodigomaModelo_Snaprobacion,cambiar_CodigomaModelo_Snaprobacion,guardar_ano_Snaprobacion
-            ,cambiar_ano_Snaprobacion,guardar_rfc,cambiar_rfc,guardar_numSerie,cambiar_serie;
+            ,cambiar_ano_Snaprobacion,guardar_rfc,cambiar_rfc,guardar_numSerie,cambiar_serie,guardar_direccion,cambiar_direccion;
     private RecyclerView  recycler_modelo,recycler_numero_basc;
     private Boolean tel10,fecha_existoso,rfc_existoso;
     private ScrollView formulario_principal, formulario_bascula,almacen_basculas,acta_dictamen_final;
@@ -233,6 +229,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         cambiar_rfc = findViewById(R.id.cambiar_rfc);
         caja_direccion = findViewById(R.id.caja_direccion);
         direccion_mercado = findViewById(R.id.direccion_mercado);
+        guardar_direccion=findViewById(R.id.guardar_direccion);
+        caja_direccion_final = findViewById(R.id.caja_direccion_final);
+        direccion_vista = findViewById(R.id.direccion_vista);
+        cambiar_direccion=findViewById(R.id.cambiar_direccion);
         caja_giro = findViewById(R.id.caja_giro);
         giros = findViewById(R.id.giros);
         caja_mercado = findViewById(R.id.caja_mercado);
@@ -476,6 +476,15 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
 
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                quitar_foco2();
+                quitar_foco3();
+                quitar_foco4();
+
+            }
+        });
 
         ArrayAdapter<String> adaptador =new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, APROBACION);
         autoAprobacion.setAdapter(adaptador);
@@ -546,15 +555,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         iniciar_verificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ultimas_preguntas.setVisibility(View.VISIBLE);
-                consultarFormaMedicamento();
-                quitar_foco2();
-                quitar_foco3();
-                quitar_foco4();
-
+                formulario_principal.setVisibility(View.VISIBLE);
                 mapaid.setVisibility(View.GONE);
-                caja_punto_partida.setVisibility(View.GONE);
-
 
             }
         });
@@ -562,7 +564,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 ultimas_preguntas.setVisibility(View.GONE);
-                formulario_principal.setVisibility(View.VISIBLE);
+                mapaid.setVisibility(View.VISIBLE);
+                consultarTablas();
 
             }
         });
@@ -576,7 +579,26 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
-
+        guardar_direccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                direccion_mercado_str=direccion_mercado.getText().toString();
+                direccion_vista.setText(direccion_mercado_str);
+                if (!direccion_mercado_str.trim().equals("")) {
+                    caja_direccion.setVisibility(View.GONE);
+                    caja_direccion_final.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "La direccion es necesaria.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        cambiar_direccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                caja_direccion.setVisibility(View.VISIBLE);
+                caja_direccion_final.setVisibility(View.GONE);
+            }
+        });
         guardar_nombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1132,10 +1154,13 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         aceptar_conflicto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapaid.setVisibility(View.VISIBLE);
-                alerta_conflictos.setVisibility(View.GONE);
 
-                ultimas_preguntas.setVisibility(View.GONE);
+
+
+                alerta_conflictos.setVisibility(View.GONE);
+                ultimas_preguntas.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(Mapa.this, Principal.class);
+                startActivity(intent);
             }
         });
         guardar_mercado.setOnClickListener(new View.OnClickListener() {
@@ -1249,27 +1274,60 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
                         if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
-
                             tipo_visita.setText("1er semestre");
                             Log.e("adentro de topita1",""+elementoNumeroMes);
+                        }
+                        else{
+                            if( elementoNumeroMes>=4&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                tipo_visita.setText("extraordinarias");
+                                Log.e("adentro de topita2",""+tipo_visita);
+                            }
+                            else{
+                                if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                    tipo_visita.setText("2do semestre");
+                                    Log.e("adentro de topita3",""+tipo_visita.getText());
 
-                        }
-                        if( elementoNumeroMes>=4&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
-                            tipo_visita.setText("extraordinarias");
-                            Log.e("adentro de topita2",""+tipo_visita);
-                        }
-                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
-                            tipo_visita.setText("2do semestre");
-                            Log.e("adentro de topita3",""+tipo_visita.getText());
+                                }
+                                else{
+                                    if(elementoNumeroMes>=10&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                        tipo_visita.setText("Extraordinarias o iniciales");
+                                        Log.e("adentro de topita4",""+tipo_visita);
+                                    }
+                                    else{
+                                        if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                            tipo_visita.setText("1er semestre");
+                                            Log.e("adentro de topita1",""+elementoNumeroMes);
+                                        }
+                                        else{
 
+                                            if( elementoNumeroMes>=4&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_si")){
+                                                tipo_visita.setText("extraordinarias");
+                                                Log.e("adentro de topita2",""+tipo_visita);
+                                            }
+                                            else{
+                                                if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_si")){
+                                                    tipo_visita.setText("2do semestre");
+                                                    Log.e("adentro de topita3",""+tipo_visita.getText());
+
+                                                }
+                                                else{
+                                                    if(elementoNumeroMes>=10&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_si")){
+                                                        tipo_visita.setText("Extraordinarias o iniciales");
+                                                        Log.e("adentro de topita4",""+tipo_visita);
+                                                    }
+                                                    else{
+                                                        if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
+                                                            tipo_visita.setText("Anual Inicial");
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        if(elementoNumeroMes>=10&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
-                            tipo_visita.setText("Extraordinarias o iniciales");
-                            Log.e("adentro de topita4",""+tipo_visita);
-                        }
-                        if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
-                            tipo_visita.setText("Anual Inicial");
-                        }
+
 
                         Log.e("adentro de topita",""+cuenta);
 
@@ -1282,10 +1340,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                         caja_recycler_minimo.setVisibility(View.GONE);
                         caja_alcanceMinSnaprobacion.setVisibility(View.VISIBLE);
-                        caja_codigo_marca.setVisibility(View.GONE);
+             /*           caja_codigo_marca.setVisibility(View.GONE);
                         caja_Codigomarca_Snaprobacion.setVisibility(View.VISIBLE);
                         caja_codigo_modelo.setVisibility(View.GONE);
-                        caja_CodigomaModelo_Snaprobacion.setVisibility(View.VISIBLE);
+                        caja_CodigomaModelo_Snaprobacion.setVisibility(View.VISIBLE);*/
                         caja_ano_aprobacion.setVisibility(View.GONE);
                         caja_ano_Snaprobacion.setVisibility(View.VISIBLE);
                     }
@@ -1299,10 +1357,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         caja_alcanceSnaprobacion.setVisibility(View.GONE);
                         caja_recycler_minimo.setVisibility(View.VISIBLE);
                         caja_alcanceMinSnaprobacion.setVisibility(View.GONE);
-                        caja_codigo_marca.setVisibility(View.VISIBLE);
+                /*        caja_codigo_marca.setVisibility(View.VISIBLE);
                         caja_Codigomarca_Snaprobacion.setVisibility(View.GONE);
                         caja_codigo_modelo.setVisibility(View.VISIBLE);
-                        caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);
+                        caja_CodigomaModelo_Snaprobacion.setVisibility(View.GONE);*/
                         caja_ano_aprobacion.setVisibility(View.VISIBLE);
                         caja_ano_Snaprobacion.setVisibility(View.GONE);
                         while (cursor3.moveToNext()){
@@ -1340,64 +1398,73 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                 Log.e("año_de_aproabacion",""+resta_anos);
 
                                 if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
-
                                     tipo_visita.setText("Inicial");
                                 }
-
-
-                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes<7){
-                                    tipo_visita.setText("Periodica anual");
-                                }
-                                if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes>6){
-                                    tipo_visita.setText("Anual Extraordinaria");
-                                }
-
-                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
-                                    tipo_visita.setText("1er semestre");
-                                    Log.e("adentro de topita1",""+elementoNumeroMes);
-
-                                }
                                 else{
-                                    if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                        tipo_visita.setText("1er semestre extraordinarias");
-                                        Log.e("adentro de topita2",""+tipo_visita);
-                                    }
-                                    else {
-                                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                            tipo_visita.setText("2do semestre");
-                                            Log.e("adentro de topita3",""+tipo_visita);
 
+                                    if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes<7){
+                                        tipo_visita.setText("Periodica anual");
+                                    }
+                                    else{
+
+                                        if(valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos<10&&elementoNumeroMes>6){
+                                            tipo_visita.setText("Anual Extraordinaria");
                                         }
-                                        else {
-                                            if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")){
-                                                tipo_visita.setText("2do semestre Extraordinarias o iniciales");
-                                                Log.e("adentro de topita4",""+tipo_visita);
+                                        else{
+                                            if (elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")&&resta_anos>10){
+                                                tipo_visita.setText("1er semestre");
+                                                Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                                            }
+                                            else{
+                                                if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                    tipo_visita.setText("1er semestre extraordinarias");
+                                                    Log.e("adentro de topita2",""+tipo_visita);
+                                                }
+                                                else {
+                                                    if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                        tipo_visita.setText("2do semestre");
+                                                        Log.e("adentro de topita3",""+tipo_visita);
+
+                                                    }
+                                                    else {
+                                                        if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                            tipo_visita.setText("2do semestre Extraordinarias o iniciales");
+                                                            Log.e("adentro de topita4",""+tipo_visita);
+                                                        }
+                                                        else{
+
+
+                                                            if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
+                                                                tipo_visita.setText("1er semestre");
+                                                                Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                                                            }
+                                                            else{
+                                                                if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
+                                                                    tipo_visita.setText("1er semestre extraordinarias");
+                                                                    Log.e("adentro de topita2",""+tipo_visita);
+                                                                }
+                                                                else {
+                                                                    if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
+                                                                        tipo_visita.setText("2do semestre");
+                                                                        Log.e("adentro de topita3",""+tipo_visita);
+
+                                                                    }
+                                                                    else {
+                                                                        if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_si")&&resta_anos>10){
+                                                                            tipo_visita.setText("2do semestre Extraordinarias o iniciales");
+                                                                            Log.e("adentro de topita4",""+tipo_visita);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
-                                }
-                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
-                                    tipo_visita.setText("1er semestre");
-                                    Log.e("adentro de topita1",""+elementoNumeroMes);
 
-                                }
-                                else{
-                                    if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
-                                        tipo_visita.setText("1er semestre extraordinarias");
-                                        Log.e("adentro de topita2",""+tipo_visita);
-                                    }
-                                    else {
-                                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
-                                            tipo_visita.setText("2do semestre");
-                                            Log.e("adentro de topita3",""+tipo_visita);
-
-                                        }
-                                        else {
-                                            if(elementoNumeroMes>9&&elementoNumeroMes==12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&resta_anos>10){
-                                                tipo_visita.setText("2do semestre Extraordinarias o iniciales");
-                                                Log.e("adentro de topita4",""+tipo_visita);
-                                            }
-                                        }
                                     }
                                 }
                             }catch (Exception e){
@@ -2011,14 +2078,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         float distancias = punto_mercado.distanceTo(punto_usuario);
         float restriccion = 80;
         Log.e("distancia", "" + distancias);
-        if (distancias < restriccion) {
-            iniciar_verificacion.setVisibility(View.VISIBLE);
-
-        } else {
-            Log.e("distancia2", "" + distancias);
-            Toast.makeText(getApplicationContext(), "Aun no llegas a tu destino.", Toast.LENGTH_LONG).show();
-
-        }
 
     }
 
@@ -2104,11 +2163,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")","")+"N");
             nueva_zona=zona.getText().toString();
             Log.e("con3",""+conver3);
-
-
-
-
-
 
             //Toast.makeText(getApplicationContext(),"direccion: "+direccion,Toast.LENGTH_LONG).show();
             //Toast.makeText(getApplicationContext(),"lat: "+latitud+"long:"+longitud,Toast.LENGTH_LONG).show();
@@ -2238,7 +2292,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             // permissions this app might request
         }
     }
-    private void consultarFormaMedicamento(){
+    private void consultarTablas(){
 
         conexion1=new Conexion(getApplicationContext(),"catalogo",null,1);
         database=conexion1.getReadableDatabase();

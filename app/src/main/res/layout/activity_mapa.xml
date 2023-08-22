@@ -13,7 +13,7 @@
         android:layout_height="80dp"
 
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/caja_punto_partida">
         <TextView
             android:layout_width="match_parent"
@@ -26,11 +26,187 @@
             android:gravity="center"
             android:layout_gravity="top"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ultimas_preguntas"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/blanco"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginRight="13dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:text="¿El verificador tiene alguna relación comercial, familiar o personal con el usuario que pudiera afectar su objetividad, la imparcialidad, independencia o integridad?"
+                android:textColor="@color/negro"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons_relacion_comercial"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/relacion_comercial_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:checked="false"
+                android:text="SI"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/relacion_comercial_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="NO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:text="¿El verificador se encuentra bajo presión comercial por parte del usuario y/o de la unidad de verificación que pudiera afectar su objetividad, la imparcialidad, independencia o integridad?"
+                android:textColor="@color/negro"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/caja_integridad"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/amenaza_integridad_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:checked="false"
+                android:text="SI"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/amenaza_integridad_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="NO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/blanco"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginRight="20dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:text="¿Existe algún conflicto de intereses del verificador y/o de la unidad de verificación que pudiera afectar la objetividad, imparcialidad, independencia o integridad al realizar el servicio de verificación?"
+                android:textColor="@color/negro"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons_conflicto_intereses"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/conflicto_intereses_si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:checked="false"
+                android:text="SI"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <CheckBox
+                android:id="@+id/conflicto_intereses_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="NO"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/comenzar_encuesta"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:background="@drawable/campo"
+            android:text="Comenzar encuesta"
+            android:textColor="@color/negro"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/mapaid"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <fragment
@@ -45,17 +221,280 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:context=".Mapa" />
-
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="70dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/blanco"
-            android:id="@+id/iniciar_verificacion"
-            android:visibility="visible"
-            />
+            android:background="@color/blanco">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="Domicilio donde se realizará la inspeccion"
+                    android:textColor="@color/negro"
+                    android:textSize="17dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_direccion"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="7dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/direccion_mercado"
+                    android:layout_width="300dp"
+                    android:layout_height="35dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+                <ImageView
+                    android:id="@+id/guardar_direccion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_direccion_final"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/direccion_vista"
+                    android:layout_width="200dp"
+                    android:layout_height="35dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+                <ImageView
+                    android:id="@+id/cambiar_direccion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="Mercado"
+                    android:textColor="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_mercado"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/mercado_texto"
+                    android:layout_width="200dp"
+                    android:layout_height="18dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+                <ImageView
+                    android:id="@+id/guardar_mercado"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/caja_mercado_final"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/mercado_vista"
+                    android:layout_width="200dp"
+                    android:layout_height="18dp"
+                    android:background="@color/blanco"
+                    android:gravity="bottom"
+                    android:hint="@string/texto3"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+                <ImageView
+                    android:id="@+id/cambiar_mercado"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/palomita"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="Zona"
+                    android:textColor="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_zona"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <TextView
+                    android:id="@+id/zona"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="Zona"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="coordenada X="
+                    android:textColor="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_x"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+                <TextView
+                    android:id="@+id/latitud_x"
+                    android:layout_width="250dp"
+                    android:layout_height="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="X"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="left"
+                    android:text="coordenada Y="
+                    android:textColor="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/caja_longitud"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_margin="10dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/longitud_y"
+                    android:layout_width="250dp"
+                    android:layout_height="20dp"
+                    android:background="@color/blanco"
+                    android:gravity="center"
+                    android:text="Y"
+                    android:textColorHint="@color/negro"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="43dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@color/negro"
+                android:id="@+id/iniciar_verificacion"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -225,8 +664,6 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/palomita"/>
             </LinearLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
@@ -244,7 +681,6 @@
                     android:textColor="@color/negro"
                     android:textSize="20dp" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/caja_edit_nombre"
                 android:layout_width="match_parent"
@@ -253,7 +689,6 @@
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:orientation="horizontal">
-
                 <EditText
                     android:id="@+id/nombre_texto"
                     android:layout_width="250dp"
@@ -271,7 +706,6 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/palomita" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/caja_nombre_final"
                 android:layout_width="match_parent"
@@ -373,43 +807,7 @@
                     android:layout_marginTop="30dp"
                     android:background="@drawable/palomita"/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="27dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="Domicilio donde se realizará la verificación"
-                    android:textColor="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/caja_direccion"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/direccion_mercado"
-                    android:layout_width="300dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:hint="@string/texto3"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -450,77 +848,9 @@
                     android:textSize="20dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="27dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="Mercado"
-                    android:textColor="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/caja_mercado"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/mercado_texto"
-                    android:layout_width="200dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="bottom"
-                    android:hint="@string/texto3"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-                <ImageView
-                    android:id="@+id/guardar_mercado"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/palomita"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/caja_mercado_final"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/mercado_vista"
-                    android:layout_width="200dp"
-                    android:layout_height="22dp"
-                    android:background="@color/blanco"
-                    android:gravity="bottom"
-                    android:hint="@string/texto3"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-                <ImageView
-                    android:id="@+id/cambiar_mercado"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_margin="15dp"
-                    android:layout_marginTop="30dp"
-                    android:background="@drawable/palomita"/>
-            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
@@ -599,125 +929,6 @@
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="Zona"
-                    android:textColor="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/caja_zona"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/zona"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:text="Zona"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="coordenada X="
-                    android:textColor="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/caja_x"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/latitud_x"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:text="X"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="coordenada Y="
-                    android:textColor="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/caja_longitud"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"
-                android:background="@color/blanco"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/longitud_y"
-                    android:layout_width="250dp"
-                    android:layout_height="22dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="center"
-                    android:text="Y"
-                    android:textColorHint="@color/negro"
-                    android:textSize="20dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/caja_siguiente_tab"
@@ -1317,7 +1528,8 @@
                 android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1335,7 +1547,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:id="@+id/caja_codigo_marca"
-                android:visibility="visible">
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -1402,7 +1614,8 @@
                 android:layout_height="35dp"
                 android:orientation="horizontal"
                 android:background="@color/blanco"
-                android:gravity="left">
+                android:gravity="left"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:background="@color/blanco"
@@ -1420,7 +1633,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:id="@+id/caja_codigo_modelo"
-                android:visibility="visible">
+                android:visibility="gone">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -1631,8 +1844,6 @@
                     android:gravity="center"
                     android:background="@color/blanco"/>
             </LinearLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -1891,7 +2102,7 @@
                     android:background="@color/blanco"
                     android:gravity="left"
                     android:textSize="20dp"
-                    android:text="Tipo de visita"
+                    android:text="Tipo de inspeccion"
                     android:textColor="@color/negro"
                     android:layout_height="22dp"
                     android:layout_marginRight="20dp"/>
@@ -2190,182 +2401,7 @@
     </ScrollView>
 
 
-        <LinearLayout
-            android:id="@+id/ultimas_preguntas"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_marginRight="13dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="¿El verificador tiene alguna relación comercial, familiar o personal con el usuario que pudiera afectar su objetividad, la imparcialidad, independencia o integridad?"
-                    android:textColor="@color/negro"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cons_relacion_comercial"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/blanco"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/relacion_comercial_si"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:checked="false"
-                    android:text="SI"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <CheckBox
-                    android:id="@+id/relacion_comercial_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="NO"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="¿El verificador se encuentra bajo presión comercial por parte del usuario y/o de la unidad de verificación que pudiera afectar su objetividad, la imparcialidad, independencia o integridad?"
-                    android:textColor="@color/negro"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/caja_integridad"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/blanco"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/amenaza_integridad_si"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:checked="false"
-                    android:text="SI"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <CheckBox
-                    android:id="@+id/amenaza_integridad_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="NO"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/blanco"
-                    android:gravity="left"
-                    android:text="¿Existe algún conflicto de intereses del verificador y/o de la unidad de verificación que pudiera afectar la objetividad, imparcialidad, independencia o integridad al realizar el servicio de verificación?"
-                    android:textColor="@color/negro"
-                    android:textSize="15dp" />
-
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cons_conflicto_intereses"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@color/blanco"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/conflicto_intereses_si"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:checked="false"
-                    android:text="SI"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <CheckBox
-                    android:id="@+id/conflicto_intereses_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:text="NO"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/comenzar_encuesta"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:background="@drawable/campo"
-                android:text="Comenzar encuesta"
-                android:textColor="@color/negro"
-                android:gravity="center"
-                android:layout_gravity="center"/>
-        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/alertaConflictos"
