@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="80dp"
-                android:text="Verificar"
+                android:text="Inspeccionar"
                 android:textSize="14dp"
                 android:textColor="@color/negro"
                 android:gravity="center"

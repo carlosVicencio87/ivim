@@ -388,6 +388,7 @@ public class Login extends AppCompatActivity {
                                 String  strAnoAprobacion= jsonObject.getString("ano_aprobacion");
                                 String  strAlcanceMinimo=jsonObject.getString("alcance_minimo");
                                 String  strAlcanceMaximo= jsonObject.getString("alcance_maximo");
+                                String  strEod= jsonObject.getString("eod");
 
                                 if(strAlcanceMinimo.equals("")){
                                     strAlcanceMinimo=" ";
@@ -404,8 +405,9 @@ public class Login extends AppCompatActivity {
                                 valores2.put("codigo_modelo",strCodigoModelo);
                                 valores2.put("ano_aprobacion",strAnoAprobacion);
                                 valores2.put("alcance_minimo",strAlcanceMinimo);
-
                                 valores2.put("alcance_maximo",strAlcanceMaximo);
+                                valores2.put("eod",strEod);
+
                                 Long id_res2= database2.insert("basculas","id",valores2);
 
                             }

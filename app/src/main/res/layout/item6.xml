@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cafe"
-    android:gravity="center"
+    android:background="@color/blanco"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/marco5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/blanco"
         android:orientation="vertical"
         android:padding="10dp">
@@ -41,6 +40,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tipo de instrumento"
+                android:gravity="center"
+                android:textSize="15dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/blanco"
+                android:gravity="left"
+                android:textSize="15dp"
+                android:text="Numero de serie"
+                android:textColor="@color/negro"
+                android:layout_height="22dp"
+                android:layout_marginRight="20dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:orientation="vertical"
+            android:background="@color/blanco"
+            android:gravity="left">
+            <TextView
+                android:id="@+id/cantidad_numeroSerie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="numero de serie"
                 android:gravity="center"
                 android:textSize="15dp"/>
         </LinearLayout>
@@ -146,7 +175,7 @@
                 android:background="@color/blanco"
                 android:gravity="left"
                 android:textSize="15dp"
-                android:text="Alcance Minimo"
+                android:text="Eod"
                 android:textColor="@color/negro"
                 android:layout_height="22dp"
                 android:layout_marginRight="20dp"/>
@@ -161,7 +190,7 @@
                 android:id="@+id/cantidad_AlcanceMin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Alcance Minimo"
+                android:text="eod"
                 android:gravity="center"
                 android:textSize="15dp"/>
         </LinearLayout>
@@ -272,7 +301,7 @@
                 android:background="@color/blanco"
                 android:gravity="left"
                 android:textSize="15dp"
-                android:text="Eod"
+                android:text="Alcance minimo"
                 android:textColor="@color/negro"
                 android:layout_height="22dp"
                 android:layout_marginRight="20dp"/>
@@ -287,7 +316,7 @@
                 android:id="@+id/cantidad_eod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="eod"
+                android:text="alcance minimo"
                 android:gravity="center"
                 android:textSize="15dp"/>
         </LinearLayout>
@@ -598,35 +627,6 @@
                 android:gravity="center"
                 android:textSize="15dp"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:layout_width="match_parent"
-                android:background="@color/blanco"
-                android:gravity="left"
-                android:textSize="15dp"
-                android:text="Numero de serie"
-                android:textColor="@color/negro"
-                android:layout_height="22dp"
-                android:layout_marginRight="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:orientation="vertical"
-            android:background="@color/blanco"
-            android:gravity="left">
-            <TextView
-                android:id="@+id/cantidad_numeroSerie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="numero de serie"
-                android:gravity="center"
-                android:textSize="15dp"/>
-        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

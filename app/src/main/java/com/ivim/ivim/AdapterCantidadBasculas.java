@@ -101,28 +101,26 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
         holder.cant_numeroSerie.setText(cantidad_numeroSerie);
 
         final String modelo  =  holder.cant_modelo.getText().toString();
+        ((Mapa)context).definirAlcance(modelo);
+
         holder.marco5.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(context,modelo,Toast.LENGTH_SHORT).show();
-                editor.putString("modelo",modelo);
-                editor.apply();
-                Log.e("cambio",datosCantidadBascula.getString("modelo","no"));
-
-                if (anterior!=null)
-                {
-                    anterior.marco5.setBackgroundResource(R.color.blanco);
-                    anterior.cant_modelo.setTextColor(context.getResources().getColor(R.color.blanco));
-                }
-
-                holder.cant_modelo.setTextColor(context.getResources().getColor(R.color.blanco));
-
-
-
-                anterior=holder;
-
+                int posiTion2 = holder.getAdapterPosition();
+                cantidad_numero_aprobacion=ranking6recycler.get(posiTion2).getCantidad_marca();
+                cantidad_marca=ranking6recycler.get(posiTion2).getCantidad_marca();
+                cantidad_modelo=ranking6recycler.get(posiTion2).getCantidad_modelo();
+                cantidad_AlcanceMax = ranking6recycler.get(posiTion2).getCantidad_AlcanceMax();
+                cantidad_AlcanceMin= ranking6recycler.get(posiTion2).getCantidad_AlcanceMin();
+                cantidad_anoAprobacion= ranking6recycler.get(posiTion2).getCantidad_anoAprobacion();
+                cantidad_eod= ranking6recycler.get(posiTion2).getCantidad_eod();
+                cantidad_TipoInstrumento= ranking6recycler.get(posiTion2).getCantidad_TipoInstrumento();
+                cantidad_TipoVisita= ranking6recycler.get(posiTion2).getCantidad_TipoVisita();
+                cantidad_costo= ranking6recycler.get(posiTion2).getCantidad_costo();
+                cantidad_numeroSerie= ranking6recycler.get(posiTion2).getCantidad_numeroSerie();
+                ((Mapa)context).editarBascula(cantidad_numero_aprobacion,cantidad_marca,cantidad_modelo,cantidad_AlcanceMax,cantidad_AlcanceMin,cantidad_anoAprobacion,cantidad_eod,cantidad_TipoInstrumento,cantidad_TipoVisita,cantidad_costo,cantidad_numeroSerie);
             }
         });
     }
