@@ -24,11 +24,12 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     private String cantidad_TipoVisita;
     private String cantidad_costo;
     private String cantidad_numeroSerie;
+    private String numero_folio;
 
     public CantidadBasculasRecycler(String cant_numero_aprobacion,String cant_marca,String cant_modelo,String cant_AlcanceMax,String cant_AlcanceMin,
                                     String cant_CodigoMarca,String cant_CodigoModelo,String cant_anoAprobacion, String cant_eod,
                                     String cant_TipoInstrumento,String cant_claseExactitud,String cant_marcoPesas,String cant_pesas5kg,
-                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_TipoVisita, String cant_costo,String cant_numeroSerie){
+                                    String cant_pesas10kg,String cant_pesas20kg,String cant_pesaClase_exactitud, String cant_horario, String cant_TipoVisita, String cant_costo,String cant_numeroSerie,String numero_folio){
 
         this.cantidad_numero_aprobacion =cant_numero_aprobacion;
         this.cantidad_marca =cant_marca;
@@ -50,6 +51,7 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_TipoVisita =cant_TipoVisita;
         this.cantidad_costo =cant_costo;
         this.cantidad_numeroSerie =cant_numeroSerie;
+        this.numero_folio=numero_folio;
 
     }
 
@@ -73,6 +75,8 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
     public String getCantidad_TipoVisita() { return cantidad_TipoVisita; }
     public String getCantidad_costo() { return cantidad_costo; }
     public String getCantidad_numeroSerie() { return cantidad_numeroSerie; }
+
+    public String getNumero_folio() {return numero_folio;}
 
     public void setCantidad_numero_aprobacion(String cantidad_numero_aprobacion) {
         this.cantidad_numero_aprobacion = cantidad_numero_aprobacion; }
@@ -114,4 +118,6 @@ public class CantidadBasculasRecycler extends AppCompatActivity {
         this.cantidad_costo = cantidad_costo; }
     public void setCantidad_numeroSerie(String cantidad_numeroSerie) {
         this.cantidad_numeroSerie = cantidad_numeroSerie; }
+
+    public void setNumero_folio(String numero_folio) {this.numero_folio = numero_folio;}
 }

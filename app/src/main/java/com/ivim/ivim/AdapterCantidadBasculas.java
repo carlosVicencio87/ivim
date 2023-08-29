@@ -23,7 +23,7 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
     private Context context;
     private String cantidad_numero_aprobacion,cantidad_marca,cantidad_modelo,cantidad_AlcanceMax,cantidad_AlcanceMin,cantidad_CodigoMarca,
             cantidad_CodigoModelo,cantidad_anoAprobacion,cantidad_eod,cantidad_TipoInstrumento,cantidad_claseExactitud,cantidad_marcoPesas,
-            cantidad_pesas5kg,cantidad_pesas10kg,cantidad_pesas20kg,cantidad_pesaClase_exactitud,cantidad_horario,cantidad_costo,cantidad_TipoVisita,cantidad_numeroSerie;
+            cantidad_pesas5kg,cantidad_pesas10kg,cantidad_pesas20kg,cantidad_pesaClase_exactitud,cantidad_horario,cantidad_costo,cantidad_TipoVisita,cantidad_numeroSerie,numero_folio;
     private SharedPreferences datosCantidadBascula;
     private SharedPreferences.Editor editor;
 
@@ -99,6 +99,8 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
 
         cantidad_numeroSerie=ranking6recycler.get(position).getCantidad_numeroSerie();
         holder.cant_numeroSerie.setText(cantidad_numeroSerie);
+        numero_folio=ranking6recycler.get(position).getNumero_folio();
+        holder.cantidad_numero_folio.setText(numero_folio);
 
         final String modelo  =  holder.cant_modelo.getText().toString();
         ((Mapa)context).definirAlcance(modelo);
@@ -133,7 +135,7 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
     public class ViewHolderRecycler extends RecyclerView.ViewHolder {
         TextView cant_numero_aprobacion,cant_marca,cant_modelo,cant_AlcanceMax,cant_AlcanceMin,cant_CodigoMarca,cant_CodigoModelo,
                 cant_anoAprobacion,cant_eod,cant_TipoInstrumento,cant_claseExactitud,cant_marcoPesas,cant_pesas5kg,cant_pesas10kg,
-                cant_pesas20kg,cant_pesaClase_exactitud,cant_horario,cant_TipoVisita,cant_costo,cant_numeroSerie;
+                cant_pesas20kg,cant_pesaClase_exactitud,cant_horario,cant_TipoVisita,cant_costo,cant_numeroSerie,cantidad_numero_folio;
         LinearLayout marco5;
 
 
@@ -160,6 +162,7 @@ public class AdapterCantidadBasculas extends RecyclerView.Adapter<AdapterCantida
             cant_TipoVisita =(TextView)itemView.findViewById(R.id.cantidad_TipoVisita);
             cant_costo =(TextView)itemView.findViewById(R.id.cantidad_costo);
             cant_numeroSerie =(TextView)itemView.findViewById(R.id.cantidad_numeroSerie);
+            cantidad_numero_folio=itemView.findViewById(R.id.cantidad_numero_folio);
             marco5=(LinearLayout)itemView.findViewById(R.id.marco5);
 
 

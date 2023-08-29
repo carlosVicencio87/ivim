@@ -89,7 +89,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
     private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,
-            cons_factura,caja_integridad,cons_relacion_comercial,cons_conflicto_intereses;
+            cons_factura,caja_integridad,cons_relacion_comercial,cons_conflicto_intereses,caja_limite_basc;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_mercado_final,caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
@@ -142,7 +142,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario, eod_snApro_vista,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
             CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,orden_tipoVerificacion,
-            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto,direccion_vista,tipo_instrumen_view;
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto,direccion_vista,tipo_instrumen_view,aperturar_nuevo_no,aperturar_nuevo_si;
 
     private int tipo_camino,cuenta_basculas;
     private EditText nombre_texto, fecha,mercado_texto, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto, eod_snApro_texto,
@@ -438,6 +438,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         aceptar_conflicto=findViewById(R.id.aceptar_conflicto);
         numero_aprob_si=findViewById(R.id.numero_aprob_si);
         numero_aprob_no=findViewById(R.id.numero_aprob_no);
+
+
+        caja_limite_basc=findViewById(R.id.caja_limite_basc);
         SERVIDOR_CONTROLADOR = new Servidor().local;
 
 
@@ -452,10 +455,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         idSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
         id_usuer=idSher.getString("id","no");
-        Log.e("ID",""+id_usuer);
         id_SesionSher=getSharedPreferences("Usuario",this.MODE_PRIVATE);
         id_SesionUsuer=id_SesionSher.getString("id_sesion","no");
-        Log.e("ID",""+id_SesionUsuer);
 
         almacen_basculas = findViewById(R.id.almacen_basculas);
         recycler_numero_basc = findViewById(R.id.recycler_numero_basc);
@@ -477,8 +478,8 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         conflicto_intereses_si = findViewById(R.id.conflicto_intereses_si);
         conflicto_intereses_no = findViewById(R.id.conflicto_intereses_no);
 
-
-
+        aperturar_nuevo_no=findViewById(R.id.aperturar_nuevo_no);
+        aperturar_nuevo_si=findViewById(R.id.aperturar_nuevo_si);
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -1016,11 +1017,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     listas_giro = (TextView) view.findViewById(R.id.listaGiro);
                 }
                 seleccion_giro = listas_giro.getText().toString();
-                Log.e("tipogiro", "" + seleccion_giro);
 
-
-                Log.e("tipo", "" + seleccion_giro);
-                Log.e("tipo", "" + position);
             }
 
             @Override
@@ -1274,9 +1271,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 String elementoAno=fecha_fragmentada[2];
                 elementoNumeroMes= Integer.parseInt(elementoMes);
                 elementoNumerAno= Integer.parseInt(elementoAno);
-                Log.e("mes_chems",""+elementoMes);
-                Log.e("mes_chems1",""+elementoNumeroMes);
-                Log.e("mes_chems1",""+elementoAno);
+
 
 
 
@@ -1289,11 +1284,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     int cuenta =cursor3.getCount();
                     Log.e("modelo_cuenta",""+cuenta);
                     if(cuenta==0){
-                        Log.e("topitas_cuenta",""+cuenta);
-                        Log.e("errodecuenta",""+elementoNumeroMes);
-                        Log.e("errodecuenta",""+valorCheckboxPrimera);
-                        Log.e("errodecuenta",""+valorCheckboxFactura);
-                        Log.e("errodecuenta",""+valorCheckboxAprobacion);
+
 
 
                         if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_no")&&valorCheckboxAprobacion.equals("aprobacion_no")){
@@ -1342,6 +1333,30 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                         if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
                                                             tipo_visita.setText("Anual Inicial");
                                                         }
+                                                        else{
+                                                            if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                tipo_visita.setText("1er semestre");
+                                                                Log.e("adentro de topita1",""+elementoNumeroMes);
+                                                            }
+                                                            else{
+                                                                if( elementoNumeroMes>=4&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                    tipo_visita.setText("extraordinarias");
+                                                                    Log.e("adentro de topita2",""+tipo_visita);
+                                                                }
+                                                                else{
+                                                                    if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                        tipo_visita.setText("2do semestre");
+                                                                        Log.e("adentro de topita3",""+tipo_visita.getText());
+                                                                    }
+                                                                    else{
+                                                                        if(elementoNumeroMes>=10&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                            tipo_visita.setText("Extraordinarias o iniciales");
+                                                                            Log.e("adentro de topita4",""+tipo_visita);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -1352,7 +1367,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         }
 
 
-                        Log.e("adentro de topita",""+cuenta);
+
 
                         tipo_camino=1;
                         caja_snAprobacion_marca.setVisibility(View.VISIBLE);
@@ -1390,16 +1405,16 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                             Log.e("marca",cursor3.getString(1));
                             recycler_marca.setText(cursor3.getString(1));
                             nueva_marca = recycler_marca.getText().toString();
-                            Log.e("marca",""+nueva_marca);
+                         /*   Log.e("marca",""+nueva_marca);*/
 
                             try {
                                 String[] parametros2 = {nueva_aprobacion.trim(),nueva_marca.trim()};
-                                Log.e("parametros2",""+parametros2);
+                              /*  Log.e("parametros2",""+parametros2);*/
                                 cursor5= database3.rawQuery("SELECT DISTINCT numero_aprobacion,marca,modelo,codigo_marca,codigo_modelo,ano_aprobacion FROM basculas WHERE numero_aprobacion=? AND marca=? ",parametros2);
-                                Log.e("modelo",""+cursor5);
+                                /*Log.e("modelo",""+cursor5);*/
 
                                 int cuenta2 =cursor5.getCount();
-                                Log.e("modelo_cuenta",""+cuenta2);
+                               /* Log.e("modelo_cuenta",""+cuenta2);*/
                                 listaModelo.clear();
                                 while (cursor5.moveToNext()){
                                     Log.e("modelo",cursor5.getString(2));
@@ -1413,12 +1428,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                     nuevo_coodigoModelo=cursor5.getString(4);
 
                                     numero_anoglobal= Integer.parseInt(ano_global);
-                                    Log.e("numero globals",""+numero_anoglobal);
+                                    /*Log.e("numero globals",""+numero_anoglobal);*/
                                     //Log.e("lista_basculas",""+BASCULAS);
                                 }
                                 setListaModelo();
                                 resta_anos=elementoNumerAno-numero_anoglobal;
-                                Log.e("año_de_aproabacion",""+resta_anos);
 
                                 if(valorCheckboxPrimera.equals("primera_si")&&valorCheckboxFactura.equals("factura_si")){
                                     tipo_visita.setText("Inicial");
@@ -1501,6 +1515,37 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                                                                                             Log.e("adentro de topita1",""+elementoNumeroMes);
 
                                                                                         }
+                                                                                        else{
+                                                                                            if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                                                tipo_visita.setText("1er semestre");
+                                                                                                Log.e("adentro de topita1",""+elementoNumeroMes);
+
+                                                                                            }
+                                                                                            else {
+                                                                                                if ( elementoNumeroMes<4&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                                                    tipo_visita.setText("1er semestre");
+                                                                                                    Log.e("adentro de topita1",""+elementoNumeroMes);
+                                                                                                }
+                                                                                                else {
+                                                                                                    if( elementoNumeroMes>3&&elementoNumeroMes<7&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                                                        tipo_visita.setText("1er semestre extraordinarias");
+                                                                                                        Log.e("adentro de topita2",""+tipo_visita);
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        if(elementoNumeroMes>6&&elementoNumeroMes<10&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                                                            tipo_visita.setText("2do semestre");
+                                                                                                            Log.e("adentro de topita3",""+tipo_visita);
+                                                                                                        }
+                                                                                                        else{
+                                                                                                            if(elementoNumeroMes>9&&elementoNumeroMes<=12&&valorCheckboxPrimera.equals("primera_no")&&valorCheckboxFactura.equals("factura_si")&&valorCheckboxAprobacion.equals("aprobacion_no")){
+                                                                                                                tipo_visita.setText("2do semestre Extraordinarias o iniciales");
+                                                                                                                Log.e("adentro de topita4",""+tipo_visita);
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
                                                                                     }
                                                                                 }
                                                                             }
@@ -1527,7 +1572,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     }
 
 
-                    Log.e("lista_basculas",""+cursor2);
+
                 }
                 catch (Exception e){
                     Log.e("basculas","no existe");
@@ -1553,28 +1598,70 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                Log.e("tamañano", String.valueOf(listaCantidadBasc.size()));
                 Log.e("tipo_camino",""+tipo_camino);
-                if(tipo_camino==2){
-                    nueva_aprobacion = autoAprobacion.getText().toString();
-                    nueva_marca = recycler_marca.getText().toString();
-                    checkModel=modeloSHER.getString("modelo","no");
-                    nuevo_alcanceMax_aprobado_str=nuevo_alcanceMax_aprobado;
-                    Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
 
-                    if(nuevo_alcanceMax_aprobado.trim().equals("")){
-                        nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
+                    if(tipo_camino==2){
+                        nueva_aprobacion = autoAprobacion.getText().toString();
+                        nueva_marca = recycler_marca.getText().toString();
+                        checkModel=modeloSHER.getString("modelo","no");
+                        nuevo_alcanceMax_aprobado_str=nuevo_alcanceMax_aprobado;
                         Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
+
+                        if(nuevo_alcanceMax_aprobado.trim().equals("")){
+                            nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
+                            Log.e("valor_cambiado",""+nuevo_alcanceMax_aprobado_str);
+                        }
+                        nuevo_eod_aprobado_str = nuevo_eod_aprobado;
+                        if(nuevo_eod_aprobado.trim().equals("")){
+                            nuevo_eod_aprobado_str = eod_snApro_texto.getText().toString();
+                            Log.e("valor_cambiadoMin",""+ nuevo_eod_aprobado_str);
+                            nuevo_alcance_min_str = alcance_min_snApro;
+                            Log.e("valor_cambiadoMin",""+ nuevo_eod_aprobado_str);
+                            nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
+                            Log.e("instrumento",""+nuevo_tipoInstrumento_string);
+                            Log.e("instrumento_a222222",""+nuevo_tipoInstrumento);
+                            nueva_claseExactitud_string=claseExactitudSnaprobacion;
+                            nuevo_marco_pesas_string=marco_pesasSnaprobacion;
+                            nuevo_pesas_5kg_string=pesas_5kgSnaprobacion;
+                            nuevo_pesas_10kg_string=pesas_10kgSnaprobacion;
+                            nuevo_pesas_20kg_string=pesas_20kgSnaprobacion;
+                            nuevo_pesa_clase_exactitud_string= esa_clase_exactitudSnaprobacion;
+                            nuevo_horario_string=horarioSnaprobacion;
+                        }
+                        else{
+                            nuevo_alcance_min_str = nuevo_alcance_min;
+                            nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
+                            Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
+                            Log.e("instrumento_a3336",""+nuevo_tipoInstrumento);
+                            nueva_claseExactitud_string=nueva_claseExactitud;
+                            nuevo_marco_pesas_string=nuevo_marco_pesas;
+                            nuevo_pesas_5kg_string=nuevo_pesas_5kg;
+                            nuevo_pesas_10kg_string=nuevo_pesas_10kg;
+                            nuevo_pesas_20kg_string=nuevo_pesas_20kg;
+                            nuevo_pesa_clase_exactitud_string= nuevo_pesa_clase_exactitud;
+                            nuevo_horario_string=nuevo_horario;
+                        }
+                        nuevo_coodigoMarca_string=nuevo_coodigoMarca;
+                        nuevo_coodigoModelo_string=nuevo_coodigoModelo;
+                        ano_global_string=ano_global;
+
+                        tipo_visita_string=tipo_visita.getText().toString();
+                        nuevo_costo = costo_texto.getText().toString();
+                        nuevo_numSerie = numSerie_texto.getText().toString();
                     }
-                    nuevo_eod_aprobado_str = nuevo_eod_aprobado;
-                    if(nuevo_eod_aprobado.trim().equals("")){
-                        nuevo_eod_aprobado_str = eod_snApro_texto.getText().toString();
-                        Log.e("valor_cambiadoMin",""+ nuevo_eod_aprobado_str);
+                    else{
+                        nueva_aprobacion = autoAprobacion.getText().toString();
+                        nueva_marca = marca_snAprobacion.getText().toString();;
+                        checkModel=modelo_snAprobacion.getText().toString();;
+                        nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
+                        nuevo_eod_aprobado_str = eod_snApro_texto.getText().toString();;
+                        nuevo_coodigoMarca_string=Codigomarca_Snaprobacion_texto.getText().toString();;
+                        nuevo_coodigoModelo_string=CodigomaModelo_Snaprobacion_texto.getText().toString();;
+                        ano_global_string=ano_Snaprobacion_texto.getText().toString();;
                         nuevo_alcance_min_str = alcance_min_snApro;
-                        Log.e("valor_cambiadoMin",""+ nuevo_eod_aprobado_str);
                         nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
-                        Log.e("instrumento",""+nuevo_tipoInstrumento_string);
+                        Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
                         Log.e("instrumento_a222222",""+nuevo_tipoInstrumento);
                         nueva_claseExactitud_string=claseExactitudSnaprobacion;
                         nuevo_marco_pesas_string=marco_pesasSnaprobacion;
@@ -1583,256 +1670,199 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         nuevo_pesas_20kg_string=pesas_20kgSnaprobacion;
                         nuevo_pesa_clase_exactitud_string= esa_clase_exactitudSnaprobacion;
                         nuevo_horario_string=horarioSnaprobacion;
+                        tipo_visita_string=tipo_visita.getText().toString();
+                        nuevo_costo = costo_texto.getText().toString();
+                        nuevo_numSerie = numSerie_texto.getText().toString();
+
                     }
-                    else{
-                        nuevo_alcance_min_str = nuevo_alcance_min;
-                        nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
-                        Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
-                        Log.e("instrumento_a3336",""+nuevo_tipoInstrumento);
-                        nueva_claseExactitud_string=nueva_claseExactitud;
-                        nuevo_marco_pesas_string=nuevo_marco_pesas;
-                        nuevo_pesas_5kg_string=nuevo_pesas_5kg;
-                        nuevo_pesas_10kg_string=nuevo_pesas_10kg;
-                        nuevo_pesas_20kg_string=nuevo_pesas_20kg;
-                        nuevo_pesa_clase_exactitud_string= nuevo_pesa_clase_exactitud;
-                        nuevo_horario_string=nuevo_horario;
-                    }
-                    nuevo_coodigoMarca_string=nuevo_coodigoMarca;
-                    nuevo_coodigoModelo_string=nuevo_coodigoModelo;
-                    ano_global_string=ano_global;
-
-                    tipo_visita_string=tipo_visita.getText().toString();
-                    nuevo_costo = costo_texto.getText().toString();
-                    nuevo_numSerie = numSerie_texto.getText().toString();
-                }
-                else{
-                    nueva_aprobacion = autoAprobacion.getText().toString();
-                    nueva_marca = marca_snAprobacion.getText().toString();;
-                    checkModel=modelo_snAprobacion.getText().toString();;
-                    nuevo_alcanceMax_aprobado_str=alcanceSnAprobacion_texto.getText().toString();
-                    nuevo_eod_aprobado_str = eod_snApro_texto.getText().toString();;
-                    nuevo_coodigoMarca_string=Codigomarca_Snaprobacion_texto.getText().toString();;
-                    nuevo_coodigoModelo_string=CodigomaModelo_Snaprobacion_texto.getText().toString();;
-                    ano_global_string=ano_Snaprobacion_texto.getText().toString();;
-                    nuevo_alcance_min_str = alcance_min_snApro;
-                    nuevo_tipoInstrumento_string=nuevo_tipoInstrumento;
-                    Log.e("instrumento_aqu",""+nuevo_tipoInstrumento_string);
-                    Log.e("instrumento_a222222",""+nuevo_tipoInstrumento);
-                    nueva_claseExactitud_string=claseExactitudSnaprobacion;
-                    nuevo_marco_pesas_string=marco_pesasSnaprobacion;
-                    nuevo_pesas_5kg_string=pesas_5kgSnaprobacion;
-                    nuevo_pesas_10kg_string=pesas_10kgSnaprobacion;
-                    nuevo_pesas_20kg_string=pesas_20kgSnaprobacion;
-                    nuevo_pesa_clase_exactitud_string= esa_clase_exactitudSnaprobacion;
-                    nuevo_horario_string=horarioSnaprobacion;
-                    tipo_visita_string=tipo_visita.getText().toString();
-                    nuevo_costo = costo_texto.getText().toString();
-                    nuevo_numSerie = numSerie_texto.getText().toString();
-
-                }
 
 
-                if(!nueva_aprobacion.trim().equals("")){
-                    if(!nueva_marca.trim().equals("")){
-                        if (!checkModel.trim().equals("")){
-                            if(!nuevo_alcanceMax_aprobado_str.trim().equals("")){
-                                if(!nuevo_eod_aprobado_str.trim().equals("")){
-                                    if(!nuevo_coodigoMarca_string.trim().equals("")){
-                                        if(!nuevo_coodigoModelo_string.trim().equals("")){
-                                            if(!ano_global_string.trim().equals("")){
-                                                if(!nuevo_alcance_min_str.trim().equals("")){
-                                                    if(!nuevo_tipoInstrumento_string.trim().equals("")){
-                                                        if(!nueva_claseExactitud_string.trim().equals("")){
-                                                            if(!nuevo_marco_pesas_string.trim().equals("")){
-                                                                if(!nuevo_pesas_5kg_string.trim().equals("")){
-                                                                    if(!nuevo_pesas_10kg_string.trim().equals("")){
-                                                                        if(!nuevo_pesas_20kg_string.trim().equals("")){
-                                                                            if(!nuevo_pesa_clase_exactitud_string.trim().equals("")){
-                                                                                if(!nuevo_horario_string.trim().equals("")){
-                                                                                    if(!tipo_visita_string.trim().equals("")){
-                                                                                        if(!nuevo_costo.trim().equals("")){
-                                                                                            if(!nuevo_numSerie.trim().equals("")){
-                                                                                                formulario_bascula.setVisibility(View.GONE);
-                                                                                                almacen_basculas.setVisibility(View.VISIBLE);
-                                                                                                Log.e("prueba1",""+nueva_aprobacion);
-                                                                                                Log.e("prueba2",""+nueva_marca);
-                                                                                                Log.e("prueba3",""+checkModel);
-                                                                                                Log.e("prueba4",""+nuevo_alcanceMax_aprobado_str);
-                                                                                                JSONObject jsonObject=new JSONObject();
-                                                                                                json_datos_bascula=new JSONArray();
-                                                                                                try {
-                                                                                                    jsonObject.put("numero_aprobacion",nueva_aprobacion);
-                                                                                                    jsonObject.put("marca",nueva_marca);
-                                                                                                    jsonObject.put("modelo",checkModel);
-                                                                                                    jsonObject.put("Alcance_max",nuevo_alcanceMax_aprobado_str);
-                                                                                                    jsonObject.put("Alcance_min", nuevo_eod_aprobado_str);
-                                                                                                    jsonObject.put("codigo_marca",nuevo_coodigoMarca_string);
-                                                                                                    jsonObject.put("codigo_modelo",nuevo_coodigoModelo_string);
-                                                                                                    jsonObject.put("ano_modelo",ano_global_string);
-                                                                                                    jsonObject.put("eod", nuevo_alcance_min_str);
-                                                                                                    jsonObject.put("tipo_instrumento",nuevo_tipoInstrumento_string);
-                                                                                                    jsonObject.put("clase_exactitud",nueva_claseExactitud_string);
-                                                                                                    jsonObject.put("marco_pesas",nuevo_marco_pesas_string);
-                                                                                                    jsonObject.put("pesas_5kg",nuevo_pesas_5kg_string);
-                                                                                                    jsonObject.put("pesas_10kg",nuevo_pesas_10kg_string);
-                                                                                                    jsonObject.put("pesas_20kg",nuevo_pesas_20kg_string);
-                                                                                                    jsonObject.put("pesa_clase_exactitud",nuevo_pesa_clase_exactitud_string);
-                                                                                                    jsonObject.put("horario",nuevo_horario_string);
-                                                                                                    jsonObject.put("tipo_visita",tipo_visita_string);
-                                                                                                    jsonObject.put("costo",nuevo_costo);
-                                                                                                    jsonObject.put("numero_serie",nuevo_numSerie);
-                                                                                                    json_datos_bascula.put(jsonObject);
+                    if(!nueva_aprobacion.trim().equals("")){
+                        if(!nueva_marca.trim().equals("")){
+                            if (!checkModel.trim().equals("")){
+                                if(!nuevo_alcanceMax_aprobado_str.trim().equals("")){
+                                    if(!nuevo_eod_aprobado_str.trim().equals("")){
+                                        if(!nuevo_coodigoMarca_string.trim().equals("")){
+                                            if(!nuevo_coodigoModelo_string.trim().equals("")){
+                                                if(!ano_global_string.trim().equals("")){
+                                                    if(!nuevo_alcance_min_str.trim().equals("")){
+                                                        if(!nuevo_tipoInstrumento_string.trim().equals("")){
+                                                            if(!nueva_claseExactitud_string.trim().equals("")){
+                                                                if(!nuevo_marco_pesas_string.trim().equals("")){
+                                                                    if(!nuevo_pesas_5kg_string.trim().equals("")){
+                                                                        if(!nuevo_pesas_10kg_string.trim().equals("")){
+                                                                            if(!nuevo_pesas_20kg_string.trim().equals("")){
+                                                                                if(!nuevo_pesa_clase_exactitud_string.trim().equals("")){
+                                                                                    if(!nuevo_horario_string.trim().equals("")){
+                                                                                        if(!tipo_visita_string.trim().equals("")){
+                                                                                            if(!nuevo_costo.trim().equals("")){
+                                                                                                if(!nuevo_numSerie.trim().equals("")){
+                                                                                                    formulario_bascula.setVisibility(View.GONE);
+                                                                                                    almacen_basculas.setVisibility(View.VISIBLE);
 
-                                                                                                    Log.e("1", String.valueOf(jsonObject));
-                                                                                                    Log.e("2", String.valueOf(json_datos_bascula));
-                                                                                                    for (int i=0; i<json_datos_bascula.length();i++)
-                                                                                                    {
-                                                                                                        try { JSONObject jsonSacando= json_datos_bascula.getJSONObject(i);
-                                                                                                            String strAprobacion=jsonSacando.get("numero_aprobacion").toString();
-                                                                                                            String strMarca=jsonSacando.get("marca").toString();
-                                                                                                            String strModelo=jsonSacando.get("modelo").toString();
-                                                                                                            String strAlcance_max=jsonSacando.get("Alcance_max").toString();
-                                                                                                            String strAlcance_min=jsonSacando.get("Alcance_min").toString();
-                                                                                                            String strCodigo_marca=jsonSacando.get("codigo_marca").toString();
-                                                                                                            String strCodigo_modelo=jsonSacando.get("codigo_modelo").toString();
-                                                                                                            String strAno_modelo=jsonSacando.get("ano_modelo").toString();
-                                                                                                            String strEod=jsonSacando.get("eod").toString();
-                                                                                                            String stTipo_instrumento=jsonSacando.get("tipo_instrumento").toString();
-                                                                                                            String strClase_exactitud=jsonSacando.get("clase_exactitud").toString();
-                                                                                                            String strMarco_pesas=jsonSacando.get("marco_pesas").toString();
-                                                                                                            String strPesas_5kg=jsonSacando.get("pesas_5kg").toString();
-                                                                                                            String stPesas_10kg=jsonSacando.get("pesas_10kg").toString();
-                                                                                                            String strPesas_20kg=jsonSacando.get("pesas_20kg").toString();
-                                                                                                            String strPesa_clase_exactitud=jsonSacando.get("pesa_clase_exactitud").toString();
-                                                                                                            String strHorario=jsonSacando.get("horario").toString();
-                                                                                                            String strTipoVisita=jsonSacando.get("tipo_visita").toString();
-                                                                                                            String strCosto=jsonSacando.get("costo").toString();
-                                                                                                            String strNumSerie=jsonSacando.get("numero_serie").toString();
+                                                                                                    JSONObject jsonObject=new JSONObject();
+                                                                                                    json_datos_bascula=new JSONArray();
+                                                                                                    Log.e("222", String.valueOf(json_datos_bascula.length()));
+
+                                                                                                    try {
+                                                                                                        jsonObject.put("numero_aprobacion",nueva_aprobacion);
+                                                                                                        jsonObject.put("marca",nueva_marca);
+                                                                                                        jsonObject.put("modelo",checkModel);
+                                                                                                        jsonObject.put("Alcance_max",nuevo_alcanceMax_aprobado_str);
+                                                                                                        jsonObject.put("Alcance_min", nuevo_eod_aprobado_str);
+                                                                                                        jsonObject.put("codigo_marca",nuevo_coodigoMarca_string);
+                                                                                                        jsonObject.put("codigo_modelo",nuevo_coodigoModelo_string);
+                                                                                                        jsonObject.put("ano_modelo",ano_global_string);
+                                                                                                        jsonObject.put("eod", nuevo_alcance_min_str);
+                                                                                                        jsonObject.put("tipo_instrumento",nuevo_tipoInstrumento_string);
+                                                                                                        jsonObject.put("clase_exactitud",nueva_claseExactitud_string);
+                                                                                                        jsonObject.put("marco_pesas",nuevo_marco_pesas_string);
+                                                                                                        jsonObject.put("pesas_5kg",nuevo_pesas_5kg_string);
+                                                                                                        jsonObject.put("pesas_10kg",nuevo_pesas_10kg_string);
+                                                                                                        jsonObject.put("pesas_20kg",nuevo_pesas_20kg_string);
+                                                                                                        jsonObject.put("pesa_clase_exactitud",nuevo_pesa_clase_exactitud_string);
+                                                                                                        jsonObject.put("horario",nuevo_horario_string);
+                                                                                                        jsonObject.put("tipo_visita",tipo_visita_string);
+                                                                                                        jsonObject.put("costo",nuevo_costo);
+                                                                                                        jsonObject.put("numero_serie",nuevo_numSerie);
+                                                                                                        json_datos_bascula.put(jsonObject);
+
+                                                                                                        Log.e("1", String.valueOf(jsonObject));
+                                                                                                        Log.e("2", String.valueOf(json_datos_bascula));
+                                                                                                        for (int i=0; i<json_datos_bascula.length();i++)
+                                                                                                        {
+                                                                                                            try { JSONObject jsonSacando= json_datos_bascula.getJSONObject(i);
+                                                                                                                String strAprobacion=jsonSacando.get("numero_aprobacion").toString();
+                                                                                                                String strMarca=jsonSacando.get("marca").toString();
+                                                                                                                String strModelo=jsonSacando.get("modelo").toString();
+                                                                                                                String strAlcance_max=jsonSacando.get("Alcance_max").toString();
+                                                                                                                String strAlcance_min=jsonSacando.get("Alcance_min").toString();
+                                                                                                                String strCodigo_marca=jsonSacando.get("codigo_marca").toString();
+                                                                                                                String strCodigo_modelo=jsonSacando.get("codigo_modelo").toString();
+                                                                                                                String strAno_modelo=jsonSacando.get("ano_modelo").toString();
+                                                                                                                String strEod=jsonSacando.get("eod").toString();
+                                                                                                                String stTipo_instrumento=jsonSacando.get("tipo_instrumento").toString();
+                                                                                                                String strClase_exactitud=jsonSacando.get("clase_exactitud").toString();
+                                                                                                                String strMarco_pesas=jsonSacando.get("marco_pesas").toString();
+                                                                                                                String strPesas_5kg=jsonSacando.get("pesas_5kg").toString();
+                                                                                                                String stPesas_10kg=jsonSacando.get("pesas_10kg").toString();
+                                                                                                                String strPesas_20kg=jsonSacando.get("pesas_20kg").toString();
+                                                                                                                String strPesa_clase_exactitud=jsonSacando.get("pesa_clase_exactitud").toString();
+                                                                                                                String strHorario=jsonSacando.get("horario").toString();
+                                                                                                                String strTipoVisita=jsonSacando.get("tipo_visita").toString();
+                                                                                                                String strCosto=jsonSacando.get("costo").toString();
+                                                                                                                String strNumSerie=jsonSacando.get("numero_serie").toString();
 
 
-                                                                                                            //listaCantidadBasc.clear();
+                                                                                                                //listaCantidadBasc.clear();
 
-                                                                                                            listaCantidadBasc.add(new CantidadBasculasRecycler(strAprobacion,strMarca,strModelo,strAlcance_max,strAlcance_min,
-                                                                                                                    strCodigo_marca,strCodigo_modelo,strAno_modelo,strEod,stTipo_instrumento,
-                                                                                                                    strClase_exactitud,strMarco_pesas,strPesas_5kg,stPesas_10kg,strPesas_20kg,strPesa_clase_exactitud,strHorario,strTipoVisita,strCosto,strNumSerie));
-                                                                                                            adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
-                                                                                                            recycler_numero_basc.setAdapter(adapterCantidadBasculas);
+                                                                                                                listaCantidadBasc.add(new CantidadBasculasRecycler(strAprobacion,strMarca,strModelo,strAlcance_max,strAlcance_min,
+                                                                                                                        strCodigo_marca,strCodigo_modelo,strAno_modelo,strEod,stTipo_instrumento,
+                                                                                                                        strClase_exactitud,strMarco_pesas,strPesas_5kg,stPesas_10kg,strPesas_20kg,strPesa_clase_exactitud,strHorario,strTipoVisita,strCosto,strNumSerie,folio_str));
+                                                                                                                adapterCantidadBasculas=new AdapterCantidadBasculas(activity,R.layout.item6,listaCantidadBasc,getResources());
+                                                                                                                recycler_numero_basc.setAdapter(adapterCantidadBasculas);
 
-                                                                                                            Log.e("t1",strAprobacion);
-                                                                                                            Log.e("t2",strMarca);
-                                                                                                            Log.e("t3",strModelo);
-                                                                                                            Log.e("t4",strAlcance_max);
-                                                                                                            Log.e("t5",strAlcance_min);
-                                                                                                            Log.e("t6",strCodigo_marca);
-                                                                                                            Log.e("t7",strCodigo_modelo);
-                                                                                                            Log.e("t8",strAno_modelo);
-                                                                                                            Log.e("t9",strEod);
-                                                                                                            Log.e("t10",stTipo_instrumento);
-                                                                                                            Log.e("t11",strClase_exactitud);
-                                                                                                            Log.e("t12",strMarco_pesas);
-                                                                                                            Log.e("t13",strPesas_5kg);
-                                                                                                            Log.e("t14",stPesas_10kg);                                                                                                    Log.e("t13",strMarco_pesas);
-                                                                                                            Log.e("t15",strPesas_20kg);
-                                                                                                            Log.e("t16",strPesa_clase_exactitud);
-                                                                                                            Log.e("t17",strHorario);
-                                                                                                            Log.e("t19",strTipoVisita);
-                                                                                                            Log.e("t18",strCosto);
-                                                                                                            Log.e("t18",strNumSerie);
+                                                                                                                Log.e("tamañano", String.valueOf(listaCantidadBasc.size()));
 
-                                                                                                            //Log.e("json"+i,jsonObject.getString(nueva_marca));
-                                                                                                        } catch (JSONException e) {
-                                                                                                            e.printStackTrace();
+                                                                                                                //Log.e("json"+i,jsonObject.getString(nueva_marca));
+                                                                                                            } catch (JSONException e) {
+                                                                                                                e.printStackTrace();
+                                                                                                            }
                                                                                                         }
+
+
+                                                                                                    } catch (JSONException e) {
+                                                                                                        e.printStackTrace();
                                                                                                     }
-
-
-                                                                                                } catch (JSONException e) {
-                                                                                                    e.printStackTrace();
                                                                                                 }
-                                                                                            }
-                                                                                            else{
-                                                                                                Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
+                                                                                                else{
+                                                                                                    Toast.makeText(getApplicationContext(), "El numero de serie es necesario.", Toast.LENGTH_LONG).show();
+
+                                                                                                }
+
 
                                                                                             }
-
 
                                                                                         }
 
+
+                                                                                        else{
+                                                                                            Toast.makeText(getApplicationContext(), "El costo es necesario.", Toast.LENGTH_LONG).show();
+                                                                                        }
                                                                                     }
-
-
                                                                                     else{
-                                                                                        Toast.makeText(getApplicationContext(), "El costo es necesario.", Toast.LENGTH_LONG).show();
+                                                                                        Toast.makeText(getApplicationContext(), "El horario es necesaio.", Toast.LENGTH_LONG).show();
                                                                                     }
                                                                                 }
                                                                                 else{
-                                                                                    Toast.makeText(getApplicationContext(), "El horario es necesaio.", Toast.LENGTH_LONG).show();
+                                                                                    Toast.makeText(getApplicationContext(), "La clase de exactitud es necesaria.", Toast.LENGTH_LONG).show();
                                                                                 }
                                                                             }
                                                                             else{
-                                                                                Toast.makeText(getApplicationContext(), "La clase de exactitud es necesaria.", Toast.LENGTH_LONG).show();
+                                                                                Toast.makeText(getApplicationContext(), "Especifique que no aplica.", Toast.LENGTH_LONG).show();
                                                                             }
+
                                                                         }
                                                                         else{
-                                                                            Toast.makeText(getApplicationContext(), "Especifique que no aplica.", Toast.LENGTH_LONG).show();
+                                                                            Toast.makeText(getApplicationContext(), "Especifique si no aplic.", Toast.LENGTH_LONG).show();
                                                                         }
-
                                                                     }
                                                                     else{
-                                                                        Toast.makeText(getApplicationContext(), "Especifique si no aplic.", Toast.LENGTH_LONG).show();
+                                                                        Toast.makeText(getApplicationContext(), "Especifique si no aplica.", Toast.LENGTH_LONG).show();
                                                                     }
                                                                 }
                                                                 else{
-                                                                    Toast.makeText(getApplicationContext(), "Especifique si no aplica.", Toast.LENGTH_LONG).show();
+                                                                    Toast.makeText(getApplicationContext(), "El marco es necesario.", Toast.LENGTH_LONG).show();
                                                                 }
                                                             }
                                                             else{
-                                                                Toast.makeText(getApplicationContext(), "El marco es necesario.", Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(getApplicationContext(), "La clase de exactitud es necesaria.", Toast.LENGTH_LONG).show();
                                                             }
                                                         }
                                                         else{
-                                                            Toast.makeText(getApplicationContext(), "La clase de exactitud es necesaria.", Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(getApplicationContext(), "El tipo de instrumento es necesario.", Toast.LENGTH_LONG).show();
                                                         }
                                                     }
                                                     else{
-                                                        Toast.makeText(getApplicationContext(), "El tipo de instrumento es necesario.", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(getApplicationContext(), "El eod es necesario.", Toast.LENGTH_LONG).show();
                                                     }
                                                 }
                                                 else{
-                                                    Toast.makeText(getApplicationContext(), "El eod es necesario.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "El año es necesario.", Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                             else{
-                                                Toast.makeText(getApplicationContext(), "El año es necesario.", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getApplicationContext(), "El codigo del modelo es necesario.", Toast.LENGTH_LONG).show();
                                             }
                                         }
                                         else{
-                                            Toast.makeText(getApplicationContext(), "El codigo del modelo es necesario.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(getApplicationContext(), "El codigo de la marca es necesaria.", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                     else{
-                                        Toast.makeText(getApplicationContext(), "El codigo de la marca es necesaria.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getApplicationContext(), "Alcance Minimo es necesario.", Toast.LENGTH_LONG).show();
                                     }
                                 }
                                 else{
-                                    Toast.makeText(getApplicationContext(), "Alcance Minimo es necesario.", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "El alcance Maximo es necesario.", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else{
-                                Toast.makeText(getApplicationContext(), "El alcance Maximo es necesario.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Seleccionar Modelo.", Toast.LENGTH_LONG).show();
                             }
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "Seleccionar Modelo.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Ingrese Marca.", Toast.LENGTH_LONG).show();
                         }
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "Ingrese Marca.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Ingrese numero de aprobacion.", Toast.LENGTH_LONG).show();
                     }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Ingrese numero de aprobacion.", Toast.LENGTH_LONG).show();
-                }
+
+
+
+
+
 
             }
         });
@@ -1926,8 +1956,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         //Log.e("",""+parametros2);
                         int cuenta3 =cursor6.getCount();
                         while (cursor6.moveToNext()){
-                            Log.e("2",cursor6.getString(0));
-                            Log.e("eod2",cursor6.getString(1));
+
 
                             alcance_minimo_view.setText(cursor6.getString(2));
                             tipoInstrumento.setText(cursor6.getString(3));
@@ -2036,47 +2065,81 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_otra_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                formulario_bascula.setVisibility(View.VISIBLE);
-                autoAprobacion.setText("");
-                recycler_marca.setText("");
-                caja_auto_aproba.setVisibility(View.VISIBLE);
-                caja_aprobacion_final.setVisibility(View.GONE);
-                tipoInstrumento.setText("");
-                recycler_modelo.setAdapter(adapterModeloBasculas);
-                recycler_alcance.setText("");
-                alcanceSnAprobacion_texto.setText("");
-                caja_recycler_alcance.setVisibility(View.VISIBLE);
-                caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
-                caja_alcanceSnaprobacion.setVisibility(View.GONE);
-                eod_snApro_texto.setText("");
-                caja_eod.setVisibility(View.VISIBLE);
-                caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
-                caja_eod_snApro_final.setVisibility(View.GONE);
-                //recycler_eod.setAdapter(adapterEoD);
-                eod_view.setText("");
-                codigo_marca.setText("");
-                claseExactitud.setText("");
-                valorCheckboxPrimera="";
-                costo_texto.setText("");
-                codigo_modelo.setText("");
-                ano_aprobacion.setText("");
-                alcance_minimo_view.setText("");
-                marco_pesas.setText("");
-                pesas_5kg.setText("");
-                pesas_10kg.setText("");
-                pesas_20kg.setText("");
-                horario.setText("");
-                tipo_visita.setText("");
-                pesa_clase_exactitud.setText("");
-                caja_costo_final.setVisibility(View.GONE);
-                caja_edit_costo.setVisibility(View.VISIBLE);
-                numSerie_texto.setText("");
-                caja_numSerie_final.setVisibility(View.GONE);
-                caja_edit_numSerie.setVisibility(View.VISIBLE);
-                primera_si.setChecked(false);
-                primera_no.setChecked(false);
-                factura_si.setChecked(false);
-                factura_no.setChecked(false);
+                Log.e("cuentaBas", String.valueOf(listaCantidadBasc.size()));
+                if(listaCantidadBasc.size()<4){
+                    Log.e("cuentaBas", String.valueOf(listaCantidadBasc.size()));
+
+                    formulario_bascula.setVisibility(View.VISIBLE);
+                    autoAprobacion.setText("");
+                    recycler_marca.setText("");
+                    caja_auto_aproba.setVisibility(View.VISIBLE);
+                    caja_aprobacion_final.setVisibility(View.GONE);
+                    tipoInstrumento.setText("");
+                    recycler_modelo.setAdapter(adapterModeloBasculas);
+                    recycler_alcance.setText("");
+                    alcanceSnAprobacion_texto.setText("");
+                    caja_recycler_alcance.setVisibility(View.VISIBLE);
+                    caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                    caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                    eod_snApro_texto.setText("");
+                    caja_eod.setVisibility(View.VISIBLE);
+                    caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                    caja_eod_snApro_final.setVisibility(View.GONE);
+                    //recycler_eod.setAdapter(adapterEoD);
+                    eod_view.setText("");
+                    codigo_marca.setText("");
+                    claseExactitud.setText("");
+                    valorCheckboxPrimera="";
+                    costo_texto.setText("");
+                    codigo_modelo.setText("");
+                    ano_aprobacion.setText("");
+                    alcance_minimo_view.setText("");
+                    marco_pesas.setText("");
+                    pesas_5kg.setText("");
+                    pesas_10kg.setText("");
+                    pesas_20kg.setText("");
+                    horario.setText("");
+                    tipo_visita.setText("");
+                    pesa_clase_exactitud.setText("");
+                    caja_costo_final.setVisibility(View.GONE);
+                    caja_edit_costo.setVisibility(View.VISIBLE);
+                    numSerie_texto.setText("");
+                    tipoInstrumento.setText("");
+                    caja_instrumento.setVisibility(View.VISIBLE);
+                    caja_tipoInstrume_final.setVisibility(View.GONE);
+                    caja_numSerie_final.setVisibility(View.GONE);
+                    caja_edit_numSerie.setVisibility(View.VISIBLE);
+                    primera_si.setChecked(false);
+                    primera_no.setChecked(false);
+                    factura_si.setChecked(false);
+                    factura_no.setChecked(false);
+                    numero_aprob_si.setChecked(false);
+                    numero_aprob_no.setChecked(false);
+                }
+                else{
+                    caja_limite_basc.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        aperturar_nuevo_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                caja_limite_basc.setVisibility(View.GONE);
+
+            }
+        });
+        aperturar_nuevo_si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        iniciarNuevoFolio();
+
+
+                    }
+                });
+
             }
         });
 
@@ -2179,24 +2242,24 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                 cp_str=direccion_fragmentada[3];
                 ciudad_str=direccion_fragmentada[4];
                 pais_str=direccion_fragmentada[5];
-                Log.e("direccion_fragmentada",direccion_fragmentada[i]);
+             /*   Log.e("direccion_fragmentada",direccion_fragmentada[i]);*/
             }
-            Log.e("lat",""+latitud);
-            Log.e("lon",""+longitud);
+     /*       Log.e("lat",""+latitud);
+            Log.e("lon",""+longitud);*/
             coordenadas =coord;
             direccion_mercado.setText(direccion);
             UTMPoint conver=fromGeodeticToUTM(punto);
-            Log.e("con",""+conver);
+           /* Log.e("con",""+conver);*/
             UTMPoint conver1=fromGeodeticToUTM(longitud,latitud);
-            Log.e("con1",""+conver1);
+        /*    Log.e("con1",""+conver1);*/
             UTMPoint conver2=fromGeodeticToUTM(longitud,latitud,WGS84);
-            Log.e("con2",""+conver2);
-
+        /*    Log.e("con2",""+conver2);
+*/
             String strConver= String.valueOf(conver2);
             Log.e("str",""+strConver);
 
             String[] X_Y_Z=strConver.split(" ");
-            Log.e("corte",""+X_Y_Z[3].toString().replace(",","").replace("(",""));
+
             String x= String.valueOf(conver2.getX());
             String y=String.valueOf(conver2.getY());
             String z=String.valueOf(conver2.getZone());
@@ -2208,7 +2271,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             GeodeticPoint conver3=fromUTMToGeodetic(x,y,z);
             zona.setText(X_Y_Z[3].toString().replace(",","").replace("(","").replace(")","")+"N");
             nueva_zona=zona.getText().toString();
-            Log.e("con3",""+conver3);
+
 
             //Toast.makeText(getApplicationContext(),"direccion: "+direccion,Toast.LENGTH_LONG).show();
             //Toast.makeText(getApplicationContext(),"lat: "+latitud+"long:"+longitud,Toast.LENGTH_LONG).show();
@@ -2351,22 +2414,20 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             cursor1= database.rawQuery("SELECT alcance_maximo,eod,tipo,alcance_minimo,alcance_medicion,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario FROM catalogo  ",null);
             // Log.e("tipos",""+cursor1);
             int cuenta =cursor1.getCount();
-            Log.e("catalogo",""+cuenta);
             while (cursor1.moveToNext()){
-                Log.e("*",cursor1.getString(0));
-                Log.e("horario",cursor1.getString(1));
+
             }
-            Log.e("horario",cuenta+" -- ");
+
         }catch (Exception e){
-            Log.e("catalogo","no existe");
+
         }
         try {
             cursor2= database2.rawQuery("SELECT DISTINCT numero_aprobacion FROM basculas  ",null);
             // Log.e("tipos",""+cursor1);
             int cuenta =cursor2.getCount();
-            Log.e("basculas",""+cuenta);
+           ;
             while (cursor2.moveToNext()){
-                Log.e("marca",cursor2.getString(0));
+
                 APROBACION.add(cursor2.getString(0));
                 //Log.e("lista_basculas",""+BASCULAS);
             }
@@ -2452,16 +2513,14 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             int cuenta =cursor4.getCount();
 
             while (cursor4.moveToNext()){
-                Log.e("ALCANCE",cursor4.getString(0));
-                Log.e("EOD",cursor4.getString(1));
+
                 nuevo_alcanceMax_aprobado=cursor4.getString(0);
                 nuevo_eod_aprobado =cursor4.getString(1);
                 recycler_alcance.setText(nuevo_alcanceMax_aprobado);
                 eod_view.setText(nuevo_eod_aprobado);
-                Log.e("ALCANCE", nuevo_eod_aprobado);
-                Log.e("EOD",nuevo_alcanceMax_aprobado);
+
                 if(nuevo_alcanceMax_aprobado.trim().equals("")&& nuevo_eod_aprobado.trim().equals("")){
-                    Log.e("quepasa",""+nueva_alcanceMax);
+
                     caja_recycler_alcance.setVisibility(View.GONE);
                     caja_alcanceSnaprobacion.setVisibility(View.VISIBLE);
                     caja_eod.setVisibility(View.GONE);
@@ -2472,13 +2531,12 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                         cursor1= database.rawQuery("SELECT alcance_maximo,eod,alcance_minimo,tipo,clase_exactitud,marco_pesas,pesa_5kg,pesa_10kg,pesa_20kg,pesa_clase_exactitud,horario,alcance_medicion FROM catalogo WHERE alcance_maximo=? AND eod=?",parametros2);
                         //Log.e("tipos",""+parametros2);
                         int cuenta2 =cursor1.getCount();
-                        Log.e("catalogo",""+cuenta2);
+
                         while (cursor1.moveToNext()){
-                            Log.e("1",cursor1.getString(0));
-                            Log.e("eod",cursor1.getString(1));
+
                             alcance_minimo_view.setText(cursor1.getString(2));
                             nuevo_alcance_min =cursor1.getString(2);
-                            Log.e("putoeod",""+ nuevo_alcance_min);
+
                             tipoInstrumento.setText(cursor1.getString(3));
                             claseExactitud.setText(cursor1.getString(4));
                             marco_pesas.setText(cursor1.getString(5));
@@ -2498,7 +2556,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                             nuevo_alcanceMedicion=cursor1.getString(11);
 
                         }
-                        Log.e("eod",cuenta2+" -- ");
+
                     }catch (Exception e){
                         Log.e("catalogo","no existe");
                     }
@@ -2509,11 +2567,10 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             }
 
 
-            Log.e("alcance_cuenta",""+cuenta);
+
             //listaAlcance.clear();
 
 
-            Log.e("LISTA_aLCANCE",""+cursor4);
         }catch (Exception e){
             Log.e("ALCANCE_MAX","no existe");
         }
@@ -2615,5 +2672,31 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     public void editarBascula(String cantidad_numero_aprobacion,String cantidad_marca,String cantidad_modelo, String cantidad_AlcanceMax,String cantidad_AlcanceMin,String cantidad_anoAprobacion,String cantidad_eod, String cantidad_TipoInstrumento,String cantidad_TipoVisita,String cantidad_costo,String cantidad_numeroSerie){
 
     }
+    public void iniciarNuevoFolio()
+    {
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.POST,  SERVIDOR_CONTROLADOR+"iniciar_nuevo_folio.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("respuesta:",response);
 
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e( "error", "error: " +error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("id_verificador",id_usuer);
+                map.put("folio",folio_str);
+                return map;
+            }
+        };
+        requestQueue.add(request);
+    }
 }
