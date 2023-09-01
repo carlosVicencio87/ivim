@@ -89,7 +89,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
     private LatLng coord, coordenadas, latLong;
     private Marker marker;
     private ConstraintLayout mapaid,cons_check,caja_siguiente_basc,caja_mensaje_basc,caja_finalizar_basc,caja_verificar_numAprobacion,
-            cons_factura,caja_integridad,cons_relacion_comercial,cons_conflicto_intereses,caja_limite_basc;
+            cons_factura,caja_integridad,cons_relacion_comercial,cons_conflicto_intereses,caja_limite_basc,mensaje_sn_folios;
     private LinearLayout caja_punto_partida, caja_edit_nombre, caja_nombre_final,
             caja_direccion, caja_giro, caja_mercado, caja_mercado_final,caja_edit_tel, caja_tel_final,
             caja_recycler_marca, caja_recycler_modelo, caja_siguiente_tab, caja_x, caja_longitud,
@@ -142,7 +142,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
             ,pesas_10kg,pesas_20kg,codigo_marca,codigo_modelo,ano_aprobacion,pesa_clase_exactitud,horario, eod_snApro_vista,
             aprobacion_no,aprobacion_si,marca_snAprobacion_final,modelo_snAprobacion_final,CodigomarcaSnaprobacion,
             CodigomaModeloSnaprobacion,anoSnaprobacion,tipo_visita,mercado_vista,rfc,numSerie,orden_tipoVerificacion,
-            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto,direccion_vista,tipo_instrumen_view,aperturar_nuevo_no,aperturar_nuevo_si;
+            orden_merca,orden_modelo,orden_numSerie,orden_alcanceMax,orden_eod,orden_alcanceMin,orden_modeloPrototipo,orden_claseExactitud,orden_alcanceMedicion,comenzar_encuesta,aceptar_conflicto,direccion_vista,tipo_instrumen_view,aperturar_nuevo_no,aperturar_nuevo_si,cerrar_men_sn_folio,contacto_folios_nuevos;
 
     private int tipo_camino,cuenta_basculas;
     private EditText nombre_texto, fecha,mercado_texto, tel_texto, marca_snAprobacion,alcanceSnAprobacion_texto,costo_texto, eod_snApro_texto,
@@ -441,7 +441,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
 
         caja_limite_basc=findViewById(R.id.caja_limite_basc);
-        SERVIDOR_CONTROLADOR = new Servidor().local;
+        SERVIDOR_CONTROLADOR = new Servidor().servidor;
 
 
 
@@ -480,6 +480,9 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
         aperturar_nuevo_no=findViewById(R.id.aperturar_nuevo_no);
         aperturar_nuevo_si=findViewById(R.id.aperturar_nuevo_si);
+        mensaje_sn_folios=findViewById(R.id.mensaje_sn_folios);
+        cerrar_men_sn_folio=findViewById(R.id.cerrar_men_sn_folio);
+        contacto_folios_nuevos=findViewById(R.id.contacto_folios_nuevos);
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -1598,8 +1601,6 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         agregar_bascula.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("tamañano", String.valueOf(listaCantidadBasc.size()));
-                Log.e("tipo_camino",""+tipo_camino);
 
                     if(tipo_camino==2){
                         nueva_aprobacion = autoAprobacion.getText().toString();
@@ -2142,7 +2143,28 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
+        cerrar_men_sn_folio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mensaje_sn_folios.setVisibility(View.GONE);
+            }
+        });
+        contacto_folios_nuevos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mensaje_sn_folios.setVisibility(View.GONE);
 
+                        iniciarNuevoFolio();
+
+
+                    }
+                });
+
+            }
+        });
     }
 
     /**
@@ -2181,12 +2203,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         Location punto_usuario = new Location("Usuario");
         punto_usuario.setLatitude(latitud);
         punto_usuario.setLongitude(longitud);
-        Log.e("mercado", "" + punto_mercado);
-        Log.e("usuario", "" + punto_usuario);
+
 
         float distancias = punto_mercado.distanceTo(punto_usuario);
         float restriccion = 80;
-        Log.e("distancia", "" + distancias);
+
 
     }
 
@@ -2195,7 +2216,7 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 PERMISO_LOCATION);
-        Log.e("va", "va");
+
     }
 
     public void checarPermisos() {
@@ -2680,7 +2701,60 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void onResponse(String response) {
                         Log.e("respuesta:",response);
+                        folio_str=response;
 
+                        if(response.contains("no existe")){
+                            mensaje_sn_folios.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            caja_limite_basc.setVisibility(View.GONE);
+                            formulario_bascula.setVisibility(View.VISIBLE);
+                            autoAprobacion.setText("");
+                            recycler_marca.setText("");
+                            caja_auto_aproba.setVisibility(View.VISIBLE);
+                            caja_aprobacion_final.setVisibility(View.GONE);
+                            tipoInstrumento.setText("");
+                            recycler_modelo.setAdapter(adapterModeloBasculas);
+                            recycler_alcance.setText("");
+                            alcanceSnAprobacion_texto.setText("");
+                            caja_recycler_alcance.setVisibility(View.VISIBLE);
+                            caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                            caja_alcanceSnaprobacion.setVisibility(View.GONE);
+                            eod_snApro_texto.setText("");
+                            caja_eod.setVisibility(View.VISIBLE);
+                            caja_alcanceSnaprobacion_final.setVisibility(View.GONE);
+                            caja_eod_snApro_final.setVisibility(View.GONE);
+                            //recycler_eod.setAdapter(adapterEoD);
+                            eod_view.setText("");
+                            codigo_marca.setText("");
+                            claseExactitud.setText("");
+                            valorCheckboxPrimera="";
+                            costo_texto.setText("");
+                            codigo_modelo.setText("");
+                            ano_aprobacion.setText("");
+                            alcance_minimo_view.setText("");
+                            marco_pesas.setText("");
+                            pesas_5kg.setText("");
+                            pesas_10kg.setText("");
+                            pesas_20kg.setText("");
+                            horario.setText("");
+                            tipo_visita.setText("");
+                            pesa_clase_exactitud.setText("");
+                            caja_costo_final.setVisibility(View.GONE);
+                            caja_edit_costo.setVisibility(View.VISIBLE);
+                            numSerie_texto.setText("");
+                            tipoInstrumento.setText("");
+                            caja_instrumento.setVisibility(View.VISIBLE);
+                            caja_tipoInstrume_final.setVisibility(View.GONE);
+                            caja_numSerie_final.setVisibility(View.GONE);
+                            caja_edit_numSerie.setVisibility(View.VISIBLE);
+                            primera_si.setChecked(false);
+                            primera_no.setChecked(false);
+                            factura_si.setChecked(false);
+                            factura_no.setChecked(false);
+                            numero_aprob_si.setChecked(false);
+                            numero_aprob_no.setChecked(false);
+                        }
 
                     }
                 }, new Response.ErrorListener() {

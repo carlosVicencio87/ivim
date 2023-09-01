@@ -573,7 +573,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/caja_limite_basc"
+        android:id="@+id/mensaje_sn_folios"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -584,17 +584,65 @@
         android:clickable="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="350dp"
+            android:background="@color/blanco"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@color/blanco"
-            android:alpha="0.3">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:gravity="center"
+                android:text="se han terminado tus folios contacta tu provedor"
+                android:textColor="@color/negro"
+                android:textSize="11dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/cerrar_men_sn_folio"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginRight="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="Cerrar"
+                android:textColor="@color/negro"
+                android:textSize="11dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+            <TextView
+                android:id="@+id/contacto_folios_nuevos"
+                android:layout_width="80dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/blanco"
+                android:gravity="center"
+                android:text="Ya me eh contactado"
+                android:textColor="@color/negro"
+                android:textSize="11dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/caja_limite_basc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:clickable="true">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/caja_mensaje_limite_basculas"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@color/blanco"
             android:orientation="horizontal"
@@ -618,13 +666,11 @@
                 android:id="@+id/aperturar_nuevo_no"
                 android:layout_width="80dp"
                 android:layout_height="22dp"
-                android:layout_marginRight="70dp"
-                android:layout_marginBottom="50dp"
                 android:background="@color/blanco"
                 android:gravity="center"
                 android:text="No"
                 android:textColor="@color/negro"
-                android:textSize="20dp"
+                android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
             <TextView
@@ -637,9 +683,9 @@
                 android:gravity="center"
                 android:text="Si"
                 android:textColor="@color/negro"
-                android:textSize="20dp"
+                android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent" />
+                app:layout_constraintLeft_toLeftOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ScrollView

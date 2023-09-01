@@ -51,7 +51,7 @@ public class Principal extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_principal);
         executorService= Executors.newSingleThreadExecutor();
-        SERVIDOR_CONTROLADOR = new Servidor().local;
+        SERVIDOR_CONTROLADOR = new Servidor().servidor;
 
         pedir_folios=findViewById(R.id.pedir_folios);
         mensaje_sn_folios=findViewById(R.id.mensaje_sn_folios);
@@ -98,8 +98,10 @@ public class Principal extends AppCompatActivity {
                             mensaje_sn_folios.setVisibility(View.VISIBLE);
                         }
                         else{
+
                             editor.putString("folio",response);
                             editor.apply();
+
                             Intent intent = new Intent(Principal.this, Mapa.class);
                             startActivity(intent);
 

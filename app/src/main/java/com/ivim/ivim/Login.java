@@ -70,7 +70,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         executorService= Executors.newSingleThreadExecutor();
-        SERVIDOR_CONTROLADOR = new Servidor().local;
+        SERVIDOR_CONTROLADOR = new Servidor().servidor;
         datosUsuario = getSharedPreferences("Usuario",this.MODE_PRIVATE);
         editor=datosUsuario.edit();
 
